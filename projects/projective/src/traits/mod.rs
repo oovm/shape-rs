@@ -1,7 +1,7 @@
 use num_traits::{real::Real, One, Zero};
 
 
-///
+/// 2D projective transformations
 ///
 /// # Arguments
 ///
@@ -10,10 +10,9 @@ use num_traits::{real::Real, One, Zero};
 /// returns: Self
 ///
 /// # Examples
-///
-/// ```
-///
-/// ```
+#[doc = "```"]
+#[doc = include_str!("../../tests/point.rs")]
+#[doc = "```"]
 pub trait Projective<T>
 where
     Self: Sized,
@@ -21,16 +20,27 @@ where
 {
     /// Transform by a 3×3 matrix.
     ///
-    /// # Arguments
+    /// # Matrix
     ///
-    /// * `matrix`: $$$$
-    ///
-    /// # Examples
-    ///
-    /// ```
-    ///
+    /// ```math
+    /// \begin{bmatrix}
+    ///     m0 & m1 & m2 \\
+    ///     m3 & m4 & m5 \\
+    ///     m6 & m7 & m8 \\
+    /// \end{bmatrix}
     /// ```
     fn transform(self, matrix: &[T; 9]) -> Self;
+    /// Transform by rotate degree $\alpha$.
+    ///
+    /// # Matrix
+    ///
+    /// ```math
+    /// \begin{bmatrix}
+    ///     cos\alpha & sin\alpha & 0 \\
+    ///    -sin\alpha & cos\alpha & 0 \\
+    ///     0         & 0         & 1 \\
+    /// \end{bmatrix}
+    /// ```
     #[rustfmt::skip]
     fn rotate(self, angle: T) -> Self {
         self.transform(&[
@@ -39,7 +49,17 @@ where
              T::zero(),   T::zero(),   T::one(),
         ])
     }
-    /// Translate by x, y
+    /// Transform by rotate degree $\alpha$.
+    ///
+    /// # Matrix
+    ///
+    /// ```math
+    /// \begin{bmatrix}
+    ///     cos\alpha & sin\alpha & 0 \\
+    ///    -sin\alpha & cos\alpha & 0 \\
+    ///     0         & 0         & 1 \\
+    /// \end{bmatrix}
+    /// ```
     #[rustfmt::skip]
     fn translate(self, x: T, y: T) -> Self {
         self.transform(&[
