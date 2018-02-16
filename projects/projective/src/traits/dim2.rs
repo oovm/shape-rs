@@ -3,32 +3,10 @@ use super::*;
 /// 2D projective transformations
 ///
 /// ![](https://s2.ax1x.com/2019/05/29/VuEtUA.png)
-///
-/// # Examples
-/// ```
-/// use projective::Projective;
-// #[derive(Debug, Copy, Clone, PartialEq)]
-// pub struct Point(f64, f64);
-//
-// #[rustfmt::skip]
-// impl Projective<f64> for Point {
-//     fn transform(self, matrix: &[f64; 9]) -> Self {
-//         Point(
-//             matrix[2] + matrix[0] * self.0 + matrix[1] * self.1,
-//             matrix[5] + matrix[3] * self.0 + matrix[4] * self.1,
-//         )
-///     }
-/// }
-///
-/// #[test]
-/// fn test_transform() {
-///     let p0 = Point(1.0, 2.0);
-///     assert_eq!(p0.translate(2.0, 1.0), Point(3.0, 3.0));
-///     assert_eq!(p0.scale(2.0, 3.0), Point(2.0, 6.0));
-///     // floating precision error, implement rotate manually to reduce errors
-///     assert_eq!(p0.rotate(std::f64::consts::PI), Point(-0.9999999999999998, -2.0));
-/// }
-/// ```
+#[doc = "# Examples"]
+#[doc = "```"]
+#[doc = include_str ! ("../../tests/point.rs")]
+#[doc = "```"]
 pub trait Projective<T>
 where
     Self: Sized,
@@ -45,7 +23,7 @@ where
     ///     m_6 & m_7 & m_8 \\
     /// \end{bmatrix}
     /// ```
-    fn transform(self, matrix: &[T; 9]) -> Self;
+    fn transform(&self, matrix: &[&T; 9]) -> Self;
     /// Transform by rotate degree $\alpha$.
     ///
     /// # Matrix
@@ -58,11 +36,13 @@ where
     /// \end{bmatrix}
     /// ```
     #[rustfmt::skip]
-    fn rotate(self, angle: T) -> Self {
+    fn rotate(&self, angle: &T) -> Self {
+        let c = angle.cos();
+        let s = angle.sin();
         self.transform(&[
-            angle.cos(), angle.sin(), T::zero(),
-            -angle.sin(), angle.cos(), T::zero(),
-            T::zero(),   T::zero(),   T::one(),
+            &c,         &s,         &T::zero(),
+            &s.neg(),   &c,         &T::zero(),
+            &T::zero(), &T::zero(), &T::one(),
         ])
     }
     /// Transform by rotate with a point $\alpha$.
@@ -75,8 +55,8 @@ where
     ///     y =& (x_0 - p_x)\sin α + (y_0 - p_y)\cos α + p_y \\
     /// \end{aligned}
     /// ```
-    fn rotate_point(self, point: &[T; 2], angle: T) -> Self {
-        self.translate(-point[0], -point[1]).rotate(angle).translate(point[0], point[1])
+    fn rotate_point(&self, point: &[&T; 2], angle: &T) -> Self {
+        self.translate(&point[0].neg(), &point[1].neg()).rotate(angle).translate(point[0], point[1])
     }
     /// Transform by length $\delta x, \delta y$.
     ///
@@ -90,11 +70,11 @@ where
     /// \end{bmatrix}
     /// ```
     #[rustfmt::skip]
-    fn translate(self, x: T, y: T) -> Self {
+    fn translate(&self, x: &T, y: &T) -> Self {
         self.transform(&[
-            T::one(), T::zero(), x,
-            T::zero(), T::one(), y,
-            T::zero(), T::zero(), T::one(),
+            &T::one(),  &T::zero(), x,
+            &T::zero(), &T::one(),  y,
+            &T::zero(), &T::zero(), &T::one(),
         ])
     }
     /// Transform by length $\delta x$.
@@ -108,8 +88,8 @@ where
     ///     0 & 0 & 1 \\
     /// \end{bmatrix}
     /// ```
-    fn translate_x(self, x: T) -> Self {
-        self.translate(x, T::zero())
+    fn translate_x(&self, x: &T) -> Self {
+        self.translate(x, &T::zero())
     }
     /// Transform by length $\delta y$.
     ///
@@ -122,8 +102,8 @@ where
     ///     0 & 0 & 1 \\
     /// \end{bmatrix}
     /// ```
-    fn translate_y(self, y: T) -> Self {
-        self.translate(T::zero(), y)
+    fn translate_y(&self, y: &T) -> Self {
+        self.translate(&T::zero(), y)
     }
     /// Transform by scale $x, y$.
     ///
@@ -137,11 +117,11 @@ where
     /// \end{bmatrix}
     /// ```
     #[rustfmt::skip]
-    fn scale(self, x: T, y: T) -> Self {
+    fn scale(self, x: &T, y: &T) -> Self {
         self.transform(&[
-            x, T::zero(), T::zero(),
-            T::zero(), y, T::zero(),
-            T::zero(), T::zero(), T::one(),
+            x,          &T::zero(), &T::zero(),
+            &T::zero(), y,          &T::zero(),
+            &T::zero(), &T::zero(), &T::one(),
         ])
     }
     /// Transform by scale $x$.
@@ -155,8 +135,8 @@ where
     ///     0 & 0 & 1 \\
     /// \end{bmatrix}
     /// ```
-    fn scale_x(self, x: T) -> Self {
-        self.scale(x, T::one())
+    fn scale_x(self, x: &T) -> Self {
+        self.scale(x, &T::one())
     }
     /// Transform by scale $y$.
     ///
@@ -169,25 +149,25 @@ where
     ///     0 & 0 & 1 \\
     /// \end{bmatrix}
     /// ```
-    fn scale_y(self, y: T) -> Self {
-        self.scale(T::one(), y)
+    fn scale_y(self, y: &T) -> Self {
+        self.scale(&T::one(), y)
     }
     /// Transform by skew $x, y$.
     #[rustfmt::skip]
-    fn reflect(self, x: T, y: T) -> Self {
+    fn reflect(self, x: &T, y: &T) -> Self {
         self.transform(&[
-            T::one(), T::zero(), T::zero(),
-            T::zero(), T::one(), T::zero(),
-            x, y, T::one(),
+            &T::one(),  &T::zero(), &T::zero(),
+            &T::zero(), &T::one(),  &T::zero(),
+            x,          y,          &T::one(),
         ])
     }
     /// Transform by skew $x$.
     fn reflect_x(self) -> Self {
-        self.reflect(T::zero(), T::one())
+        self.reflect(&T::zero(), &T::one())
     }
     /// Transform by skew $y$.
     fn reflect_y(self) -> Self {
-        self.reflect(T::one(), T::zero())
+        self.reflect(&T::one(), &T::zero())
     }
     /// Transform by angle $\alpha, \beta$.
     ///
@@ -201,11 +181,11 @@ where
     /// \end{bmatrix}
     /// ```
     #[rustfmt::skip]
-    fn skew(self, a: T, b: T) -> Self {
+    fn skew(self, a: &T, b: &T) -> Self {
         self.transform(&[
-            T::one(), a.tan(), T::zero(),
-            b.tan(), T::one(), T::zero(),
-            T::zero(), T::zero(), T::one(),
+            &T::one(),  &a.tan(),   &T::zero(),
+            &b.tan(),   &T::one(),  &T::zero(),
+            &T::zero(), &T::zero(), &T::one(),
         ])
     }
     /// Transform by angle $\alpha$.
@@ -219,8 +199,8 @@ where
     ///     0         & 0          & 1 \\
     /// \end{bmatrix}
     /// ```
-    fn skew_x(self, a: T) -> Self {
-        self.skew(a, T::zero())
+    fn skew_x(self, a: &T) -> Self {
+        self.skew(a, &T::zero())
     }
     /// Transform by angle $\beta$.
     ///
@@ -233,7 +213,7 @@ where
     ///     0         & 0          & 1 \\
     /// \end{vmatrix}
     /// ```
-    fn skew_y(self, b: T) -> Self {
-        self.skew(T::zero(), b)
+    fn skew_y(self, b: &T) -> Self {
+        self.skew(&T::zero(), b)
     }
 }
