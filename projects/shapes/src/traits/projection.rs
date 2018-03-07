@@ -1,16 +1,23 @@
+use num_traits::Float;
 use projective::Projective;
 
 use crate::{Line, Point, Triangle};
 
-impl<T> Projective<T> for Point<T> {
+impl<T> Projective<T> for Point<T>
+where
+    T: Float,
+{
     fn transform(&self, matrix: &[&T; 9]) -> Self {
-        let x = &self.x * matrix[0] + &self.y * matrix[1] + matrix[2];
-        let y = &self.x * matrix[3] + &self.y * matrix[4] + matrix[5];
+        let x = self.x.mul(*matrix[0]) + self.y.mul(*matrix[1]) + *matrix[2];
+        let y = self.x.mul(*matrix[3]) + self.y.mul(*matrix[4]) + *matrix[5];
         Point { x, y }
     }
 }
 
-impl<T> Projective<T> for Line<T> {
+impl<T> Projective<T> for Line<T>
+where
+    T: Float,
+{
     fn transform(&self, matrix: &[&T; 9]) -> Self {
         let start = self.start.transform(matrix);
         let end = self.end.transform(matrix);
@@ -18,7 +25,10 @@ impl<T> Projective<T> for Line<T> {
     }
 }
 
-impl<T> Projective<T> for Triangle<T> {
+impl<T> Projective<T> for Triangle<T>
+where
+    T: Float,
+{
     fn transform(&self, matrix: &[&T; 9]) -> Self {
         let a = self.vertex[0].transform(matrix);
         let b = self.vertex[1].transform(matrix);
