@@ -11,6 +11,10 @@ readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
+[dependencies]
+partition = "0.1.2"
+num-traits = "0.2.14"
+
 [dependencies.graphics-shape]
 version = "0.0.2"
 optional = true
