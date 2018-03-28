@@ -15,6 +15,7 @@ where
     type Output = Polygon<T>;
 
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output> {
-        todo!()
+        let v: Vec<_> = self.iter().map(|p| (p.x.clone(), p.y.clone())).collect();
+        v.get_convex_hull(tolerance)
     }
 }
