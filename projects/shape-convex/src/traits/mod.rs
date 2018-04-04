@@ -1,3 +1,8 @@
+mod dim2;
+mod dim3;
+#[cfg(test)]
+mod tests;
+
 ///
 pub trait ConvexHull<T> {
     ///
