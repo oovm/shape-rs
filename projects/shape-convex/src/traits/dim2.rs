@@ -7,13 +7,15 @@ use std::{
 use num_traits::Signed;
 use partition::partition;
 
-use crate::{utils::dot_dim2_point3, ConvexHull};
+use graphics_shape::{Point, Polygon};
 
-impl<T> ConvexHull<T> for Vec<(T, T)>
+use crate::ConvexHull;
+
+impl<T> ConvexHull<T> for Vec<Point<T>>
 where
     T: Signed + Clone + PartialOrd,
 {
-    type Output = Vec<(T, T)>;
+    type Output = Vec<Point<T>>;
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output> {
         match self.as_slice() {
             [] | [_] | [_, _] => None,
@@ -24,22 +26,22 @@ where
 }
 
 #[inline]
-fn coord_cmp<T>(p: &(T, T), q: &(T, T)) -> Ordering
+fn coord_cmp<T>(p: &Point<T>, q: &Point<T>) -> Ordering
 where
     T: PartialOrd,
 {
-    p.0.partial_cmp(&q.0).unwrap().then(p.1.partial_cmp(&q.1).unwrap())
+    p.x.partial_cmp(&q.x).unwrap().then(p.y.partial_cmp(&q.y).unwrap())
 }
 
 #[inline]
-fn distance_power2<T>(a: &(T, T), b: &(T, T), p: &(T, T)) -> T
+fn distance_power2<T>(a: &Point<T>, b: &Point<T>, p: &Point<T>) -> T
 where
     T: Clone,
     T: Mul<Output = T> + Add<Output = T> + Sub<Output = T>,
 {
-    let orthogonal = ((a.1.clone() - b.1.clone()), (b.0.clone() - a.0.clone()));
-    let p_diff = ((p.0.clone() - a.0.clone()), (p.1.clone() - a.1.clone()));
-    orthogonal.0 * p_diff.0 + orthogonal.1 * p_diff.1
+    let orthogonal = ((a.y.clone() - b.y.clone()), (b.x.clone() - a.x.clone()));
+    let p_diff = ((p.x.clone() - a.x.clone()), (p.y.clone() - a.y.clone()));
+    orthogonal.x * p_diff.x + orthogonal.y * p_diff.y
 }
 
 #[inline]
@@ -51,18 +53,18 @@ fn swap_remove_to_first<'a, T>(slice: &mut &'a mut [T], idx: usize) -> &'a mut T
     h
 }
 
-fn convex3<T>(a: &(T, T), b: &(T, T), c: &(T, T), tolerance: Option<T>) -> Option<Vec<(T, T)>>
+fn convex3<T>(a: &Point<T>, b: &Point<T>, c: &Point<T>, tolerance: Option<T>) -> Option<Polygon<T>>
 where
     T: Signed + Clone + PartialOrd,
 {
-    match dot_dim2_point3(a, b, c).abs() <= tolerance.unwrap_or(T::zero()) {
-        true => Some(vec![a.clone(), b.clone(), c.clone()]),
+    match a.cross_dot(b, c).abs() <= tolerance.unwrap_or(T::zero()) {
+        true => Some(Polygon::new(vec![a, b, c])),
         false => None,
     }
 }
 
 // Adapted from https://web.archive.org/web/20180409175413/http://www.ahristov.com/tutorial/geometry-games/convex-hull.html
-pub fn convex4<T>(mut points: &mut [(T, T)], _tolerance: Option<T>) -> Vec<(T, T)>
+pub fn convex4<T>(mut points: &mut [Point<T>], _tolerance: Option<T>) -> Polygon<T>
 where
     T: Clone + PartialOrd + Signed,
 {
@@ -81,17 +83,17 @@ where
         (min, max)
     };
 
-    let (part1, _) = partition(points, |p| dot_dim2_point3(max, min, p) > T::zero());
+    let (part1, _) = partition(points, |p| max.cross_dot(min, p) > T::zero());
     hull_set(max, min, part1, &mut hull);
     hull.push(max.clone());
-    let (part2, _) = partition(points, |p| dot_dim2_point3(min, max, p) > T::zero());
+    let (part2, _) = partition(points, |p| min.cross_dot(max, p) > T::zero());
     hull_set(min, max, part2, &mut hull);
     hull.push(min.clone());
     hull
 }
 
 /// Compute index of the lexicographically least and the greatest coordinate in one pass.
-pub fn minmax_index<T>(pts: &[(T, T)]) -> (usize, usize)
+pub fn minmax_index<T>(pts: &[Point<T>]) -> (usize, usize)
 where
     T: Signed + PartialOrd,
 {
@@ -112,11 +114,11 @@ where
             },
         )
     });
-    (min.unwrap().0, max.unwrap().0)
+    (min.unwrap().x, max.unwrap().x)
 }
 
 // recursively calculate the convex hull of a subset of points
-fn hull_set<T>(a: &(T, T), b: &(T, T), mut set: &mut [(T, T)], hull: &mut Vec<(T, T)>)
+fn hull_set<T>(a: &Point<T>, b: &Point<T>, mut set: &mut [Point<T>], hull: &mut Vec<Point<T>>)
 where
     T: Signed + Clone + PartialOrd,
 {
@@ -134,11 +136,11 @@ where
         .enumerate()
         .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
         .unwrap()
-        .0;
+        .x;
     let furthest_point = swap_remove_to_first(&mut set, furthest_idx);
-    let (part1, _) = partition(set, |p| dot_dim2_point3(furthest_point, b, p) > T::zero());
+    let (part1, _) = partition(set, |p| furthest_point.cross_dot(b, p) > T::zero());
     hull_set(furthest_point, b, part1, hull);
     hull.push(furthest_point.clone());
-    let (part2, _) = partition(set, |p| dot_dim2_point3(a, furthest_point, p) > T::zero());
+    let (part2, _) = partition(set, |p| a.cross_dot(furthest_point, p) > T::zero());
     hull_set(a, furthest_point, part2, hull);
 }

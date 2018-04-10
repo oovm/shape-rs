@@ -17,7 +17,7 @@ num-traits = "0.2.14"
 
 [dependencies.graphics-shape]
 version = "0.0.2"
-path = "../shapes"
+path = "../shape-core"
 
 [dev-dependencies]
 

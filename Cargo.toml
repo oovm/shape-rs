@@ -2,7 +2,7 @@
 members = ["projects/*"]
 default-members = [
     "projects/projective",
-    "projects/shapes",
+    "projects/shape-core",
     "projects/convex",
 ]
 exclude = [
