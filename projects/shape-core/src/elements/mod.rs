@@ -1,9 +1,11 @@
 pub use line::{Line, Line3D};
 pub use point::{Point, Point3D};
+pub use polygon::Polygon;
 pub use triangle::Triangle;
 
 mod line;
 mod point;
+mod polygon;
 mod rectangle;
 mod triangle;
 
@@ -29,24 +31,4 @@ pub struct Circle {
     pub x: f32,
     pub y: f32,
     pub radius: f32,
-}
-
-#[derive(Debug, Clone)]
-pub struct Polygon<T> {
-    pub points: Vec<Point<T>>,
-}
-
-impl<T> Polygon<T> {
-    pub fn new<P>(points: Vec<P>) -> Self
-    where
-        Point<T>: From<P>,
-    {
-        Self { points: points.into_iter().map(|p| p.into()).collect() }
-    }
-}
-
-impl<T: Clone> From<&Triangle<T>> for Polygon<T> {
-    fn from(v: &Triangle<T>) -> Self {
-        Self { points: v.vertex.to_vec() }
-    }
 }
