@@ -1,2 +1,4 @@
-mod point;
-mod point3d;
+#[test]
+fn test() {
+
+}

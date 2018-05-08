@@ -1,9 +1,9 @@
 [workspace]
 members = ["projects/*"]
 default-members = [
-    "projects/projective",
-    "projects/shape-core",
-    "projects/convex",
+#    "projects/projective",
+#    "projects/shape-core",
+#    "projects/convex",
 ]
 exclude = [
     "projects/images",
