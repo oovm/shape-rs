@@ -1,0 +1,33 @@
+canvas.frame
+canvas.time
+
+
+
+
+fn main_once {
+    canvas.size = (640, 360)
+    background.loop = false
+}
+
+fn main_loop() {
+    canvas.size = (400, 800)
+    canvas
+}
+
+
+if mouse is pressed {
+    circle(mouse.x, mouse.y);
+}
+
+/// Create a circle and draw instance
+def circle(..args, ...kws) {
+    Circle(args, kws).draw()
+}
+
+def circle(..args, ...kws) {
+    Circle(args, kws).draw()
+}
+
+
+x = canvas.width / 2
+y = canvas.height / 2

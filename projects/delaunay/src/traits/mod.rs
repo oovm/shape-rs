@@ -1,11 +1,18 @@
 use std::borrow::Cow;
 
 ///
-pub trait Delaunay<T> {
+pub trait Delaunay {
     ///
     type Output: Triangulation;
     /// Get the convex hull, allowing a certain numerical error
-    fn delaunay(&self, tolerance: Option<T>) -> Self::Output;
+    fn delaunay(&self) -> Self::Output;
+}
+
+pub trait Voronoi {
+    ///
+    type Output: Triangulation;
+    /// Get the convex hull, allowing a certain numerical error
+    fn voronoi(&self) -> Self::Output;
 }
 
 pub trait Triangulation {

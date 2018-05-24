@@ -1,5 +1,23 @@
-use crate::{π, Ellipse, Float, Point};
+use crate::{π, Ellipse, Float, Point, Polygon};
 use std::ops::Div;
+use projective::Projective;
+
+pub struct Circle {
+
+}
+
+pub struct Ellipse<T> {
+    center: Point<T>,
+    radius: (T,T),
+    angle: T,
+}
+
+impl<T> Ellipse<T> {
+    pub fn approx_polygon(self) -> Polygon<T>
+}
+
+
+
 
 impl Ellipse {
     /// Create a new ellipse with the coefficient of equation.
@@ -15,7 +33,7 @@ impl Ellipse {
         todo!()
     }
     /// Create a new ellipse with 5 points.
-    pub fn from_5_points(p1: &Point, p2: &Point, p3: &Point, p4: &Point, p5: &Point) {}
+    pub fn from_5_points(p1: &Point<T>, p2: &Point<T>, p3: &Point<T>, p4: &Point<T>, p5: &Point<T>) {}
 }
 impl Ellipse {
     /// Return the center of the ellipse.
