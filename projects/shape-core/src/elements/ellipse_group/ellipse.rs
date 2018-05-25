@@ -1,10 +1,4 @@
-use crate::{π, Ellipse, Float, Point, Polygon};
-use std::ops::Div;
-use projective::Projective;
-
-pub struct Circle {
-
-}
+use super::*;
 
 pub struct Ellipse<T> {
     center: Point<T>,

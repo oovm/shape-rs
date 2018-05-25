@@ -2,7 +2,7 @@ use crate::elements::point::Point;
 
 impl<T> Point<T> {
     /// Construct new point
-    pub fn from_x_y(x: T, y: T) -> Self {
+    pub fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
 }
