@@ -3,7 +3,6 @@ mod projection;
 #[cfg(feature = "wolfram_wxf")]
 mod wolfram;
 
-pub trait Distance {
-    type Other;
-    fn distance(&self, other: &Self::Other) -> f32;
+pub trait Distance<T, RHS> {
+    fn distance_to(&self, other: &RHS) -> T;
 }
