@@ -1,0 +1,22 @@
+[package]
+name = "shape-svg"
+version = "0.0.0"
+authors = ["Aster <192607617@qq.com>"]
+description = "The styles of all graphics elements"
+repository = "https://github.com/oovm/graphics-rs"
+documentation = "https://docs.rs/graphics-svg"
+readme = "Readme.md"
+license = "MPL-2.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+
+[features]
+default = []
+
+[package.metadata.wee]
+t = "cargo test"
+p = "cargo publish --allow-dirty"
+

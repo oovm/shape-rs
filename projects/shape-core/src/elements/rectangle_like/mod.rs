@@ -1,19 +1,13 @@
 use super::*;
 mod traits;
 
-mod parallelogram;
+mod para;
 mod rect;
 mod square;
 
-pub struct Square<T> {
-    anchor: Point<T>,
-    side: T,
-}
+pub struct Square<T> {}
 
-pub struct Rectangle<T> {
-    anchor: Point<T>,
-    side: (T, T),
-}
+pub struct Rectangle<T> {}
 
 pub struct Parallelogram<T> {
     anchor: Point<T>,

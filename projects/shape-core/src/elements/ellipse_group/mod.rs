@@ -13,9 +13,3 @@ pub struct Ellipse<T> {
     pub radius: (T, T),
     pub angle: T,
 }
-
-pub struct Ball<T> {
-    pub center: Point3D<T>,
-    pub radius: (T, T, T),
-    pub angle: (T, T, T),
-}
