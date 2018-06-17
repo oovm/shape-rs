@@ -5,11 +5,19 @@ mod para;
 mod rect;
 mod square;
 
-pub struct Square<T> {}
+/// A square without rotated.
+pub struct Square<T> {
+    pub anchor: Point<T>,
+    pub side: T,
+}
 
-pub struct Rectangle<T> {}
+/// A rectangle without rotated.
+pub struct Rectangle<T> {
+    pub anchor: Point<T>,
+    pub side: (T, T),
+}
 
 pub struct Parallelogram<T> {
-    anchor: Point<T>,
-    side: (Line<T>, Line<T>),
+    pub anchor: Point<T>,
+    pub side: (Line<T>, Line<T>),
 }

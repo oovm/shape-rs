@@ -9,7 +9,9 @@ readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
-[dependencies]
+[dependencies.shape-core]
+version = "0.0.*"
+path = "../shape-core"
 
 [dev-dependencies]
 

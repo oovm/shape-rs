@@ -1,5 +1,5 @@
 use super::*;
-use crate::elements::polygon::Polyline;
+use crate::elements::polygon_like::Polyline;
 use num_traits::Signed;
 
 #[allow(unused_variables)]
@@ -21,7 +21,10 @@ impl<T> Ellipse<T> {
     pub fn from_5_points(p1: Point<T>, p2: Point<T>, p3: Point<T>, p4: Point<T>, p5: Point<T>) {}
 }
 
-impl<T: Signed> Ellipse<T> {
+impl<T> Ellipse<T>
+where
+    T: Real + Pow<u32, Output = T>,
+{
     /// Return the center of the ellipse.
     pub fn major_axis(&self) -> &T {
         &self.radius.0
@@ -49,8 +52,7 @@ impl<T: Signed> Ellipse<T> {
     /// ```
     pub fn major_delta(&self) -> T {
         let (a, b, c, d, e, f) = self.homogeneous();
-        let two = T::one() + T::one();
-        a * c * f + 2.0 * b * d * e - a * e * e - c * d * d - f * b * b
+        a * c * f + two::<T>() * b * d * e - a * e * e - c * d * d - f * b * b
     }
     /// Get the minor delta of the ellipse.
     /// ```math
@@ -63,7 +65,7 @@ impl<T: Signed> Ellipse<T> {
     /// ```
     pub fn minor_delta(&self) -> T {
         let (a, b, c, _, _, _) = self.homogeneous();
-        a * c - b.pow(2.0)
+        a * c - b.pow(2)
     }
 }
 
