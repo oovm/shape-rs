@@ -5,8 +5,11 @@ use num_traits::Signed;
 #[allow(unused_variables)]
 impl<T> Ellipse<T> {
     /// Create a new ellipse with the center and the two axes and .
-    pub fn new(center: Point<T>, radius: (T, T), angle: T) -> Self {
-        Self { center, radius, angle }
+    pub fn new<P>(center: P, radius: (T, T), angle: T) -> Self
+    where
+        P: Into<Point<T>>,
+    {
+        Self { center: center.into(), radius, angle }
     }
     /// Create a new ellipse with the coefficient of equation.
     ///

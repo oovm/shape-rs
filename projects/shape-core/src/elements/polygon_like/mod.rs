@@ -10,9 +10,6 @@ pub struct Polyline<T> {
 #[derive(Debug, Clone)]
 pub struct Polygon<T> {
     pub vertex: Vec<Point<T>>,
-    pub convex_hull: Option<bool>,
-    pub self_intersect: Option<bool>,
-    pub holes: Vec<Polygon<T>>,
 }
 
 impl<T> Polygon<T> {
@@ -20,12 +17,24 @@ impl<T> Polygon<T> {
     where
         Point<T>: From<P>,
     {
-        Self { vertex: points.into_iter().map(|p| p.into()).collect(), convex_hull: None, self_intersect: None, holes: vec![] }
+        Self { vertex: points.into_iter().map(|p| p.into()).collect() }
     }
 }
 
-impl<T: Clone> From<&Triangle<T>> for Polygon<T> {
+impl<T> From<&Triangle<T>> for Polygon<T>
+where
+    T: Clone,
+{
     fn from(v: &Triangle<T>) -> Self {
+        Self { vertex: v.vertex.to_vec() }
+    }
+}
+
+impl<T> From<&Parallelogram<T>> for Polygon<T>
+where
+    T: Clone,
+{
+    fn from(v: &Parallelogram<T>) -> Self {
         todo!()
         // Self { vertex: v.vertex.to_vec() }
     }

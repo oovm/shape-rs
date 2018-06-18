@@ -1,9 +1,49 @@
 use super::*;
-use shape_core::{Polygon, Triangle};
+use shape_core::{Circle, Ellipse, One, Parallelogram, Point, Polygon, Triangle, Zero};
+
+impl<T> ToSVG for Point<T>
+where
+    T: Display + One + Clone,
+{
+    fn to_svg(&self) -> SVG {
+        Circle::from(self).to_svg()
+    }
+}
+
+impl<T> ToSVG for Circle<T>
+where
+    T: Display,
+{
+    fn to_svg(&self) -> SVG {
+        let attributes = &[
+            //
+            ("cx", format!("{}", self.center.x)),
+            ("cy", format!("{}", self.center.y)),
+            ("r", format!("{}", self.radius)),
+        ];
+        SVG::new("circle", attributes, vec![])
+    }
+}
+
+impl<T> ToSVG for Ellipse<T>
+where
+    T: Display + PartialEq + Zero,
+{
+    fn to_svg(&self) -> SVG {
+        let attributes = &[
+            ("cx", format!("{}", self.center.x)),
+            ("cy", format!("{}", self.center.y)),
+            ("rx", format!("{}", self.radius.0)),
+            ("ry", format!("{}", self.radius.1)),
+            ("transform", format!("rotate({}, {} {})", self.angle, self.center.x, self.center.y)),
+        ];
+        SVG::new("ellipse", attributes, vec![])
+    }
+}
 
 impl<T> ToSVG for Triangle<T>
 where
-    T: Display,
+    T: Display + Clone,
 {
     fn to_svg(&self) -> SVG {
         Polygon::from(self).to_svg()
@@ -40,11 +80,25 @@ where
     }
 }
 
-impl<T> ToSVG for Triangle<T>
+impl<T> ToSVG for Parallelogram<T>
 where
     T: Display,
 {
     fn to_svg(&self) -> SVG {
-        Polygon::from(self).to_svg()
+        todo!()
+        // Polygon::from(self).to_svg()
+    }
+}
+
+impl<T> ToSVG for Polygon<T>
+where
+    T: Display,
+{
+    /// <polygon points="100,10 40,198 190,78 10,78 160,198"
+    //   style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+    fn to_svg(&self) -> SVG {
+        let points = self.vertex.iter().map(|p| format!("{},{}", p.x, p.y)).collect::<Vec<_>>().join(" ");
+        let attributes = &[("points", points)];
+        SVG::new("polygon", attributes, vec![])
     }
 }

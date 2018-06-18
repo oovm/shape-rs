@@ -6,8 +6,12 @@ pub struct Triangle<T> {
 }
 
 impl<T> Triangle<T> {
-    pub fn new(vertex: [Point<T>; 3]) -> Self {
-        Self { vertex }
+    pub fn new<P>(vertex: [P; 3]) -> Self
+    where
+        Point<T>: From<P>,
+    {
+        let [a, b, c] = vertex;
+        Self { vertex: [Point::from(a), Point::from(b), Point::from(c)] }
     }
     pub fn area(&self) -> T {
         todo!()
