@@ -1,5 +1,3 @@
-use bitflags::bitflags;
-
 use super::*;
 
 pub struct Polyline<T> {

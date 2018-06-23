@@ -2,8 +2,8 @@ use super::*;
 use num_traits::Num;
 
 pub struct Parallelogram<T> {
-    anchor: Point<T>,
-    side: (Line<T>, Line<T>),
+    pub anchor: Point<T>,
+    pub side: (Line<T>, Line<T>),
 }
 
 impl<T> Parallelogram<T> {
@@ -17,13 +17,22 @@ impl<T> Parallelogram<T> {
 
 impl<T> Square<T>
 where
-    T: Clone,
+    T: Num + Clone,
 {
-    pub fn from_center(center: Point<T>, side: T, rotate: T) -> Parallelogram<T> {
-        todo!()
+    pub fn from_anchor<P>(anchor: P, side: T) -> Self
+    where
+        Point<T>: From<P>,
+    {
+        Self { anchor: Point::from(anchor), side }
     }
-    pub fn from_anchor(anchor: Point<T>, side: T, rotate: T) -> Parallelogram<T> {
-        todo!()
+
+    pub fn from_center<P>(center: P, side: T) -> Self
+    where
+        Point<T>: From<P>,
+    {
+        let center = Point::from(center);
+        let anchor = Point::new(center.x - side.clone() / two(), center.y - side.clone() / two());
+        Self { anchor, side }
     }
 }
 
@@ -40,7 +49,8 @@ where
     pub fn from_center(anchor: Point<T>, side: (T, T)) -> Self {
         todo!()
     }
-    pub fn from_diagonal_points(p1: Point<T>, p2: Point<T>) -> Parallelogram<T> {
-        todo!()
+    pub fn from_diagonal_points(p1: Point<T>, p2: Point<T>) -> Rectangle<T> {
+        let size = p2.clone() - p1.clone();
+        Self { anchor: p1, side: (size.x, size.y) }
     }
 }

@@ -1,6 +1,5 @@
 use super::*;
 use crate::elements::polygon_like::Polyline;
-use num_traits::Signed;
 
 #[allow(unused_variables)]
 impl<T> Ellipse<T> {

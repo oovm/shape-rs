@@ -1,7 +1,7 @@
 use num_traits::Float;
 use projective::Projective;
 
-use crate::{Ellipse, Line, Point, Polygon, Triangle};
+use crate::{Ellipse, Line, Polygon, Triangle};
 
 impl<T> Projective<T> for Line<T>
 where
