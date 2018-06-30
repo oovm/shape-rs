@@ -23,38 +23,44 @@ impl<T> Line<T> {
 
 impl<T> Line<T>
 where
-    T: Clone + Float,
+    T: Clone + Num,
 {
-    pub fn length(&self) -> T {
-        (self.end.clone() - self.start.clone()).norm()
-    }
-}
-
-impl<T> Point<T>
-where
-    T: Num + Clone,
-{
-    pub fn norm(&self) -> T
+    pub fn length(&self) -> T
     where
         T: Float,
     {
-        (self.x.clone() * self.x.clone() + self.y.clone() * self.y.clone()).sqrt()
+        self.start.distance_to(&self.end).sqrt()
+    }
+    #[inline(always)]
+    pub fn as_vector(&self) -> Vector<T> {
+        let new = self.end.clone() - &self.start;
+        Vector { dx: new.x, dy: new.y }
     }
 
-    /// ```math
-    /// \vec{PA}\times\vec{PB} = (a_x-b_x)*(p_y-b_y)-(p_x-b_x)*(a_y-b_y)
-    /// ```
-    pub fn cross_dot(&self, a: &Self, b: &Self) -> T {
-        let p = (b.x.clone() - a.x.clone()) * (self.y.clone() - b.y.clone());
-        let q = (b.y.clone() - a.y.clone()) * (self.x.clone() - b.x.clone());
-        p - q
+    pub fn is_parallel(&self, rhs: &Self) -> bool {
+        let a = self.as_vector();
+        let b = rhs.as_vector();
+        a.is_parallel(&b)
+    }
+    pub fn is_orthogonal(&self, rhs: &Self) -> bool {
+        let a = self.as_vector();
+        let b = rhs.as_vector();
+        a.is_orthogonal(&b)
     }
 }
 
-// impl Line<T> {
-//     pub fn is_empty(&self, ctx: &StyleResolver) -> bool {
-//         let length = || self.start == self.end;
-//         let width = || self.width.unwrap_or(ctx.line_width()) <= 0.0;
-//         length() || width()
-//     }
-// }
+impl<T> Vector<T>
+where
+    T: Clone + Num,
+{
+    pub fn is_parallel(&self, rhs: &Self) -> bool {
+        let Vector { dx: x1, dy: y1 } = self.clone();
+        let Vector { dx: x2, dy: y2 } = rhs.clone();
+        x1 * x2 - y1 * y2 == zero()
+    }
+    pub fn is_orthogonal(&self, rhs: &Self) -> bool {
+        let Vector { dx: x1, dy: y1 } = self.clone();
+        let Vector { dx: x2, dy: y2 } = rhs.clone();
+        x1 * x2 + y1 * y2 == zero()
+    }
+}
