@@ -30,9 +30,9 @@ where
 
 impl<T> From<&Parallelogram<T>> for Polygon<T>
 where
-    T: Clone,
+    T: Clone + Num,
 {
     fn from(v: &Parallelogram<T>) -> Self {
-        v.vectors()
+        Self { vertex: v.vertexes() }
     }
 }

@@ -9,6 +9,7 @@ pub use self::{
 use crate::Distance;
 use num_traits::{real::Real, Float, FloatConst, Num, One, Pow, Zero};
 use projective::Projective;
+use serde::{Deserialize, Serialize};
 use std::ops::Add;
 
 mod ellipse_like;

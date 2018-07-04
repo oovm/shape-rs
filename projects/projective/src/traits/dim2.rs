@@ -1,4 +1,4 @@
-use super::*;
+use num_traits::Float;
 
 /// 2D projective transformations
 ///
@@ -19,7 +19,7 @@ use super::*;
 pub trait Projective<T>
 where
     Self: Sized,
-    T: Zero + One + Real,
+    T: Float,
 {
     /// Transform by a 3×3 matrix.
     ///

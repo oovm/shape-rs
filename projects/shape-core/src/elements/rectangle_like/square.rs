@@ -15,8 +15,8 @@ where
     where
         Point<T>: From<P>,
     {
-        let center = Point::from(center);
-        let anchor = Point::new(center.x - side.clone() / two(), center.y - side.clone() / two());
+        let Point { x: x0, y: y0 } = center.into();
+        let anchor = Point::new(x0 - side.clone() / two(), y0 - side.clone() / two());
         Self { anchor, side }
     }
 }
