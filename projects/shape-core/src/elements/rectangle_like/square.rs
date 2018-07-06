@@ -20,3 +20,15 @@ where
         Self { anchor, side }
     }
 }
+impl<T> Square<T>
+where
+    T: Clone + Add<Output = T>,
+{
+    pub fn vertexes(&self) -> Vec<Point<T>> {
+        let a = self.anchor.clone();
+        let b = Point { x: self.anchor.x.clone() + self.side.clone(), y: self.anchor.y.clone() };
+        let c = Point { x: self.anchor.x.clone() + self.side.clone(), y: self.anchor.y.clone() + self.side.clone() };
+        let d = Point { x: self.anchor.x.clone(), y: self.anchor.y.clone() + self.side.clone() };
+        vec![a, b, c, d]
+    }
+}

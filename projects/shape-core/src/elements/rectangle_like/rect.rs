@@ -23,3 +23,16 @@ where
         Self { anchor: p1, side: (size.x, size.y) }
     }
 }
+
+impl<T> Rectangle<T>
+where
+    T: Clone + Add<Output = T>,
+{
+    pub fn vertexes(&self) -> Vec<Point<T>> {
+        let a = self.anchor.clone();
+        let b = Point { x: self.anchor.x.clone() + self.side.0.clone(), y: self.anchor.y.clone() };
+        let c = Point { x: self.anchor.x.clone() + self.side.0.clone(), y: self.anchor.y.clone() + self.side.1.clone() };
+        let d = Point { x: self.anchor.x.clone(), y: self.anchor.y.clone() + self.side.1.clone() };
+        vec![a, b, c, d]
+    }
+}

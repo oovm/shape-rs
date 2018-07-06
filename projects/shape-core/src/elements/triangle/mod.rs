@@ -1,4 +1,5 @@
-use crate::Point;
+mod convert;
+use super::*;
 
 #[derive(Debug, Clone)]
 pub struct Triangle<T> {
@@ -11,7 +12,16 @@ impl<T> Triangle<T> {
         Point<T>: From<P>,
     {
         let [a, b, c] = vertex;
-        Self { vertex: [Point::from(a), Point::from(b), Point::from(c)] }
+        Self { vertex: [a.into(), b.into(), c.into()] }
+    }
+    pub fn is_empty(&self) -> bool {
+        true
+    }
+    pub fn is_sss(&self) -> bool {
+        true
+    }
+    pub fn is_sas(&self) -> bool {
+        true
     }
     pub fn area(&self) -> T {
         todo!()
