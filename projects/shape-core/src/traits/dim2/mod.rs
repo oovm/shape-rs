@@ -1,5 +1,5 @@
-use crate::{Area, Point, Triangle, ValidShape};
-use num_traits::Zero;
+use crate::{Area, Point};
 mod area;
 mod valid;
-use crate::{Rectangle, Square};
+use crate::{Rectangle, Square, Triangle, ValidShape, Vector};
+use num_traits::{Num, Zero};

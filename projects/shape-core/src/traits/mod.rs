@@ -20,6 +20,10 @@ where
     fn is_empty_under_thousand(&self, thousand: T) -> bool;
 }
 
+pub trait EqualThousand<T> {
+    fn eq_under_thousand(&self, thousand: T) -> bool;
+}
+
 pub trait Area<T> {
     fn area(&self) -> T;
 }

@@ -1,12 +1,13 @@
 use super::*;
 mod convert;
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polyline<T> {
     pub points: Vec<T>,
     pub closed: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polygon<T> {
     pub vertex: Vec<Point<T>>,
 }
