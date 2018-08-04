@@ -2,10 +2,7 @@ use super::*;
 use crate::elements::polygon_like::Polyline;
 
 #[allow(unused_variables)]
-impl<T> Ellipse<T>
-where
-    T: Clone + Real,
-{
+impl<T> Ellipse<T> {
     /// Create a new ellipse with the center and the two axes and .
     pub fn new<P>(center: P, radius: (T, T), angle: T) -> Self
     where
@@ -16,25 +13,15 @@ where
     /// Create a new ellipse with the coefficient of equation.
     ///
     /// ```math
-    /// a x^2 + b y^2 + c xy + d x + e y + f = 0
+    /// A x^2 + B y^2 + C xy + D x + E y + F = 0
     /// ```
-    ///
-    /// x = (2 c d-b f)/(b^2-4 a c)
-    /// y = (2 a f-b d)/(b^2-4 a c)
     pub fn from_coefficient(a: T, b: T, c: T, d: T, e: T, f: T) -> Self {
-        let delta = b.clone() * b.clone() - four() * a.clone() * c.clone();
-
-        let x = (two() * c.clone() * d.clone() - b.clone() * f.clone()) / delta.clone();
-        let y = (two() * a.clone() * f.clone() - b.clone() * d.clone()) / delta.clone();
-
-        Self { center: Point { x, y }, radius: ((), ()), angle: () }
+        todo!()
     }
 
     /// Create a new ellipse with 5 points.
     pub fn from_5_points(p1: Point<T>, p2: Point<T>, p3: Point<T>, p4: Point<T>, p5: Point<T>) {}
 }
-
-fn delta() {}
 
 impl<T> Ellipse<T>
 where

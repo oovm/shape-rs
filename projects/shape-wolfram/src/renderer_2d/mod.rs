@@ -4,7 +4,7 @@ use shape_core::{Rectangle, Square};
 use std::fmt::Display;
 
 /// Mark a type that can be convert to svg
-pub trait ToSVG {
+pub trait ToWolfram {
     /// Convert to svg by reference
-    fn to_svg(&self) -> SVG;
+    fn to_wolfram(&self) -> SVG;
 }
