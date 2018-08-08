@@ -34,7 +34,7 @@ fn two<T>() -> T
 where
     T: One + Add<Output = T>,
 {
-    double(two())
+    T::one() + T::one()
 }
 
 #[inline(always)]
@@ -42,7 +42,7 @@ fn four<T>() -> T
 where
     T: One + Add<Output = T>,
 {
-    double(two())
+    T::one() + T::one() + T::one() + T::one()
 }
 
 #[inline(always)]
