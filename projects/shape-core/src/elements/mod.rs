@@ -7,7 +7,7 @@ pub use self::{
     triangle::Triangle,
 };
 use crate::Distance;
-use num_traits::{real::Real, Float, FloatConst, Num, One, Pow, Zero};
+use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
 use std::ops::{Add, Div};
@@ -59,11 +59,11 @@ where
 }
 
 #[inline(always)]
-fn double<T>(x: T) -> T
+fn double<T>(x: &T) -> T
 where
     T: Clone + Add<Output = T>,
 {
-    x.clone() + x
+    x.clone() + x.clone()
 }
 
 #[inline(always)]
