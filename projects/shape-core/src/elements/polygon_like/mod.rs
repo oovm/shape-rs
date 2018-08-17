@@ -3,6 +3,14 @@ mod convert;
 mod regular;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct RegularPolygon<T> {
+    pub sides: usize,
+    pub center: Point<T>,
+    pub radius: T,
+    pub rotate: T,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polyline<T> {
     pub points: Vec<Point<T>>,
     pub closed: bool,

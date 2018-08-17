@@ -1,15 +1,15 @@
-use crate::{Ellipse, Line, Point, Polygon, Triangle};
+use crate::{Ellipse, Line, Polygon, Triangle};
 use num_traits::Float;
 use projective::Projective;
+use std::ops::AddAssign;
 
 impl<T> Projective<T> for Line<T>
 where
     T: Float,
 {
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        let start = self.start.transform(matrix);
-        let end = self.end.transform(matrix);
-        Line { start, end }
+    fn transform(&mut self, matrix: &[&T; 9]) {
+        self.start.transform(matrix);
+        self.end.transform(matrix);
     }
 }
 
@@ -17,11 +17,10 @@ impl<T> Projective<T> for Triangle<T>
 where
     T: Float,
 {
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        let a = self.vertex[0].transform(matrix);
-        let b = self.vertex[1].transform(matrix);
-        let c = self.vertex[2].transform(matrix);
-        Triangle { vertex: [a, b, c] }
+    fn transform(&mut self, matrix: &[&T; 9]) {
+        self.vertex[0].transform(matrix);
+        self.vertex[1].transform(matrix);
+        self.vertex[2].transform(matrix);
     }
 }
 
@@ -29,23 +28,26 @@ impl<T> Projective<T> for Polygon<T>
 where
     T: Float,
 {
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        Self { vertex: self.vertex.iter().map(|v| v.transform(matrix)).collect() }
+    fn transform(&mut self, matrix: &[&T; 9]) {
+        for point in self.vertex.iter_mut() {
+            point.transform(matrix);
+        }
     }
 }
 
 impl<T> Projective<T> for Ellipse<T>
 where
-    T: Float + Clone,
+    T: Float + AddAssign,
 {
     #[track_caller]
-    fn transform(&self, _: &[&T; 9]) -> Self {
+    fn transform(&mut self, _: &[&T; 9]) {
         panic!("Can't keep the shape after projective transformation");
     }
-    fn translate(&self, x: &T, y: &T) -> Self {
-        Self { center: self.center + Point::new(x.clone(), y.clone()), ..self.clone() }
+    fn translate(&mut self, x: &T, y: &T) {
+        self.center.x += *x;
+        self.center.y += *y;
     }
-    fn rotate(&self, angle: &T) -> Self {
-        Self { angle: self.angle + angle.clone(), ..self.clone() }
+    fn rotate(&mut self, angle: &T) {
+        self.angle += *angle;
     }
 }

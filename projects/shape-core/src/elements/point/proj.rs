@@ -28,9 +28,8 @@ impl<T> Projective<T> for Point<T>
 where
     T: Float,
 {
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        let x = self.x.mul(*matrix[0]) + self.y.mul(*matrix[1]) + *matrix[2];
-        let y = self.x.mul(*matrix[3]) + self.y.mul(*matrix[4]) + *matrix[5];
-        Point { x, y }
+    fn transform(&mut self, matrix: &[&T; 9]) {
+        self.x = self.x.mul(*matrix[0]) + self.y.mul(*matrix[1]) + *matrix[2];
+        self.y = self.x.mul(*matrix[3]) + self.y.mul(*matrix[4]) + *matrix[5];
     }
 }
