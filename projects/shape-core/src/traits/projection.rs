@@ -48,6 +48,6 @@ where
         self.center.y += *y;
     }
     fn rotate(&mut self, angle: &T) {
-        self.angle += *angle;
+        self.rotate += *angle;
     }
 }

@@ -17,13 +17,14 @@ impl<T> Triangle<T> {
     pub fn is_empty(&self) -> bool {
         true
     }
-    pub fn is_sss(&self) -> bool {
+    pub fn is_congruent(&self) -> bool {
         true
     }
-    pub fn is_sas(&self) -> bool {
+    pub fn is_isosceles(&self) -> bool {
         true
     }
     pub fn area(&self) -> T {
+        // Det[{{x1, y1, 1}, {x2, y2, 1}, {x3, y3, 1}}]/2
         todo!()
     }
 }

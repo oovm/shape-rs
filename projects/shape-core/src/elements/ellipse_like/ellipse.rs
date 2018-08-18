@@ -12,7 +12,7 @@ where
     where
         P: Into<Point<T>>,
     {
-        Self { center: center.into(), radius, angle }
+        Self { center: center.into(), radius, rotate: angle }
     }
     /// Create a new ellipse with the coefficient of equation.
     ///
@@ -31,7 +31,7 @@ where
         Self {
             center: Point { x: center_x(&a, &b, &c, &d, &e, &delta_s), y: center_y(&a, &b, &c, &d, &e, &delta_s) },
             radius: (major_axis(&a, &c, &delta_m, &delta_s, &eta), minor_axis(&a, &c, &delta_m, &delta_s, &eta)),
-            angle: angle(&a, &b, &c),
+            rotate: angle(&a, &b, &c),
         }
     }
 
@@ -54,7 +54,7 @@ where
 {
     /// a / pi in Z
     pub fn is_horizontal(&self) -> bool {
-        self.angle == T::zero()
+        self.rotate == T::zero()
     }
 }
 
@@ -145,10 +145,10 @@ where
         Polyline::new(vertex)
     }
     pub fn sample_x(&self, t: &T) -> T {
-        self.radius.0 * self.angle.cos() * t.cos() - self.radius.1 * self.angle.sin() * t.sin() + self.center.x
+        self.radius.0 * self.rotate.cos() * t.cos() - self.radius.1 * self.rotate.sin() * t.sin() + self.center.x
     }
     pub fn sample_y(&self, t: &T) -> T {
-        self.radius.0 * self.angle.sin() * t.cos() + self.radius.1 * self.angle.cos() * t.cos() + self.center.y
+        self.radius.0 * self.rotate.sin() * t.cos() + self.radius.1 * self.rotate.cos() * t.cos() + self.center.y
     }
 }
 

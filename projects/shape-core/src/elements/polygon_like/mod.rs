@@ -1,4 +1,5 @@
 use super::*;
+use std::marker::PhantomData;
 mod convert;
 mod regular;
 
@@ -8,6 +9,11 @@ pub struct RegularPolygon<T> {
     pub center: Point<T>,
     pub radius: T,
     pub rotate: T,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct CirclePoints<T> {
+    ty: PhantomData<T>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]

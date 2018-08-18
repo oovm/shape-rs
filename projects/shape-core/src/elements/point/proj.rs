@@ -26,7 +26,7 @@ where
 
 impl<T> Projective<T> for Point<T>
 where
-    T: Float,
+    T: Real,
 {
     fn transform(&mut self, matrix: &[&T; 9]) {
         self.x = self.x.mul(*matrix[0]) + self.y.mul(*matrix[1]) + *matrix[2];
