@@ -3,8 +3,9 @@ use num_traits::Zero;
 mod convert;
 mod dim2;
 mod projection;
+#[cfg(feature = "rand")]
 mod random;
-#[cfg(feature = "wolfram_wxf")]
+#[cfg(feature = "wolfram-expr")]
 mod wolfram;
 
 pub trait Distance<T, RHS> {
@@ -23,8 +24,4 @@ where
 
 pub trait EqualThousand<T> {
     fn eq_under_thousand(&self, thousand: T) -> bool;
-}
-
-pub trait Area<T> {
-    fn area(&self) -> T;
 }
