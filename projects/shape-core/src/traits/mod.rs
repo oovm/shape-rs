@@ -8,10 +8,6 @@ mod random;
 #[cfg(feature = "wolfram-expr")]
 mod wolfram;
 
-pub trait Distance<T, RHS> {
-    fn distance_to(&self, other: &RHS) -> T;
-}
-
 pub trait ValidShape<T>
 where
     T: Zero,

@@ -13,7 +13,7 @@ edition = "2021"
 
 [dependencies]
 partition = "0.1.2"
-num-traits = "0.2.14"
+num-traits = "0.2.15"
 
 [dependencies.shape-core]
 version = "0.1.*"

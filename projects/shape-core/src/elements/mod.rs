@@ -7,7 +7,7 @@ pub use self::{
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::Triangle,
 };
-use crate::Distance;
+
 use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};

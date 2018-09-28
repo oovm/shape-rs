@@ -22,11 +22,11 @@ where
     pub fn from_2_points(p1: Point<T>, p2: Point<T>) -> Self {
         let two = T::one() + T::one();
         let center = Point::new((p1.x + p2.x).div(two), (p1.y + p2.y).div(two));
-        Self { center, radius: p1.distance_to(&p2).div(two) }
+        Self { center, radius: p1.euclidean(&p2).div(two) }
     }
 
     /// Create circle that intersects the 3 points.
-    pub fn from_3_points(p1: Point<T>, p2: Point<T>, p3: Point<T>) -> Self {
+    pub fn from_3_points(p1: &Point<T>, p2: &Point<T>, p3: &Point<T>) -> Self {
         let two = T::one() + T::one();
 
         let p12 = Point::new(p2.x - p1.x.clone(), p2.y - p1.y.clone());
@@ -40,7 +40,17 @@ where
         let cy = (p12.x * c13 - p13.x * c12) / c123.mul(two);
 
         let center = Point::new(cx + p1.x, cy + p1.y);
-        Self { center, radius: center.distance_to(&p1) }
+        Self { center, radius: center.euclidean(&p1) }
+    }
+}
+
+impl<T> Circle<T>
+where
+    T: Real,
+{
+    /// Checks if the circle contains the given point.
+    pub fn contains(&self, point: &Point<T>) -> bool {
+        self.center.euclidean(point) <= self.radius
     }
 }
 
@@ -56,12 +66,8 @@ where
     pub fn perimeter(&self) -> T {
         self.radius.clone() * two_pi()
     }
-    /// Checks if the circle contains the given point.
-    pub fn contains(&self, point: &Point<T>) -> bool {
-        self.center.distance_to(point) <= self.radius
-    }
     /// Checks if the circle intersects the given circle.
     pub fn intersects(&self, other: &Self) -> bool {
-        self.center.distance_to(&other.center) <= self.radius + other.radius
+        self.center.euclidean(&other.center) <= self.radius + other.radius
     }
 }

@@ -1,4 +1,5 @@
 mod convert;
+
 use super::*;
 
 #[derive(Debug, Clone)]
@@ -7,11 +8,10 @@ pub struct Triangle<T> {
 }
 
 impl<T> Triangle<T> {
-    pub fn new<P>(vertex: [P; 3]) -> Self
+    pub fn new<P>(a: P, b: P, c: P) -> Self
     where
         Point<T>: From<P>,
     {
-        let [a, b, c] = vertex;
         Self { vertex: [a.into(), b.into(), c.into()] }
     }
 }
@@ -51,10 +51,12 @@ where
     }
     /// Get the circumscribed circle of the triangle.
     pub fn circumscribed_circle(&self) -> Circle<T> {
-        Circle::from_3_points(self.vertex[0].clone(), self.vertex[1].clone(), self.vertex[2].clone())
+        Circle::from_3_points(&self.vertex[0], &self.vertex[1], &self.vertex[2])
     }
-    #[inline]
-    fn edges(&self) -> (Vector<T>, Vector<T>, Vector<T>) {
-        todo!()
+    pub fn edges(&self) -> (Line<T>, Line<T>, Line<T>) {
+        let ab = Line::new(&self.vertex[0], &self.vertex[1]);
+        let ac = Line::new(&self.vertex[0], &self.vertex[2]);
+        let bc = Line::new(&self.vertex[1], &self.vertex[2]);
+        (ab, ac, bc)
     }
 }
