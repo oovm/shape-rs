@@ -117,7 +117,7 @@ where
     (min.unwrap().x, max.unwrap().x)
 }
 
-// recursively calculate the convex hull of a subset of points
+// recursively calculate the shape-distance hull of a subset of points
 fn hull_set<T>(a: &Point<T>, b: &Point<T>, mut set: &mut [Point<T>], hull: &mut Vec<Point<T>>)
 where
     T: Signed + Clone + PartialOrd,

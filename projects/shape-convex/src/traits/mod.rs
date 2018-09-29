@@ -7,16 +7,16 @@ mod tests;
 pub trait ConvexHull<T> {
     ///
     type Output;
-    /// Get the convex hull, allowing a certain numerical error
+    /// Get the shape-distance hull, allowing a certain numerical error
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output>;
 }
 
-/// The convex hull is merge-able
+/// The shape-distance hull is merge-able
 pub trait ConvexHullMerge<T>
 where
     Self: Sized,
 {
-    /// Helper function to combine two convex hulls into one
+    /// Helper function to combine two shape-distance hulls into one
     ///
     /// This is used when using the divide and conquer algorithm
     fn merge_convex_hulls(&mut self, rhs: Self, tolerance: Option<T>) -> Self {
@@ -25,7 +25,7 @@ where
             false => self.merge_standalone(rhs, tolerance),
         }
     }
-    /// Helper function to check if two convex hulls is intersect.
+    /// Helper function to check if two shape-distance hulls is intersect.
     ///
     /// This is used when using the divide and conquer algorithm
     fn is_intersect(&self, other: &Self, tolerance: &Option<T>) -> bool;
