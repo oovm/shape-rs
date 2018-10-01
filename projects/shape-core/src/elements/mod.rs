@@ -2,6 +2,7 @@ pub use self::{
     curve::{BSplineCurve, BezierCurve},
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
+    mesh::MeshTriangleIndex,
     point::{Point, Point3D},
     polygon_like::{CirclePoints, Polygon, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
@@ -16,6 +17,7 @@ use std::ops::{Add, AddAssign, Div};
 mod curve;
 mod ellipse_like;
 mod line;
+mod mesh;
 mod point;
 mod polygon_like;
 mod rectangle_like;

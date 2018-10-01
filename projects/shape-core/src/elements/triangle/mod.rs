@@ -14,6 +14,22 @@ impl<T> Triangle<T> {
     {
         Self { vertex: [a.into(), b.into(), c.into()] }
     }
+    pub fn from_mesh(vertexes: &[Point<T>], index: MeshTriangleIndex) -> Self
+    where
+        T: Clone,
+    {
+        debug_assert!(index.max() < vertexes.len(), "index {:?} out of range {}", index, vertexes.len());
+        // SAFETY: the debug_assert! above ensures that the index is in range
+        unsafe {
+            Self {
+                vertex: [
+                    Point::from(vertexes.get_unchecked(index.indexes[0])),
+                    Point::from(vertexes.get_unchecked(index.indexes[1])),
+                    Point::from(vertexes.get_unchecked(index.indexes[2])),
+                ],
+            }
+        }
+    }
 }
 
 impl<T> Triangle<T>
