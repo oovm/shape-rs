@@ -4,7 +4,7 @@ default-members = [
     "projects/projective",
     "projects/shape-core",
     "projects/shape-svg",
-#    "projects/convex",
+#    "projects/shape-distance",
 ]
 exclude = [
     "projects/images",

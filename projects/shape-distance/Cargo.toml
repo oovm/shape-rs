@@ -1,12 +1,12 @@
 [package]
-name = "convex"
+name = "distantia"
 version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
-description = "The representation projective transformation"
+description = "The shared library for distances"
 categories = ["mathematics", "graphics"]
 keywords = ["math", "projective", "transformation"]
 repository = "https://github.com/oovm/shape-rs"
-documentation = "https://docs.rs/convex"
+documentation = "https://docs.rs/distantia"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"

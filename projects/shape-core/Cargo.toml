@@ -10,6 +10,7 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+itertools = "0.10.5"
 num-traits = "0.2.15"
 #bitflags = "2.1.0"
 serde = { version = "1.0.159", features = ["derive"] }
@@ -19,6 +20,11 @@ wolfram-expr = { version = "0.1.4", optional = true }
 [dependencies.projective]
 version = "0.3.0"
 path = "../projective"
+
+[dependencies.distantia]
+#version = "0.3.0"
+path = "../shape-distance"
+
 
 [dev-dependencies]
 

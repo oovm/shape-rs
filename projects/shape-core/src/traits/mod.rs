@@ -8,6 +8,7 @@ mod random;
 #[cfg(feature = "wolfram-expr")]
 mod wolfram;
 
+/// A trait for checking if a shape is empty
 pub trait ValidShape<T>
 where
     T: Zero,

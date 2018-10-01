@@ -1,8 +1,4 @@
-use crate::{Circle, Line, Point, Triangle};
-use distantia::EuclideanDistance;
-use itertools::Itertools;
-use num_traits::{real::Real, Float, Num};
-use std::cmp::Ordering;
+use super::*;
 
 // ┌────────────────────────┐
 // │ From point to Geometry │
@@ -20,57 +16,74 @@ where
     fn euclidean_squared(&self, rhs: &Point<T>) -> T {
         let dx = self.x - rhs.y;
         let dy = self.y - rhs.y;
+        // x * x and x.powi(2) are the same
+        // `mulsd %xmm0, %xmm0`
         dx.powi(2) + dy.powi(2)
     }
 }
 
+/// 平面点集, 同时维护范围, 适用于
 #[derive(Debug, Clone, PartialEq)]
 pub struct Multipoint<T> {
     pub points: Vec<Point<T>>,
 }
 
+impl<T> Multipoint<T> {
+    pub fn new<I, U>(points: I) -> Self
+    where
+        I: IntoIterator<Item = U>,
+        U: Into<Point<T>>,
+    {
+        Self { points: points.into_iter().map(|p| p.into()).collect() }
+    }
+}
+
 impl<T> EuclideanDistance<T, Multipoint<T>> for Point<T>
 where
-    T: Float,
+    T: Float + PartialOrd,
 {
     fn euclidean_distance(&self, rhs: &Multipoint<T>) -> T {
         self.euclidean_squared(rhs).sqrt()
     }
 
+    /// 适合单次查询最近的点
     fn euclidean_squared(&self, rhs: &Multipoint<T>) -> T {
-        rhs.points
-            .iter()
-            .map(|p| self.euclidean_squared(p))
-            .min_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal))
-            .unwrap_or(T::zero())
+        match rhs.points.len() {
+            0 => panic!("Multipoint must have at least one point"),
+            1 => unsafe {
+                let p = rhs.points.get_unchecked(0);
+                self.euclidean_squared(p)
+            },
+            _ => unsafe {
+                let xs =
+                    rhs.points.iter().sorted_unstable_by(|a, b| a.x.partial_cmp(&b.x).unwrap_or(Ordering::Equal)).collect_vec();
+                let (lhs, rhs) = rhs.points.split_at(xs.len() / 2);
+                todo!()
+            },
+        }
     }
 }
 
+// It is not the minimum distance between a point and a line
 impl<T: Float> EuclideanDistance<T, Line<T>> for Point<T> {
-    // distance = fabs(((y1 - y2) * x0 - (x1 - x2) * y0 + (x1 * y2 - x2 * y1)) / sqrt(pow(y1 - y2, 2) + pow(x1 - x2, 2)));
     fn euclidean_distance(&self, rhs: &Line<T>) -> T {
-        let x0 = self.x;
-        let y0 = self.y;
-        let x1 = rhs.start.x;
-        let y1 = rhs.start.y;
-        let x2 = rhs.end.x;
-        let y2 = rhs.end.y;
-        let numerator = (y1 - y2) * x0 - (x1 - x2) * y0 + (x1 * y2 - x2 * y1);
-        let denominator = (y1 - y2).powi(2) + (x1 - x2).powi(2);
+        let (numerator, denominator) = point_line_ratio(self, rhs);
         numerator.abs() / denominator.sqrt()
     }
 
     fn euclidean_squared(&self, rhs: &Line<T>) -> T {
-        let x0 = self.x;
-        let y0 = self.y;
-        let x1 = rhs.start.x;
-        let y1 = rhs.start.y;
-        let x2 = rhs.end.x;
-        let y2 = rhs.end.y;
-        let numerator = (y1 - y2) * x0 - (x1 - x2) * y0 + (x1 * y2 - x2 * y1);
-        let denominator = (y1 - y2).powi(2) + (x1 - x2).powi(2);
-        (numerator.abs() / denominator.sqrt()).powi(2)
+        let (numerator, denominator) = point_line_ratio(self, rhs);
+        numerator.powi(2) / denominator
     }
+}
+
+fn point_line_ratio<T: Float>(p: &Point<T>, l: &Line<T>) -> (T, T) {
+    let dy = l.start.y - l.end.y;
+    let dx = l.start.x - l.end.x;
+    let dt = l.start.x * l.end.y - l.end.x * l.start.y;
+    let nu = dy * p.x - dx * p.y + dt;
+    let de = dy.powi(2) + dx.powi(2);
+    (nu, de)
 }
 
 impl<T: Float> EuclideanDistance<T, Triangle<T>> for Point<T> {
@@ -96,7 +109,6 @@ impl<T: Float> EuclideanDistance<T, Circle<T>> for Point<T> {
 }
 
 #[test]
-
 fn test() {
     let c = Circle::new(Point::new(0.0, 0.0), 1.0);
     let p = Point::new(3.0, 0.0);
