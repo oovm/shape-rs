@@ -4,7 +4,9 @@ use super::*;
 
 #[derive(Debug, Clone)]
 pub struct Triangle<T> {
-    pub vertex: [Point<T>; 3],
+    pub a: Point<T>,
+    pub b: Point<T>,
+    pub c: Point<T>,
 }
 
 impl<T> Triangle<T> {
@@ -12,21 +14,19 @@ impl<T> Triangle<T> {
     where
         Point<T>: From<P>,
     {
-        Self { vertex: [a.into(), b.into(), c.into()] }
+        Self { a: a.into(), b: b.into(), c: c.into() }
     }
     pub fn from_mesh(vertexes: &[Point<T>], index: MeshTriangleIndex) -> Self
     where
         T: Clone,
     {
-        debug_assert!(index.max() < vertexes.len(), "index {:?} out of range {}", index, vertexes.len());
+        debug_assert!(index.max() < vertexes.len(), "triangle index {index} out of range, must less than {}", vertexes.len());
         // SAFETY: the debug_assert! above ensures that the index is in range
         unsafe {
             Self {
-                vertex: [
-                    Point::from(vertexes.get_unchecked(index.indexes[0])),
-                    Point::from(vertexes.get_unchecked(index.indexes[1])),
-                    Point::from(vertexes.get_unchecked(index.indexes[2])),
-                ],
+                a: vertexes.get_unchecked(index.a).clone(),
+                b: vertexes.get_unchecked(index.b).clone(),
+                c: vertexes.get_unchecked(index.c).clone(),
             }
         }
     }
@@ -54,11 +54,11 @@ where
     pub fn area(&self) -> T {
         // Det[{{x0, y0, 1}, {x1, y1, 1}, {x2, y2, 1}}] / 2
         // x0 y1 - x1 y0
-        let det1 = self.vertex[0].x.clone() * self.vertex[1].y.clone() - self.vertex[1].x.clone() * self.vertex[0].y.clone();
+        let det1 = self.a.x.clone() * self.b.y.clone() - self.b.x.clone() * self.a.y.clone();
         // x1 y2 - x2 y1
-        let det2 = self.vertex[1].x.clone() * self.vertex[2].y.clone() - self.vertex[2].x.clone() * self.vertex[1].y.clone();
+        let det2 = self.b.x.clone() * self.c.y.clone() - self.c.x.clone() * self.b.y.clone();
         // x2 y0 - x0 y2
-        let det3 = self.vertex[2].x.clone() * self.vertex[0].y.clone() - self.vertex[0].x.clone() * self.vertex[2].y.clone();
+        let det3 = self.c.x.clone() * self.a.y.clone() - self.a.x.clone() * self.c.y.clone();
         (det1 + det2 + det3) / two()
     }
     /// Get the inscribed circle of the triangle
@@ -67,12 +67,12 @@ where
     }
     /// Get the circumscribed circle of the triangle.
     pub fn circumscribed_circle(&self) -> Circle<T> {
-        Circle::from_3_points(&self.vertex[0], &self.vertex[1], &self.vertex[2])
+        Circle::from_3_points(&self.a, &self.b, &self.c)
     }
     pub fn edges(&self) -> (Line<T>, Line<T>, Line<T>) {
-        let ab = Line::new(&self.vertex[0], &self.vertex[1]);
-        let ac = Line::new(&self.vertex[0], &self.vertex[2]);
-        let bc = Line::new(&self.vertex[1], &self.vertex[2]);
+        let ab = Line::new(&self.a, &self.b);
+        let ac = Line::new(&self.a, &self.c);
+        let bc = Line::new(&self.b, &self.c);
         (ab, ac, bc)
     }
 }

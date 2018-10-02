@@ -9,7 +9,7 @@ where
     type Error = ();
 
     fn try_from(value: (P, P, P)) -> Result<Self, Self::Error> {
-        let tri = Self { vertex: [value.0.into(), value.1.into(), value.2.into()] };
+        let tri = Self { a: value.0.into(), b: value.1.into(), c: value.2.into() };
         match tri.is_empty() {
             true => Ok(tri),
             false => Err(()),
@@ -25,7 +25,7 @@ where
 
     fn try_from(value: &Polygon<T>) -> Result<Self, Self::Error> {
         match value.vertex.as_slice() {
-            [a, b, c] => Ok(Triangle { vertex: [a.clone(), b.clone(), c.clone()] }),
+            [a, b, c] => Ok(Triangle { a: a.clone(), b: b.clone(), c: c.clone() }),
             _ => Err(()),
         }
     }

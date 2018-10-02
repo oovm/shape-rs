@@ -18,9 +18,9 @@ where
     T: Float,
 {
     fn transform(&mut self, matrix: &[&T; 9]) {
-        self.vertex[0].transform(matrix);
-        self.vertex[1].transform(matrix);
-        self.vertex[2].transform(matrix);
+        self.a.transform(matrix);
+        self.b.transform(matrix);
+        self.c.transform(matrix);
     }
 }
 

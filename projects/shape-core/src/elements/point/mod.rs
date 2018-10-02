@@ -17,3 +17,11 @@ pub struct Point3D<T> {
     pub y: T,
     pub z: T,
 }
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct Point4D<T> {
+    pub x: T,
+    pub y: T,
+    pub z: T,
+    pub w: T,
+}

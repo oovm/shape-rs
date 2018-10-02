@@ -3,7 +3,7 @@ pub use self::{
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
     mesh::MeshTriangleIndex,
-    point::{Point, Point3D},
+    point::{Point, Point3D, Point4D},
     polygon_like::{CirclePoints, Polygon, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::Triangle,

@@ -5,7 +5,7 @@ where
     T: Clone,
 {
     fn from(v: &Triangle<T>) -> Self {
-        Self { vertex: v.vertex.to_vec() }
+        Self { vertex: vec![v.a.clone(), v.b.clone(), v.c.clone()] }
     }
 }
 

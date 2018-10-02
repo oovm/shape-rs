@@ -1,26 +1,33 @@
-#[derive(Copy, Clone, Debug)]
+use crate::{Point, Point3D};
+use color_core::RGBA32;
+use std::{
+    fmt::{Debug, Display, Formatter},
+    ops::Neg,
+};
+
+mod display;
+mod tri;
+
+#[derive(Copy, Clone)]
+pub struct Mesh<T> {
+    pub vertices: Vec<MeshVertex<T>>,
+    pub triangles: Vec<MeshTriangleIndex>,
+}
+
+#[derive(Copy, Clone)]
+pub struct MeshVertex<T> {
+    pub position: Point3D<T>,
+    pub uv_tiling: Point<f32>,
+    pub uv_offset: Point<f32>,
+    pub color: RGBA32,
+}
+
+/// Clockwise means the front side, and counterclockwise means the back side. When rendering, only the front side is rendered by default, and the back side is invisible.
+///
+/// If you need double-sided display, you need to draw the reverse side at the same time, you can call !self to get the reverse side
+#[derive(Copy, Clone)]
 pub struct MeshTriangleIndex {
     pub a: usize,
     pub b: usize,
     pub c: usize,
-}
-
-impl MeshTriangleIndex {
-    pub fn new(a: usize, b: usize, c: usize) -> Self {
-        Self { a, b, c }
-    }
-
-    pub fn min(&self) -> usize {
-        self.a.min(self.b).min(self.c)
-    }
-    /// Returns the maximum index in the triangle.
-    ///
-    /// Used to check if the triangle index is valid
-    pub fn max(&self) -> usize {
-        self.a.max(self.b).max(self.c)
-    }
-    /// Render the triangle in the opposite direction
-    pub fn obverse(&self) -> Self {
-        Self { a: self.a, b: self.c, c: self.b }
-    }
 }
