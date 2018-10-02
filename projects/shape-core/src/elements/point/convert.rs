@@ -1,15 +1,6 @@
 use super::*;
 use std::ops::Sub;
 
-impl<T> Default for Point<T>
-where
-    T: Zero,
-{
-    fn default() -> Self {
-        Self { x: T::zero(), y: T::zero() }
-    }
-}
-
 impl<T> From<&Self> for Point<T>
 where
     T: Clone,

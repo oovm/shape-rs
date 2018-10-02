@@ -8,12 +8,12 @@ impl<T> Point<T> {
 }
 
 impl<T> Point<T>
-    where
-        T: Num + Clone,
+where
+    T: Num + Clone,
 {
     pub fn norm(&self) -> T
-        where
-            T: Float,
+    where
+        T: Float,
     {
         (self.x.clone() * self.x.clone() + self.y.clone() * self.y.clone()).sqrt()
     }
@@ -25,17 +25,5 @@ impl<T> Point<T>
         let p = (b.x.clone() - a.x.clone()) * (self.y.clone() - b.y.clone());
         let q = (b.y.clone() - a.y.clone()) * (self.x.clone() - b.x.clone());
         p - q
-    }
-}
-
-impl<T: Real> Point<T> {
-    /// Distance between two points.
-    pub fn euclidean2(&self, other: &Self) -> T {
-        let dx = self.x.sub(other.x);
-        let dy = self.y.sub(other.y);
-        dx.powi(2) + dy.powi(2)
-    }
-    pub fn euclidean(&self, other: &Self) -> T {
-        self.euclidean2(other).sqrt()
     }
 }
