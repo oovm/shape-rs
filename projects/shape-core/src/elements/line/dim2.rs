@@ -29,7 +29,7 @@ where
     where
         T: Float,
     {
-        self.start.euclidean(&self.end)
+        self.start.euclidean_distance(&self.end)
     }
     #[inline(always)]
     pub fn as_vector(&self) -> Vector<T> {

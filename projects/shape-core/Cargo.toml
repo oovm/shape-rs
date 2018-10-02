@@ -1,6 +1,6 @@
 [package]
 name = "shape-core"
-version = "0.1.4"
+version = "0.1.7"
 authors = ["Aster <192607617@qq.com>"]
 description = "Definition of geometry shapes"
 repository = "https://github.com/oovm/shape-rs"
@@ -24,7 +24,7 @@ path = "../projective"
 
 [dependencies.distantia]
 version = "0.0.0"
-#path = "../shape-distance"
+#path = "../shape-mesh"
 
 
 [dev-dependencies]

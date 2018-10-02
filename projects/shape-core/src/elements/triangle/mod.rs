@@ -1,4 +1,6 @@
 mod convert;
+mod display;
+mod indexes;
 
 use super::*;
 
@@ -9,6 +11,16 @@ pub struct Triangle<T> {
     pub c: Point<T>,
 }
 
+/// Clockwise means the front side, and counterclockwise means the back side. When rendering, only the front side is rendered by default, and the back side is invisible.
+///
+/// If you need double-sided display, you need to draw the reverse side at the same time, you can call !self to get the reverse side
+#[derive(Copy, Clone)]
+pub struct TriangleIndex {
+    pub a: usize,
+    pub b: usize,
+    pub c: usize,
+}
+
 impl<T> Triangle<T> {
     pub fn new<P>(a: P, b: P, c: P) -> Self
     where
@@ -16,7 +28,7 @@ impl<T> Triangle<T> {
     {
         Self { a: a.into(), b: b.into(), c: c.into() }
     }
-    pub fn from_mesh(vertexes: &[Point<T>], index: MeshTriangleIndex) -> Self
+    pub fn from_mesh(vertexes: &[Point<T>], index: TriangleIndex) -> Self
     where
         T: Clone,
     {

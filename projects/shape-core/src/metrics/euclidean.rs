@@ -1,4 +1,5 @@
 use super::*;
+use num_traits::real::Real;
 
 // ┌────────────────────────┐
 // │ From point to Geometry │
@@ -6,7 +7,7 @@ use super::*;
 
 impl<T> EuclideanDistance<T, Point<T>> for Point<T>
 where
-    T: Float,
+    T: Real,
 {
     /// Minimum distance between two `Coord`s
     fn euclidean_distance(&self, c: &Point<T>) -> T {

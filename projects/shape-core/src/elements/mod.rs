@@ -2,18 +2,20 @@ pub use self::{
     curve::{BSplineCurve, BezierCurve},
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
-    mesh::MeshTriangleIndex,
     point::{Point, Point3D, Point4D},
-    polygon_like::{CirclePoints, Polygon, Polyline, RegularPolygon},
+    polygon_like::{CirclePoints, Polygon, Polygon3D, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
-    triangle::Triangle,
+    triangle::{Triangle, TriangleIndex},
 };
-
+use distantia::EuclideanDistance;
+use itertools::Itertools;
 use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, AddAssign, Div};
-
+use std::{
+    marker::PhantomData,
+    ops::{Add, AddAssign, Div, Neg},
+};
 mod curve;
 mod ellipse_like;
 mod line;

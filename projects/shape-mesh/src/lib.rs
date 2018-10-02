@@ -1,16 +1,8 @@
-// #![deny(missing_docs)]
+#![deny(rustdoc::missing_crate_level_docs)]
+#![warn(missing_docs)]
 #![deny(missing_debug_implementations)]
 #![doc = include_str!("../Readme.md")]
 #![doc(html_logo_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
 #![doc(html_favicon_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
-pub use num_traits::{float::Float, real::Real, Num, One, Signed, Zero};
 
-pub use crate::{elements::*, macros::*, traits::*};
-pub use itertools::Itertools;
-
-mod elements;
-mod macros;
-mod metrics;
-mod traits;
-
-pub use elements::*;
+mod meshes;

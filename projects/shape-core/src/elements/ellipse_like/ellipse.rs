@@ -142,7 +142,8 @@ where
             let y = self.sample_y(&angle);
             vertex.push(Point::new(x, y));
         }
-        Polyline::new(vertex)
+        todo!()
+        // Polyline::new(vertex)
     }
     pub fn sample_x(&self, t: &T) -> T {
         self.radius.0 * self.rotate.cos() * t.cos() - self.radius.1 * self.rotate.sin() * t.sin() + self.center.x
