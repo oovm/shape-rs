@@ -14,3 +14,5 @@ mod metrics;
 mod traits;
 
 pub use elements::*;
+
+pub use distantia::EuclideanDistance;

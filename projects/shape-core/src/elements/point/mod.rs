@@ -1,6 +1,7 @@
 use super::*;
 mod convert;
 mod dim2;
+pub mod dim2_set;
 mod dim3;
 mod proj;
 

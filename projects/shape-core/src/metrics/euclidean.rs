@@ -23,22 +23,6 @@ where
     }
 }
 
-/// 平面点集, 同时维护范围, 适用于
-#[derive(Debug, Clone, PartialEq)]
-pub struct Multipoint<T> {
-    pub points: Vec<Point<T>>,
-}
-
-impl<T> Multipoint<T> {
-    pub fn new<I, U>(points: I) -> Self
-    where
-        I: IntoIterator<Item = U>,
-        U: Into<Point<T>>,
-    {
-        Self { points: points.into_iter().map(|p| p.into()).collect() }
-    }
-}
-
 impl<T> EuclideanDistance<T, Multipoint<T>> for Point<T>
 where
     T: Float + PartialOrd,
