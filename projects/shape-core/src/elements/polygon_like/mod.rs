@@ -28,6 +28,12 @@ pub struct Polyline<T> {
 pub struct Polygon<T> {
     pub vertex: Vec<Point<T>>,
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct PolygonIndex {
+    pub vertex: Vec<usize>,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polygon3D<T> {
     pub vertex: Vec<Point3D<T>>,

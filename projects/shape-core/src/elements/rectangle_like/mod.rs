@@ -15,8 +15,14 @@ pub struct Square<T> {
 /// A rectangle without rotated.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Rectangle<T> {
-    pub anchor: Point<T>,
-    pub side: (T, T),
+    /// origin x point of the rectangle
+    pub x: T,
+    /// origin y point of the rectangle
+    pub y: T,
+    /// width of the rectangle
+    pub w: T,
+    /// height of the rectangle
+    pub h: T,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]

@@ -1,4 +1,5 @@
 use super::*;
+use crate::PointSet;
 use num_traits::real::Real;
 
 // ┌────────────────────────┐
@@ -23,16 +24,16 @@ where
     }
 }
 
-impl<T> EuclideanDistance<T, Multipoint<T>> for Point<T>
+impl<T> EuclideanDistance<T, PointSet<T>> for Point<T>
 where
     T: Float + PartialOrd,
 {
-    fn euclidean_distance(&self, rhs: &Multipoint<T>) -> T {
+    fn euclidean_distance(&self, rhs: &PointSet<T>) -> T {
         self.euclidean_squared(rhs).sqrt()
     }
 
     /// 适合单次查询最近的点
-    fn euclidean_squared(&self, rhs: &Multipoint<T>) -> T {
+    fn euclidean_squared(&self, rhs: &PointSet<T>) -> T {
         match rhs.points.len() {
             0 => panic!("Multipoint must have at least one point"),
             1 => unsafe {

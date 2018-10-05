@@ -23,7 +23,7 @@ where
     T: Clone + Add<Output = T>,
 {
     fn from(v: &Rectangle<T>) -> Self {
-        Self { vertex: v.vertexes() }
+        todo!("Rectangle to Polygon")
     }
 }
 
@@ -33,5 +33,29 @@ where
 {
     fn from(v: &Parallelogram<T>) -> Self {
         Self { vertex: v.vertexes() }
+    }
+}
+
+impl<T, P> FromIterator<P> for Polygon<T>
+where
+    P: Into<Point<T>>,
+{
+    fn from_iter<I>(iter: I) -> Self
+    where
+        I: IntoIterator<Item = P>,
+    {
+        Self { vertex: iter.into_iter().map(|p| p.into()).collect() }
+    }
+}
+
+impl<T, P> FromIterator<P> for Polygon3D<T>
+where
+    P: Into<Point3D<T>>,
+{
+    fn from_iter<I>(iter: I) -> Self
+    where
+        I: IntoIterator<Item = P>,
+    {
+        Self { vertex: iter.into_iter().map(|p| p.into()).collect() }
     }
 }

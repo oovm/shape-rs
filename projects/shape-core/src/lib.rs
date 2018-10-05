@@ -1,3 +1,5 @@
+#![feature(iter_from_generator)]
+#![feature(generators)]
 // #![deny(missing_docs)]
 #![deny(missing_debug_implementations)]
 #![doc = include_str!("../Readme.md")]

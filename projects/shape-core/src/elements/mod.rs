@@ -2,7 +2,7 @@ pub use self::{
     curve::{BSplineCurve, BezierCurve},
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
-    point::{dim2_set::Point2DSet, Point, Point3D, Point4D},
+    point::{dim2_set::PointSet, Point, Point3D, Point4D},
     polygon_like::{CirclePoints, Polygon, Polygon3D, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::{Triangle, TriangleIndex},

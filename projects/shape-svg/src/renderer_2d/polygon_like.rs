@@ -39,8 +39,8 @@ where
 {
     fn to_svg(&self) -> SVG {
         let attributes = vec![
-            ("x", format!("{}", self.anchor.x)),
-            ("y", format!("{}", self.anchor.y)),
+            ("x", format!("{}", self.origin.x)),
+            ("y", format!("{}", self.origin.y)),
             ("width", format!("{}", self.side.0)),
             ("height", format!("{}", self.side.1)),
         ];

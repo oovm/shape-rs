@@ -1,3 +1,4 @@
+use crate::{Line, Point, Rectangle};
 use num_traits::Zero;
 
 mod convert;
@@ -17,6 +18,18 @@ where
         self.is_empty_under_thousand(T::zero())
     }
     fn is_empty_under_thousand(&self, thousand: T) -> bool;
+}
+
+pub trait Shape2D {
+    type Value;
+    fn is_valid(&self) -> bool;
+    fn boundary(&self) -> Rectangle<Self::Value>;
+    fn vertices<'i, I>(&'i self) -> I
+    where
+        I: Iterator<Item = Point<&'i Self::Value>>;
+    fn edges<'i, I>(&'i self) -> I
+    where
+        I: Iterator<Item = Line<&'i Self::Value>>;
 }
 
 pub trait EqualThousand<T> {

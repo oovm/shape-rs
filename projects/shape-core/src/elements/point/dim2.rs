@@ -5,6 +5,9 @@ impl<T> Point<T> {
     pub fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
+    pub fn ref_inner(&self) -> Point<&T> {
+        Point { x: &self.x, y: &self.y }
+    }
 }
 
 impl<T> Point<T>
