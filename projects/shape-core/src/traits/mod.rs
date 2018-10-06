@@ -2,7 +2,6 @@ use crate::{Line, Point, Rectangle};
 use num_traits::Zero;
 
 mod convert;
-mod dim2;
 mod projection;
 #[cfg(feature = "rand")]
 mod random;
@@ -24,12 +23,8 @@ pub trait Shape2D {
     type Value;
     fn is_valid(&self) -> bool;
     fn boundary(&self) -> Rectangle<Self::Value>;
-    fn vertices<'i, I>(&'i self) -> I
-    where
-        I: Iterator<Item = Point<&'i Self::Value>>;
-    fn edges<'i, I>(&'i self) -> I
-    where
-        I: Iterator<Item = Line<&'i Self::Value>>;
+    fn vertices(&self) -> impl Iterator<Item = Point<Self::Value>> + '_;
+    fn edges(&self) -> impl Iterator<Item = Line<Self::Value>> + '_;
 }
 
 pub trait EqualThousand<T> {

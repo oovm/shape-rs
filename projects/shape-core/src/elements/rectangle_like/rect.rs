@@ -1,5 +1,5 @@
 use super::*;
-use num_traits::NumOps;
+
 use std::ops::Sub;
 
 impl<T> Rectangle<T> {

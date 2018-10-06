@@ -1,7 +1,6 @@
 use super::*;
 use crate::Shape2D;
 use num_traits::NumOps;
-use std::{collections::BTreeSet, iter::from_generator};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PointSet<T> {
@@ -61,18 +60,12 @@ where
         Rectangle::from_diagonal_points(min, max)
     }
 
-    fn vertices<'i, I>(&'i self) -> I
-    where
-        I: Iterator<Item = Point<&'i T>>,
-    {
-        todo!()
+    fn vertices(&self) -> impl Iterator<Item = Point<Self::Value>> + '_ {
+        self.points.iter().map(|p| p.clone())
     }
 
-    fn edges<'i, I>(&'i self) -> I
-    where
-        I: Iterator<Item = Line<&'i T>>,
-        T: 'i,
-    {
-        todo!()
+    /// The set of points does not contain any edges
+    fn edges(&self) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+        [].into_iter()
     }
 }

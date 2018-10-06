@@ -1,5 +1,4 @@
 use super::*;
-use std::ops::Mul;
 
 impl<T> Line3D<T> {
     /// Construct new line

@@ -1,5 +1,4 @@
 use super::*;
-use num_traits::NumOps;
 
 impl<T> Polygon3D<T> {
     pub fn new(points: &[Point3D<T>]) -> Self
