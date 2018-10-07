@@ -5,6 +5,6 @@ impl<T> Polygon<T> {
     where
         I: IntoIterator<Item = Point<T>>,
     {
-        Self { vertex: points.into_iter().collect() }
+        Self { points_set: points.into_iter().collect() }
     }
 }

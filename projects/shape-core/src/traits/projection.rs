@@ -29,7 +29,7 @@ where
     T: Float,
 {
     fn transform(&mut self, matrix: &[&T; 9]) {
-        for point in self.vertex.iter_mut() {
+        for point in self.points_set.points.iter_mut() {
             point.transform(matrix);
         }
     }

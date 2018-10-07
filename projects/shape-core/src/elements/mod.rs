@@ -2,7 +2,7 @@ pub use self::{
     curve::{BSplineCurve, BezierCurve},
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
-    point::{dim2_set::PointSet, Point, Point3D, Point4D},
+    point::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
     polygon_like::{CirclePoints, Polygon, Polygon3D, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::{Triangle, TriangleIndex},
@@ -13,8 +13,10 @@ use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
 use std::{
+    cmp::Ordering,
+    fmt::{Debug, Display, Formatter},
     marker::PhantomData,
-    ops::{Add, AddAssign, Div, Neg},
+    ops::{Add, AddAssign, Div, Neg, Sub},
 };
 mod curve;
 mod ellipse_like;

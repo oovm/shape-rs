@@ -1,4 +1,13 @@
 use super::*;
+mod display;
+mod metrics;
+
+/// A 2D point.
+#[derive(Copy, Clone, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct Point<T> {
+    pub x: T,
+    pub y: T,
+}
 
 impl<T> Point<T> {
     /// Construct new point

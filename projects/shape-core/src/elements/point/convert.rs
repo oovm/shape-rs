@@ -1,5 +1,4 @@
 use super::*;
-use std::ops::Sub;
 
 impl<T> From<&Self> for Point<T>
 where

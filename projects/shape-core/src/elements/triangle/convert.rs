@@ -28,7 +28,7 @@ where
     type Error = ();
 
     fn try_from(value: &Polygon<T>) -> Result<Self, Self::Error> {
-        match value.vertex.as_slice() {
+        match value.points_set.points.as_slice() {
             [a, b, c] => Ok(Triangle { a: a.clone(), b: b.clone(), c: c.clone() }),
             _ => Err(()),
         }

@@ -2,7 +2,7 @@ use super::*;
 use crate::Shape2D;
 use num_traits::NumOps;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct PointSet<T> {
     pub points: Vec<Point<T>>,
 }

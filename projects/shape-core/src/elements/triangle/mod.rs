@@ -4,10 +4,28 @@ mod indexes;
 
 use super::*;
 
+/// A triangle is a polygon with three edges and three vertices. It is one of the basic shapes in geometry.
+///
+/// # Arguments
+///
+/// * `a`:
+/// * `b`:
+/// * `c`:
+///
+/// returns: Triangle<T>
+///
+/// # Examples
+///
+/// ```
+/// # use shape_core::Triangle;
+/// ```
 #[derive(Debug, Clone)]
 pub struct Triangle<T> {
+    /// The 1st vertex of the triangle.
     pub a: Point<T>,
+    /// The 2nd vertex of the triangle.
     pub b: Point<T>,
+    /// The 3rd vertex of the triangle.
     pub c: Point<T>,
 }
 
@@ -48,10 +66,6 @@ impl<T> Triangle<T>
 where
     T: Clone + Real,
 {
-    pub fn is_valid(&self) -> bool {
-        let (ab, ac, _) = self.edges();
-        ab.is_parallel(&ac)
-    }
     pub fn is_congruent(&self) -> bool {
         true
     }
@@ -80,11 +94,5 @@ where
     /// Get the circumscribed circle of the triangle.
     pub fn circumscribed_circle(&self) -> Circle<T> {
         Circle::from_3_points(&self.a, &self.b, &self.c)
-    }
-    pub fn edges(&self) -> (Line<T>, Line<T>, Line<T>) {
-        let ab = Line::new(&self.a, &self.b);
-        let ac = Line::new(&self.a, &self.c);
-        let bc = Line::new(&self.b, &self.c);
-        (ab, ac, bc)
     }
 }

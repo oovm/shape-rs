@@ -77,7 +77,7 @@ where
     /// <polygon points="100,10 40,198 190,78 10,78 160,198"
     //   style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
     fn to_svg(&self) -> SVG {
-        let points = self.vertex.iter().map(|p| format!("{},{}", p.x, p.y)).collect::<Vec<_>>().join(" ");
+        let points = self.points_set.iter().map(|p| format!("{},{}", p.x, p.y)).collect::<Vec<_>>().join(" ");
         let attributes = vec![("points", points)];
         SVG::new("polygon", attributes, vec![])
     }

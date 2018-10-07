@@ -20,13 +20,13 @@ pub struct CirclePoints<T> {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polyline<T> {
-    pub points: Vec<Point<T>>,
+    pub points: PointSet<T>,
     pub closed: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polygon<T> {
-    pub vertex: Vec<Point<T>>,
+    pub points_set: PointSet<T>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
