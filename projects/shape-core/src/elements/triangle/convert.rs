@@ -1,8 +1,5 @@
 use super::*;
-use crate::{
-    utils::{max3, min3},
-    Shape2D,
-};
+use crate::utils::{max3, min3};
 use std::iter::from_generator;
 
 impl<T, P> TryFrom<(P, P, P)> for Triangle<T>
@@ -55,7 +52,7 @@ where
         Rectangle::from_diagonal_points(Point::new(min_x, min_y), Point::new(max_x, max_y))
     }
 
-    fn vertices(&self) -> impl Iterator<Item = Point<Self::Value>> + '_ {
+    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
         from_generator(move || {
             yield self.a.clone();
             yield self.b.clone();
@@ -63,7 +60,7 @@ where
         })
     }
 
-    fn edges(&self) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
         from_generator(move || {
             yield Line::new(self.a.clone(), self.b.clone());
             yield Line::new(self.b.clone(), self.c.clone());

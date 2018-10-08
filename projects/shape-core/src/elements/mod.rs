@@ -3,13 +3,14 @@ pub use self::{
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
     point::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
-    polygon_like::{CirclePoints, Polygon, Polygon3D, Polyline, RegularPolygon},
+    polygon_like::{Polygon, Polygon3D, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::{Triangle, TriangleIndex},
 };
+use crate::traits::Shape2D;
 use distantia::EuclideanDistance;
 use itertools::Itertools;
-use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
+use num_traits::{real::Real, Float, FloatConst, Num, NumOps, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
 use std::{

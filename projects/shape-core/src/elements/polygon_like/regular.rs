@@ -47,23 +47,6 @@ where
     }
 }
 
-impl<T> CirclePoints<T>
-where
-    T: Real,
-{
-    #[inline]
-    pub fn unit(sides: usize) -> Vec<Point<T>> {
-        RegularPolygon::unit(sides).vertexes()
-    }
-    #[inline]
-    pub fn new<P>(sides: usize, center: P, radius: T, rotate: T) -> Vec<Point<T>>
-    where
-        Point<T>: From<P>,
-    {
-        RegularPolygon::new(sides, center, radius, rotate).vertexes()
-    }
-}
-
 impl<T> Projective<T> for RegularPolygon<T>
 where
     T: Real + AddAssign,

@@ -34,7 +34,9 @@ pub trait Shape2D {
     /// Returns the boundary of the shape.
     fn boundary(&self) -> Rectangle<Self::Value>;
     /// Returns the owned vertices of the shape.
-    fn vertices(&self) -> impl Iterator<Item = Point<Self::Value>> + '_;
+    ///
+    /// Notice that sample only works for non-linear shapes.
+    fn vertices(&self, sample: usize) -> impl Iterator<Item = Point<Self::Value>> + '_;
     /// Returns the owned edges of the shape.
-    fn edges(&self) -> impl Iterator<Item = Line<Self::Value>> + '_;
+    fn edges(&self, sample: usize) -> impl Iterator<Item = Line<Self::Value>> + '_;
 }

@@ -14,11 +14,6 @@ pub struct RegularPolygon<T> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub struct CirclePoints<T> {
-    ty: PhantomData<T>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polyline<T> {
     pub points: PointSet<T>,
     pub closed: bool,

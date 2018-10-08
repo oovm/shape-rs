@@ -1,6 +1,4 @@
 use super::*;
-use crate::Shape2D;
-use num_traits::NumOps;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct PointSet<T> {
@@ -60,12 +58,12 @@ where
         Rectangle::from_diagonal_points(min, max)
     }
 
-    fn vertices(&self) -> impl Iterator<Item = Point<Self::Value>> + '_ {
+    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
         self.points.iter().map(|p| p.clone())
     }
 
     /// The set of points does not contain any edges
-    fn edges(&self) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
         [].into_iter()
     }
 }
