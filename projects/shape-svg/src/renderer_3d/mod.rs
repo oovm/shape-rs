@@ -1,4 +1,4 @@
-use crate::SVG;
+use svg::node::element::SVG;
 
 /// Mark a type that can be convert to svg
 pub trait ToSVG3D {

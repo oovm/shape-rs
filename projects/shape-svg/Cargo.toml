@@ -1,6 +1,6 @@
 [package]
 name = "shape-svg"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Aster <192607617@qq.com>"]
 description = "SVG representation of shapes"
 repository = "https://github.com/oovm/shape-rs"
@@ -12,8 +12,7 @@ edition = "2021"
 
 [dependencies]
 svg = "0.13.1"
-serde = "1.0.159"
-serde_derive = "1.0.159"
+#serde = "1.0.159"
 
 
 [dependencies.shape-core]
