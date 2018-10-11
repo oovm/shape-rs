@@ -1,5 +1,4 @@
 use super::*;
-use std::ops::{Add, Sub};
 
 impl<T> ManhattanDistance<T, Point<T>> for Point<T>
 where

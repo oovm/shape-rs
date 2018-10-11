@@ -4,7 +4,7 @@ mod indexes;
 
 use super::*;
 
-/// A triangle is a polygon with three edges and three vertices. It is one of the basic shapes in geometry.
+/// A triangle_like is a polygon with three edges and three vertices. It is one of the basic shapes in geometry.
 ///
 /// # Arguments
 ///
@@ -21,11 +21,11 @@ use super::*;
 /// ```
 #[derive(Debug, Clone)]
 pub struct Triangle<T> {
-    /// The 1st vertex of the triangle.
+    /// The 1st vertex of the triangle_like.
     pub a: Point<T>,
-    /// The 2nd vertex of the triangle.
+    /// The 2nd vertex of the triangle_like.
     pub b: Point<T>,
-    /// The 3rd vertex of the triangle.
+    /// The 3rd vertex of the triangle_like.
     pub c: Point<T>,
 }
 
@@ -50,7 +50,11 @@ impl<T> Triangle<T> {
     where
         T: Clone,
     {
-        debug_assert!(index.max() < vertexes.len(), "triangle index {index} out of range, must less than {}", vertexes.len());
+        debug_assert!(
+            index.max() < vertexes.len(),
+            "triangle_like index {index} out of range, must less than {}",
+            vertexes.len()
+        );
         // SAFETY: the debug_assert! above ensures that the index is in range
         unsafe {
             Self {
@@ -76,7 +80,7 @@ where
         todo!()
     }
 
-    /// Returns the area of the triangle.
+    /// Returns the area of the triangle_like.
     pub fn area(&self) -> T {
         // Det[{{x0, y0, 1}, {x1, y1, 1}, {x2, y2, 1}}] / 2
         // x0 y1 - x1 y0
@@ -87,11 +91,11 @@ where
         let det3 = self.c.x.clone() * self.a.y.clone() - self.a.x.clone() * self.c.y.clone();
         (det1 + det2 + det3) / two()
     }
-    /// Get the inscribed circle of the triangle
+    /// Get the inscribed circle of the triangle_like
     pub fn inscribed_circle(&self) -> Circle<T> {
         todo!()
     }
-    /// Get the circumscribed circle of the triangle.
+    /// Get the circumscribed circle of the triangle_like.
     pub fn circumscribed_circle(&self) -> Circle<T> {
         Circle::from_3_points(&self.a, &self.b, &self.c)
     }

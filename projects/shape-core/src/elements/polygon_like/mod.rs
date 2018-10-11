@@ -1,8 +1,8 @@
 use super::*;
 
 mod convert;
-mod dim2;
 mod dim3;
+pub mod normal_2d;
 mod regular;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -17,11 +17,6 @@ pub struct RegularPolygon<T> {
 pub struct Polyline<T> {
     pub points: PointSet<T>,
     pub closed: bool,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub struct Polygon<T> {
-    pub points_set: PointSet<T>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]

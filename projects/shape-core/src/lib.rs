@@ -13,7 +13,6 @@ pub use itertools::Itertools;
 pub use num_traits::{float::Float, real::Real, Num, One, Signed, Zero};
 mod elements;
 mod macros;
-mod metrics;
 mod traits;
 pub mod utils;
 

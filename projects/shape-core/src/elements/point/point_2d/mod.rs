@@ -1,6 +1,7 @@
 use super::*;
 mod display;
-mod metrics;
+mod euclidean;
+mod manhattan;
 
 /// A 2D point.
 #[derive(Copy, Clone, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]

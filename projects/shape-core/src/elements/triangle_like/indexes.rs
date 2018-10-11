@@ -16,9 +16,9 @@ impl TriangleIndex {
     pub fn min(&self) -> usize {
         self.a.min(self.b).min(self.c)
     }
-    /// Returns the maximum index in the triangle.
+    /// Returns the maximum index in the triangle_like.
     ///
-    /// Used to check if the triangle index is valid
+    /// Used to check if the triangle_like index is valid
     pub fn max(&self) -> usize {
         self.a.max(self.b).max(self.c)
     }

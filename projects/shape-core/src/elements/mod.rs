@@ -3,12 +3,12 @@ pub use self::{
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
     point::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
-    polygon_like::{Polygon, Polygon3D, Polyline, RegularPolygon},
-    rectangle_like::{Parallelogram, Rectangle, Square},
-    triangle::{Triangle, TriangleIndex},
+    polygon_like::{normal_2d::Polygon, Polygon3D, Polyline, RegularPolygon},
+    rectangle_like::{rectangle::Rectangle, square::Square, Parallelogram},
+    triangle_like::{Triangle, TriangleIndex},
 };
 use crate::traits::Shape2D;
-use distantia::EuclideanDistance;
+use distantia::{EuclideanDistance, ManhattanDistance};
 use itertools::Itertools;
 use num_traits::{real::Real, Float, FloatConst, Num, NumOps, One, Zero};
 use projective::Projective;
@@ -16,7 +16,6 @@ use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,
     fmt::{Debug, Display, Formatter},
-    marker::PhantomData,
     ops::{Add, AddAssign, Div, Neg, Sub},
 };
 mod curve;
@@ -26,7 +25,7 @@ mod mesh;
 mod point;
 mod polygon_like;
 mod rectangle_like;
-mod triangle;
+mod triangle_like;
 
 #[inline(always)]
 fn zero<T: Zero>() -> T {

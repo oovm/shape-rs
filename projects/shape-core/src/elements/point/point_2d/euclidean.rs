@@ -1,9 +1,5 @@
 use super::*;
 
-// ┌────────────────────────┐
-// │ From point to Geometry │
-// └────────────────────────┘
-
 impl<T> EuclideanDistance<T, Point<T>> for Point<T>
 where
     T: Real,
