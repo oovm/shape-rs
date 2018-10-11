@@ -8,8 +8,8 @@ where
     T: Float,
 {
     fn transform(&mut self, matrix: &[&T; 9]) {
-        self.start.transform(matrix);
-        self.end.transform(matrix);
+        self.s.transform(matrix);
+        self.e.transform(matrix);
     }
 }
 

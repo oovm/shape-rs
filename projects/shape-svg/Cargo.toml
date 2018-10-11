@@ -16,7 +16,7 @@ svg = "0.13.1"
 
 
 [dependencies.shape-core]
-version = "0.1.10"
+version = "0.1.11"
 path = "../shape-core"
 
 [dev-dependencies]

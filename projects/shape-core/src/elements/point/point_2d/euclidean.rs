@@ -44,7 +44,7 @@ where
     }
 }
 
-// It is not the minimum distance between a point and a line
+// It is not the minimum distance between a point and a line_like
 impl<T: Float> EuclideanDistance<T, Line<T>> for Point<T> {
     fn euclidean_distance(&self, rhs: &Line<T>) -> T {
         let (numerator, denominator) = point_line_ratio(self, rhs);
@@ -58,9 +58,9 @@ impl<T: Float> EuclideanDistance<T, Line<T>> for Point<T> {
 }
 
 fn point_line_ratio<T: Float>(p: &Point<T>, l: &Line<T>) -> (T, T) {
-    let dy = l.start.y - l.end.y;
-    let dx = l.start.x - l.end.x;
-    let dt = l.start.x * l.end.y - l.end.x * l.start.y;
+    let dy = l.s.y - l.e.y;
+    let dx = l.s.x - l.e.x;
+    let dt = l.s.x * l.e.y - l.e.x * l.s.y;
     let nu = dy * p.x - dx * p.y + dt;
     let de = dy.powi(2) + dx.powi(2);
     (nu, de)

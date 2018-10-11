@@ -1,12 +1,12 @@
 use super::*;
 
 impl<T> Line3D<T> {
-    /// Construct new line
+    /// Construct new line_like
     pub fn new<P>(start: P, end: P) -> Self
     where
         Point3D<T>: From<P>,
     {
-        Self { start: start.into(), end: end.into() }
+        Self { s: start.into(), e: end.into() }
     }
 }
 
@@ -15,9 +15,9 @@ impl<T: Real> Line3D<T> {
         todo!()
     }
     pub fn middle_point(&self) -> Point3D<T> {
-        let mx = (self.start.x + self.end.x) / two();
-        let my = (self.start.y + self.end.y) / two();
-        let mz = (self.start.z + self.end.z) / two();
+        let mx = (self.s.x + self.e.x) / two();
+        let my = (self.s.y + self.e.y) / two();
+        let mz = (self.s.z + self.e.z) / two();
         Point3D { x: mx, y: my, z: mz }
     }
 }

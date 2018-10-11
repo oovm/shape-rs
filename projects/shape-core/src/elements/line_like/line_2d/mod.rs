@@ -1,24 +1,21 @@
 use super::*;
 use num_traits::{Num, One};
+mod convert;
 
-impl<T> Default for Line<T>
-where
-    T: Zero + One,
-{
-    #[inline(always)]
-    fn default() -> Self {
-        Self { start: Point { x: zero(), y: zero() }, end: Point { x: one(), y: zero() } }
-    }
+/// represents an infinitely long line_like segment
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct Vector<T> {
+    pub dx: T,
+    pub dy: T,
 }
 
-impl<T> Line<T> {
-    #[inline(always)]
-    pub fn new<P>(start: P, end: P) -> Self
-    where
-        Point<T>: From<P>,
-    {
-        Self { start: start.into(), end: end.into() }
-    }
+/// A line_like segment of finite length, determined by a starting point and an ending point.
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct Line<T> {
+    /// Start point of the line_like segment.
+    pub s: Point<T>,
+    /// End point of the line_like segment.
+    pub e: Point<T>,
 }
 
 impl<T> Line<T>
@@ -27,13 +24,13 @@ where
 {
     pub fn length(&self) -> T
     where
-        T: Float,
+        T: Real,
     {
-        self.start.euclidean_distance(&self.end)
+        self.s.euclidean_distance(&self.e)
     }
     #[inline(always)]
     pub fn as_vector(&self) -> Vector<T> {
-        let new = self.end.clone() - &self.start;
+        let new = self.e.clone() - &self.s;
         Vector { dx: new.x, dy: new.y }
     }
 

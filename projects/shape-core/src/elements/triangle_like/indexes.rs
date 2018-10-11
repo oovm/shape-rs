@@ -9,16 +9,15 @@ impl Neg for TriangleIndex {
 }
 
 impl TriangleIndex {
+    /// Construct new triangle index
     pub fn new(a: usize, b: usize, c: usize) -> Self {
         Self { a, b, c }
     }
-
+    /// Returns the minimum index in the triangle index.
     pub fn min(&self) -> usize {
         self.a.min(self.b).min(self.c)
     }
-    /// Returns the maximum index in the triangle_like.
-    ///
-    /// Used to check if the triangle_like index is valid
+    /// Returns the maximum index in the triangle index, used to check if the triangle index is valid
     pub fn max(&self) -> usize {
         self.a.max(self.b).max(self.c)
     }

@@ -21,11 +21,11 @@ use super::*;
 /// ```
 #[derive(Debug, Clone)]
 pub struct Triangle<T> {
-    /// The 1st vertex of the triangle_like.
+    /// The 1st vertex of the triangle.
     pub a: Point<T>,
-    /// The 2nd vertex of the triangle_like.
+    /// The 2nd vertex of the triangle.
     pub b: Point<T>,
-    /// The 3rd vertex of the triangle_like.
+    /// The 3rd vertex of the triangle.
     pub c: Point<T>,
 }
 
@@ -34,18 +34,23 @@ pub struct Triangle<T> {
 /// If you need double-sided display, you need to draw the reverse side at the same time, you can call !self to get the reverse side
 #[derive(Copy, Clone)]
 pub struct TriangleIndex {
+    /// The 1st vertex in the triangle index.
     pub a: usize,
+    /// The 2nd vertex in the triangle index.
     pub b: usize,
+    /// The 3rd vertex in the triangle index.
     pub c: usize,
 }
 
 impl<T> Triangle<T> {
+    /// Create a new triangle from three points.
     pub fn new<P>(a: P, b: P, c: P) -> Self
     where
-        Point<T>: From<P>,
+        P: Into<Point<T>>,
     {
         Self { a: a.into(), b: b.into(), c: c.into() }
     }
+    /// Create a triangle from a mesh and a triangle_like index.
     pub fn from_mesh(vertexes: &[Point<T>], index: TriangleIndex) -> Self
     where
         T: Clone,
@@ -68,16 +73,24 @@ impl<T> Triangle<T> {
 
 impl<T> Triangle<T>
 where
-    T: Clone + Real,
+    T: Clone + AddAssign + Real,
 {
+    /// Returns true if the triangle is equilateral.
     pub fn is_congruent(&self) -> bool {
         true
     }
+    /// Returns true if the triangle is equilateral.
     pub fn is_isosceles(&self) -> bool {
         true
     }
+
+    /// Returns the perimeter of the triangle.
     pub fn perimeter(&self) -> T {
-        todo!()
+        let mut out = T::zero();
+        for edge in self.edges(3) {
+            out += edge.length();
+        }
+        out
     }
 
     /// Returns the area of the triangle_like.
