@@ -25,12 +25,14 @@ where
         let b = Line::new(&self.anchor, &self.side.1);
         (a, b)
     }
+    /// Check if the parallelogram is a square_2d
     pub fn is_square(&self) -> bool
     where
         T: Float,
     {
         self.is_rectangle() && self.is_diamond()
     }
+    /// Check if the parallelogram is a diamond
     pub fn is_diamond(&self) -> bool
     where
         T: Float,
@@ -38,6 +40,7 @@ where
         let (a, b) = self.side_edges();
         a.length() == b.length()
     }
+    /// Check if the parallelogram is a rectangle_2d
     pub fn is_rectangle(&self) -> bool {
         let a = Line::new(&self.anchor, &self.side.0);
         let b = Line::new(&self.anchor, &self.side.1);

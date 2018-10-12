@@ -7,9 +7,12 @@ pub use self::{
     },
     point::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
     polygon_like::{normal_2d::Polygon, Polygon3D, Polyline, RegularPolygon},
-    rectangle_like::{rectangle::Rectangle, square::Square, Parallelogram},
+    rectangle_like::{rectangle_2d::Rectangle, rectangle_3d::Cuboid, square_2d::Square, Parallelogram},
     triangle_like::{Triangle, TriangleIndex},
 };
+use num_traits::Signed;
+use std::iter::from_generator;
+
 use crate::traits::Shape2D;
 use distantia::{EuclideanDistance, ManhattanDistance};
 use itertools::Itertools;
