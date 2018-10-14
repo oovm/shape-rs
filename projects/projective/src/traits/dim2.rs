@@ -14,7 +14,7 @@ use num_traits::real::Real;
 /// | [scale](Projective::scale)         | ----------- |
 #[doc = "## Examples"]
 #[doc = "```"]
-#[doc = include_str ! ("../../tests/point.rs")]
+#[doc = include_str ! ("../../tests/points.rs")]
 #[doc = "```"]
 pub trait Projective<T>
 where
@@ -105,7 +105,7 @@ where
             &T::zero(), &T::zero(), &T::one(),
         ])
     }
-    /// Transform by rotate with a point $\alpha$.
+    /// Transform by rotate with a points $\alpha$.
     ///
     /// # Matrix
     ///

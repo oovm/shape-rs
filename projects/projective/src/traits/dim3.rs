@@ -31,24 +31,24 @@ where
     fn rotate_point(&self, _point: &[T; 3], _alpha: T, _beta: T, _gamma: T) -> Self {
         todo!()
     }
-    /// Rotate with a line_like.
+    /// Rotate with a lines.
     #[rustfmt::skip]
     fn rotate_axis(&self, _p1: &[T; 3], _p2: &[T; 3], _alpha:T) -> Self {
         todo!()
     }
-    /// Rotate with a line_like.
+    /// Rotate with a lines.
     fn rotate_axis_x(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::one(), T::zero(), T::zero()], alpha)
     }
-    /// Rotate with a line_like.
+    /// Rotate with a lines.
     fn rotate_axis_y(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::zero(), T::one(), T::zero()], alpha)
     }
-    /// Rotate with a line_like.
+    /// Rotate with a lines.
     fn rotate_axis_z(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::zero(), T::zero(), T::one()], alpha)
     }
-    /// Rotate with a line_like.
+    /// Rotate with a lines.
     #[rustfmt::skip]
     fn translate(&self, x: &T, y: &T, z: &T) -> Self {
         self.transform(&[

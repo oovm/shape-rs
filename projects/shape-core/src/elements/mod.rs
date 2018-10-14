@@ -1,14 +1,14 @@
 pub use self::{
-    curve::{BSplineCurve, BezierCurve},
-    ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
-    line_like::{
+    curves::{BSplineCurve, BezierCurve},
+    ellipses::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
+    lines::{
         line_2d::{Line, Vector},
         Line3D, Vector3D,
     },
-    point::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
-    polygon_like::{normal_2d::Polygon, Polygon3D, Polyline, RegularPolygon},
-    rectangle_like::{rectangle_2d::Rectangle, rectangle_3d::Cuboid, square_2d::Square, Parallelogram},
-    triangle_like::{Triangle, TriangleIndex},
+    points::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
+    polygons::{normal_2d::Polygon, Polygon3D, Polyline, RegularPolygon},
+    rectangles::{rectangle_2d::Rectangle, rectangle_3d::Cuboid, square_2d::Square, Parallelogram},
+    triangles::{Triangle, TriangleIndex},
 };
 use num_traits::Signed;
 use std::iter::from_generator;
@@ -24,14 +24,14 @@ use std::{
     fmt::{Debug, Display, Formatter},
     ops::{Add, AddAssign, Div, Neg, Sub},
 };
-mod curve;
-mod ellipse_like;
-mod line_like;
+mod curves;
+mod ellipses;
+mod lines;
 mod mesh;
-mod point;
-mod polygon_like;
-mod rectangle_like;
-mod triangle_like;
+mod points;
+mod polygons;
+mod rectangles;
+mod triangles;
 
 #[inline(always)]
 fn zero<T: Zero>() -> T {
