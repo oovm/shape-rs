@@ -2,19 +2,18 @@ use super::*;
 
 impl<T> ToSVG for Point<T>
 where
-    T: Clone,
-    T: Into<Value>,
+    T: Display,
 {
     type Element = svg::node::element::Circle;
 
     fn to_svg(&self) -> Self::Element {
-        svg::node::element::Circle::new().set("cx", self.x.clone()).set("cy", self.y.clone()).set("r", 1)
+        svg::node::element::Circle::new().set("cx", self.x.to_string()).set("cy", self.y.to_string()).set("r", 1)
     }
 }
 
 impl<T> ToSVG for Triangle<T>
 where
-    T: Into<Value> + Display,
+    T: Display,
 {
     type Element = svg::node::element::Polygon;
 
@@ -29,33 +28,31 @@ where
 
 impl<T> ToSVG for Square<T>
 where
-    T: Clone,
-    T: Into<Value>,
+    T: Display,
 {
     type Element = svg::node::element::Rectangle;
 
     fn to_svg(&self) -> Self::Element {
         svg::node::element::Rectangle::new()
-            .set("x", self.x.clone())
-            .set("y", self.y.clone())
-            .set("width", self.s.clone())
-            .set("height", self.s.clone())
+            .set("x", self.x.to_string())
+            .set("y", self.y.to_string())
+            .set("width", self.s.to_string())
+            .set("height", self.s.to_string())
     }
 }
 
 impl<T> ToSVG for Rectangle<T>
 where
-    T: Clone,
-    T: Into<Value>,
+    T: Display,
 {
     type Element = svg::node::element::Rectangle;
 
     fn to_svg(&self) -> Self::Element {
         svg::node::element::Rectangle::new()
-            .set("x", self.x.clone())
-            .set("y", self.y.clone())
-            .set("width", self.w.clone())
-            .set("height", self.h.clone())
+            .set("x", self.x.to_string())
+            .set("y", self.y.to_string())
+            .set("width", self.w.to_string())
+            .set("height", self.h.to_string())
     }
 }
 

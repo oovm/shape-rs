@@ -8,3 +8,4 @@ mod renderer_2d;
 mod renderer_3d;
 
 pub use self::{renderer_2d::ToSVG, renderer_3d::ToSVG3D};
+pub use svg::{node::element::SVG, read, save};

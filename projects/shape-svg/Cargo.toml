@@ -1,6 +1,6 @@
 [package]
 name = "shape-svg"
-version = "0.0.5"
+version = "0.0.7"
 authors = ["Aster <192607617@qq.com>"]
 description = "SVG representation of shapes"
 repository = "https://github.com/oovm/shape-rs"
@@ -16,7 +16,7 @@ svg = "0.13.1"
 
 
 [dependencies.shape-core]
-version = "0.1.11"
+version = "0.1.12"
 path = "../shape-core"
 
 [dev-dependencies]
