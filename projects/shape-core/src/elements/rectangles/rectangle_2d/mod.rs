@@ -17,23 +17,19 @@ mod constructors;
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Rectangle<T> {
     /// origin x points of the rectangle
-    pub x: T,
+    pub min: Point<T>,
     /// origin y points of the rectangle
-    pub y: T,
-    /// width of the rectangle_2d
-    pub w: T,
-    /// height of the rectangle_2d
-    pub h: T,
+    pub max: Point<T>,
 }
 
 impl<T> Shape2D for Rectangle<T>
 where
-    T: Signed + Clone,
+    T: Signed + Clone + PartialOrd,
 {
     type Value = T;
 
     fn is_valid(&self) -> bool {
-        self.w.is_positive() && self.h.is_positive()
+        self.max.x > self.min.x && self.max.y > self.min.y
     }
 
     fn normalize(&mut self) -> bool {
@@ -46,27 +42,27 @@ where
 
     fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
         from_generator(move || {
-            yield Point { x: self.x.clone(), y: self.y.clone() };
-            yield Point { x: self.x.clone() + self.w.clone(), y: self.y.clone() };
-            yield Point { x: self.x.clone() + self.w.clone(), y: self.y.clone() + self.h.clone() };
-            yield Point { x: self.x.clone(), y: self.y.clone() + self.h.clone() };
+            yield self.min.clone();
+            yield Point { x: self.max.x.clone(), y: self.min.y.clone() };
+            yield self.max.clone();
+            yield Point { x: self.min.x.clone(), y: self.max.y.clone() };
         })
     }
 
     fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
-        let mut start = Point { x: self.x.clone(), y: self.y.clone() };
-        let mut end = Point { x: self.x.clone() + self.w.clone(), y: self.y.clone() };
+        let mut start = self.min.clone();
+        let mut end = Point { x: self.max.x.clone(), y: self.min.y.clone() };
         from_generator(move || {
             yield Line::new(start.clone(), end.clone());
-            start = end;
-            end = Point { x: self.x.clone() + self.w.clone(), y: self.y.clone() + self.h.clone() };
+            start = end.clone();
+            end = self.max.clone();
             yield Line::new(start.clone(), end.clone());
-            start = end;
-            end = Point { x: self.x.clone(), y: self.y.clone() + self.h.clone() };
+            start = end.clone();
+            end = Point { x: self.min.x.clone(), y: self.max.y.clone() };
             yield Line::new(start.clone(), end.clone());
-            start = end;
-            end = Point { x: self.x.clone(), y: self.y.clone() };
-            yield Line::new(start, end);
+            start = end.clone();
+            end = self.min.clone();
+            yield Line::new(start.clone(), end.clone());
         })
     }
 }
@@ -74,21 +70,29 @@ where
 impl<T> Rectangle<T> {
     /// Get the origin points of the rectangle_2d
     pub fn origin(&self) -> Point<&T> {
-        Point { x: &self.x, y: &self.y }
+        self.min.ref_inner()
+    }
+    pub fn width(&self) -> T
+    where
+        T: Clone + Sub<Output = T>,
+    {
+        self.max.x.clone() - self.min.x.clone()
+    }
+    pub fn height(&self) -> T
+    where
+        T: Clone + Sub<Output = T>,
+    {
+        self.max.y.clone() - self.min.y.clone()
     }
     /// Get the center points of the rectangle_2d
     pub fn center(&self) -> Point<T>
     where
         T: Clone + One + Add<Output = T> + Sub<Output = T> + Div<Output = T>,
     {
-        let half_width = self.w.clone() / two::<T>();
-        let half_height = self.h.clone() / two::<T>();
-        let x = self.x.clone() + half_width.clone();
-        let y = self.y.clone() + half_height.clone();
-        Point { x, y }
+        Point { x: (self.min.x.clone() + self.max.x.clone()) / two(), y: (self.min.y.clone() + self.max.y.clone()) / two() }
     }
     /// Move reference to the inner value
     pub fn ref_inner(&self) -> Rectangle<&T> {
-        Rectangle { x: &self.x, y: &self.y, w: &self.w, h: &self.h }
+        Rectangle { min: self.min.ref_inner(), max: self.max.ref_inner() }
     }
 }

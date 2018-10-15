@@ -6,7 +6,7 @@ impl<T> Point3D<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
         Self { x, y, z }
     }
-    pub fn as_ref(&self) -> Point3D<&T> {
+    pub fn ref_inner(&self) -> Point3D<&T> {
         Point3D { x: &self.x, y: &self.y, z: &self.z }
     }
 }

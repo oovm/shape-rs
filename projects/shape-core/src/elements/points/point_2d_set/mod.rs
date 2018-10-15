@@ -55,7 +55,7 @@ where
                 max.y = p.y.clone();
             }
         }
-        Rectangle::from_diagonal(min, max)
+        Rectangle::from_min_max(min, max)
     }
 
     fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {

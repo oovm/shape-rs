@@ -5,7 +5,9 @@ mod convert;
 /// represents an infinitely long lines segment
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Vector<T> {
+    /// x component of the vector
     pub dx: T,
+    /// y component of the vector
     pub dy: T,
 }
 

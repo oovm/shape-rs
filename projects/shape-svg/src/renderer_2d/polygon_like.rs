@@ -1,4 +1,5 @@
 use super::*;
+use std::ops::Sub;
 
 impl<T> ToSVG for Point<T>
 where
@@ -43,16 +44,16 @@ where
 
 impl<T> ToSVG for Rectangle<T>
 where
-    T: Display,
+    T: Display + Clone + Sub<Output = T>,
 {
     type Element = svg::node::element::Rectangle;
 
     fn to_svg(&self) -> Self::Element {
         svg::node::element::Rectangle::new()
-            .set("x", self.x.to_string())
-            .set("y", self.y.to_string())
-            .set("width", self.w.to_string())
-            .set("height", self.h.to_string())
+            .set("x", self.min.to_string())
+            .set("y", self.max.to_string())
+            .set("width", self.width().to_string())
+            .set("height", self.height().to_string())
     }
 }
 

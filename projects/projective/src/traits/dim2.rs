@@ -14,7 +14,7 @@ use num_traits::real::Real;
 /// | [scale](Projective::scale)         | ----------- |
 #[doc = "## Examples"]
 #[doc = "```"]
-#[doc = include_str ! ("../../tests/points.rs")]
+#[doc = include_str!("../../tests/point.rs")]
 #[doc = "```"]
 pub trait Projective<T>
 where

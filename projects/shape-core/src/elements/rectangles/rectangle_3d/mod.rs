@@ -14,26 +14,21 @@ use super::*;
 /// ```
 pub struct Cuboid<T> {
     /// The origin x of the cuboid.
-    pub x: T,
-    /// The origin y of the cuboid.
-    pub y: T,
-    /// The origin z of the cuboid.
-    pub z: T,
+    pub min: Point3D<T>,
     /// The width of the cuboid.
-    pub w: T,
-    /// The height of the cuboid.
-    pub h: T,
-    /// The length of the cuboid.
-    pub l: T,
+    pub max: Point3D<T>,
 }
 
-impl<T: Debug> Debug for Cuboid<T> {
+impl<T> Debug for Cuboid<T>
+where
+    T: Debug + Clone + Sub<Output = T>,
+{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Cuboid")
             .field("origin", &self.origin())
-            .field("width", &self.w)
-            .field("height", &self.h)
-            .field("length", &self.l)
+            .field("width", &self.width())
+            .field("height", &self.height())
+            .field("length", &self.length())
             .finish()
     }
 }
@@ -41,6 +36,27 @@ impl<T: Debug> Debug for Cuboid<T> {
 impl<T> Cuboid<T> {
     /// Create a cuboid from 6 properties
     pub fn origin(&self) -> Point3D<&T> {
-        Point3D { x: &self.x, y: &self.y, z: &self.z }
+        self.min.ref_inner()
+    }
+    /// Delta x
+    pub fn width(&self) -> T
+    where
+        T: Clone + Sub<Output = T>,
+    {
+        self.max.x.clone() - self.min.x.clone()
+    }
+    /// delta y
+    pub fn height(&self) -> T
+    where
+        T: Clone + Sub<Output = T>,
+    {
+        self.max.y.clone() - self.min.y.clone()
+    }
+    /// Delta z
+    pub fn length(&self) -> T
+    where
+        T: Clone + Sub<Output = T>,
+    {
+        self.max.z.clone() - self.min.z.clone()
     }
 }

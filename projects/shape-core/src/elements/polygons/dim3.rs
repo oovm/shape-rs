@@ -14,7 +14,7 @@ impl<T> Polygon3D<T> {
             .cycle()
             .take(self.vertex.len() + 1)
             .tuple_windows()
-            .map(|(a, b)| Line3D { s: a.as_ref(), e: b.as_ref() })
+            .map(|(a, b)| Line3D { s: a.ref_inner(), e: b.ref_inner() })
     }
     pub fn center(&self) -> Point3D<T>
     where

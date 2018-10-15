@@ -49,7 +49,7 @@ where
         let min_y = min3(&self.a.y, &self.b.y, &self.c.y).clone();
         let max_x = max3(&self.a.x, &self.b.x, &self.c.x).clone();
         let max_y = max3(&self.a.y, &self.b.y, &self.c.y).clone();
-        Rectangle::from_diagonal(Point::new(min_x, min_y), Point::new(max_x, max_y))
+        Rectangle::from_min_max(Point::new(min_x, min_y), Point::new(max_x, max_y))
     }
 
     fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {

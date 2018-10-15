@@ -5,14 +5,14 @@ where
     T: Debug,
 {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let origin = Point { x: &self.x, y: &self.y };
-        f.debug_struct("Rectangle").field("origin", &origin).field("width", &self.w).field("height", &self.h).finish()
+        let origin = Point { x: &self.min, y: &self.max };
+        f.debug_struct("Rectangle").field("origin", &origin).field("diagonal", &self.max).finish()
     }
 }
 
 impl<T: Display> Display for Rectangle<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Rectangle(x: {}, y: {}, w: {}, h: {})", self.x, self.y, self.w, self.h)
+        write!(f, "Rectangle({}, {})", self.min, self.max)
     }
 }
 
@@ -30,8 +30,12 @@ impl<T> Rectangle<T> {
     /// # use shape_core::Rectangle;
     /// let rect = Rectangle::new(0.0, 0.0, 1.0, 1.0);
     /// ```
-    pub fn new(x: T, y: T, width: T, height: T) -> Self {
-        Self { x, y, w: width, h: height }
+    pub fn new(x: T, y: T, width: T, height: T) -> Self
+    where
+        T: Clone + Add<Output = T>,
+    {
+        let min = Point::new(x, y);
+        Self::from_origin(min, width, height)
     }
     /// Create a rectangle_2d from origin and 2 properties
     ///
@@ -47,11 +51,12 @@ impl<T> Rectangle<T> {
     /// ```
     pub fn from_origin<P>(origin: P, width: T, height: T) -> Self
     where
-        T: Clone + One + Add<Output = T> + Sub<Output = T> + Div<Output = T>,
+        T: Clone + Add<Output = T>,
         P: Into<Point<T>>,
     {
-        let Point { x, y } = origin.into();
-        Self { x, y, w: width, h: height }
+        let min = origin.into();
+        let max = Point::new(min.x.clone() + width, min.y.clone() + height);
+        Self { min, max }
     }
     /// Create a rectangle_2d from center and 2 properties
     ///
@@ -70,13 +75,12 @@ impl<T> Rectangle<T> {
         T: Clone + One + Add<Output = T> + Sub<Output = T> + Div<Output = T>,
         P: Into<Point<T>>,
     {
-        let Point { x: x0, y: y0 } = center.into();
-        let half_width = width.clone() / two::<T>();
-        let half_height = height.clone() / two::<T>();
-        let origin = Point { x: x0 - half_width.clone(), y: y0 - half_height.clone() };
-        let w = half_width * two::<T>();
-        let h = half_height * two::<T>();
-        Self { x: origin.x, y: origin.y, w, h }
+        let center = center.into();
+        let half_width = width.clone() / T::one() + T::one();
+        let half_height = height.clone() / T::one() + T::one();
+        let min = Point::new(center.x.clone() - half_width.clone(), center.y.clone() - half_height.clone());
+        let max = Point::new(center.x.clone() + half_width.clone(), center.y.clone() + half_height.clone());
+        Self { min, max }
     }
     /// Create a rectangle_2d from two diagonal points.
     ///
@@ -88,18 +92,13 @@ impl<T> Rectangle<T> {
     ///
     /// ```
     /// # use shape_core::Rectangle;
-    /// let rect = Rectangle::from_diagonal((0.0, 0.0), (1.0, 1.0));
+    /// let rect = Rectangle::from_min_max((0.0, 0.0), (1.0, 1.0));
     /// ```
-    pub fn from_diagonal<P1, P2>(p1: P1, p2: P2) -> Rectangle<T>
+    pub fn from_min_max<P1, P2>(min: P1, max: P2) -> Rectangle<T>
     where
         P1: Into<Point<T>>,
         P2: Into<Point<T>>,
-        T: Clone + Sub<Output = T>,
     {
-        let Point { x: x1, y: y1 } = p1.into();
-        let Point { x: x2, y: y2 } = p2.into();
-        let x = x1.clone();
-        let y = y1.clone();
-        Rectangle { x, y, w: x2 - x1, h: y2 - y1 }
+        Rectangle { min: min.into(), max: max.into() }
     }
 }

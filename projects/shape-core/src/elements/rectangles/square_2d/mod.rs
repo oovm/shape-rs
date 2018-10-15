@@ -16,28 +16,41 @@ mod constructors;
 /// ```
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Square<T> {
-    /// The origin x points of the square_2d.
+    /// The origin x points of the square.
     pub x: T,
-    /// The origin y points of the square_2d.
+    /// The origin y points of the square.
     pub y: T,
-    /// The side length of the square_2d.
+    /// The side length of the square.
     pub s: T,
+}
+
+impl<T> Square<T> {
+    /// Get the origin of the square.
+    pub fn origin(&self) -> Point<&T>
+    where
+        T: Clone,
+    {
+        Point { x: &self.x, y: &self.y }
+    }
 }
 
 impl<T> Shape2D for Square<T>
 where
-    T: Signed + Clone,
+    T: Signed + Clone + PartialOrd,
 {
     type Value = T;
 
     fn is_valid(&self) -> bool {
-        self.s.is_positive()
+        self.s > T::zero()
     }
     fn normalize(&mut self) -> bool {
         todo!()
     }
     fn boundary(&self) -> Rectangle<Self::Value> {
-        Rectangle { x: self.x.clone(), y: self.y.clone(), w: self.s.clone(), h: self.s.clone() }
+        Rectangle {
+            min: Point { x: self.x.clone(), y: self.y.clone() },
+            max: Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() + self.s.clone() },
+        }
     }
 
     fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
