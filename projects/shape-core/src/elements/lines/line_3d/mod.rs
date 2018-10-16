@@ -12,6 +12,7 @@ impl<T> Line3D<T> {
 
 impl<T: Real> Line3D<T> {
     pub fn quantile_point(&self, p: usize, q: usize) -> Point3D<T> {
+        let _ = (p, q);
         todo!()
     }
     pub fn middle_point(&self) -> Point3D<T> {
