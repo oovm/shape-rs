@@ -1,6 +1,7 @@
 use super::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Polygon<T> {
     pub points_set: PointSet<T>,
 }

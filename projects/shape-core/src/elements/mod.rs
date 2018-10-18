@@ -18,6 +18,7 @@ use distantia::{EuclideanDistance, ManhattanDistance};
 use itertools::Itertools;
 use num_traits::{real::Real, Float, FloatConst, Num, NumOps, One, Zero};
 use projective::Projective;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,

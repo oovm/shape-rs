@@ -1,6 +1,7 @@
 use super::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PointSet<T> {
     pub points: Vec<Point<T>>,
 }

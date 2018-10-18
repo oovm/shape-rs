@@ -15,7 +15,8 @@ mod constructors;
 /// # use shape_core::Rectangle;
 /// let rect = Rectangle::new(0.0, 0.0, 1.0, 1.0);
 /// ```
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Rectangle<T> {
     /// origin x points of the rectangle
     pub min: Point<T>,

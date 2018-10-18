@@ -18,7 +18,8 @@ pub mod square_2d;
 /// # use shape_core::Square;
 /// let rect = Square::new(0.0, 0.0, 1.0);
 /// ```
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Parallelogram<T> {
     /// The origin points of the parallelogram.
     pub anchor: Point<T>,

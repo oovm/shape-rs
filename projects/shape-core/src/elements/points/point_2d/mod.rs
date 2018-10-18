@@ -4,9 +4,12 @@ mod euclidean;
 mod manhattan;
 
 /// A 2D points.
-#[derive(Copy, Clone, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Point<T> {
+    /// The x-coordinate of the point
     pub x: T,
+    /// The y-coordinate of the point
     pub y: T,
 }
 

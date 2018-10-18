@@ -14,7 +14,8 @@ mod constructors;
 /// # use shape_core::Square;
 /// let rect = Square::new(0.0, 0.0, 1.0);
 /// ```
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Square<T> {
     /// The origin x points of the square.
     pub x: T,

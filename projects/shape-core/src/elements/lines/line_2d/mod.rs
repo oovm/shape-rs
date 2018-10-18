@@ -3,7 +3,8 @@ use num_traits::{Num, One};
 mod convert;
 
 /// represents an infinitely long lines segment
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Vector<T> {
     /// x component of the vector
     pub dx: T,
@@ -12,7 +13,8 @@ pub struct Vector<T> {
 }
 
 /// A lines segment of finite length, determined by a starting points and an ending points.
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Line<T> {
     /// Start points of the lines segment.
     pub s: Point<T>,
