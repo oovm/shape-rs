@@ -6,7 +6,7 @@ pub mod point_3d;
 mod proj;
 
 #[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Point4D<T> {
     pub x: T,
     pub y: T,

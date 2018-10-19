@@ -3,10 +3,10 @@ pub use self::{
     ellipses::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     lines::{
         line_2d::{Line, Vector},
-        Line3D, Vector3D,
+        line_3d::{Line3D, Vector3D},
     },
     points::{point_2d::Point, point_2d_set::PointSet, point_3d::Point3D, Point4D},
-    polygons::{normal_2d::Polygon, Polygon3D, Polyline, RegularPolygon},
+    polygons::{normal_2d::Polygon, normal_3d::Polygon3D, Polyline, RegularPolygon},
     rectangles::{rectangle_2d::Rectangle, rectangle_3d::Cuboid, square_2d::Square, Parallelogram},
     triangles::{Triangle, TriangleIndex},
 };

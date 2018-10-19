@@ -1,30 +1,10 @@
 use super::*;
+mod constructors;
 
 #[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PointSet<T> {
     pub points: Vec<Point<T>>,
-}
-
-impl<T> PointSet<T> {
-    pub fn new(points: &[Point<T>]) -> Self
-    where
-        T: Clone,
-    {
-        Self { points: points.to_vec() }
-    }
-}
-
-impl<T, P> FromIterator<P> for PointSet<T>
-where
-    P: Into<Point<T>>,
-{
-    fn from_iter<I>(iter: I) -> Self
-    where
-        I: IntoIterator<Item = P>,
-    {
-        Self { points: iter.into_iter().map(|p| p.into()).collect() }
-    }
 }
 
 impl<T> Shape2D for PointSet<T>

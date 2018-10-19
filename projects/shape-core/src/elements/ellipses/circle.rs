@@ -2,7 +2,7 @@ use super::*;
 
 impl<T> Default for Circle<T>
 where
-    T: Default + One,
+    T: Zero + One,
 {
     fn default() -> Self {
         Self { center: Point::default(), radius: T::one() }

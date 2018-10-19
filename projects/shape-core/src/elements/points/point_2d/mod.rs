@@ -1,4 +1,5 @@
 use super::*;
+mod constructors;
 mod display;
 mod euclidean;
 mod manhattan;
@@ -14,10 +15,6 @@ pub struct Point<T> {
 }
 
 impl<T> Point<T> {
-    /// Construct new points
-    pub fn new(x: T, y: T) -> Self {
-        Self { x, y }
-    }
     pub fn ref_inner(&self) -> Point<&T> {
         Point { x: &self.x, y: &self.y }
     }
