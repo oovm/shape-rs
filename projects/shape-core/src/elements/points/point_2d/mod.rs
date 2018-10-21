@@ -1,6 +1,6 @@
 use super::*;
+mod arthmetic;
 mod constructors;
-mod display;
 mod euclidean;
 mod manhattan;
 

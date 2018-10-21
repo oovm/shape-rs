@@ -11,7 +11,6 @@ pub use self::{
     triangles::{Triangle, TriangleIndex},
 };
 use num_traits::Signed;
-use std::iter::from_generator;
 
 use crate::traits::Shape2D;
 use distantia::{EuclideanDistance, ManhattanDistance};

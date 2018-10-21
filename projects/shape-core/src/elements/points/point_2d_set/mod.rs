@@ -1,4 +1,5 @@
 use super::*;
+use std::vec::IntoIter;
 mod constructors;
 
 #[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
@@ -7,11 +8,35 @@ pub struct PointSet<T> {
     pub points: Vec<Point<T>>,
 }
 
+#[derive(Debug)]
+pub struct PointsIterator<'a, T> {
+    iter: std::slice::Iter<'a, Point<T>>,
+}
+
+impl<'a, T> Iterator for PointsIterator<'a, T>
+where
+    T: Clone,
+{
+    type Item = Point<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next().map(|p| p.clone())
+    }
+}
+
 impl<T> Shape2D for PointSet<T>
 where
     T: NumOps + PartialOrd + Clone,
 {
     type Value = T;
+    type VertexIterator<'a>
+    where
+        T: 'a,
+    = PointsIterator<'a, T>;
+    type LineIterator<'a>
+    where
+        T: 'a,
+    = IntoIter<Line<T>>;
 
     fn is_valid(&self) -> bool {
         self.points.len() > 0
@@ -39,12 +64,12 @@ where
         Rectangle::from_min_max(min, max)
     }
 
-    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
-        self.points.iter().map(|p| p.clone())
+    fn vertices<'a>(&'a self, _: usize) -> Self::VertexIterator<'a> {
+        PointsIterator { iter: self.points.iter() }
     }
 
     /// The set of points does not contain any edges
-    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
-        [].into_iter()
+    fn edges<'a>(&'a self, _: usize) -> Self::LineIterator<'a> {
+        vec![].into_iter()
     }
 }

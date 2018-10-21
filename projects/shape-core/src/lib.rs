@@ -1,6 +1,4 @@
 #![allow(incomplete_features)]
-#![feature(generators, iter_from_generator)]
-#![feature(return_position_impl_trait_in_trait)]
 #![warn(missing_docs)]
 #![deny(missing_debug_implementations)]
 #![doc = include_str!("../Readme.md")]

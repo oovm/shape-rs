@@ -1,4 +1,6 @@
 use super::*;
+use crate::elements::points::point_2d_set::PointsIterator;
+use std::{marker::PhantomData, vec::IntoIter};
 
 mod constructors;
 
@@ -13,6 +15,14 @@ where
     T: NumOps + PartialOrd + Clone,
 {
     type Value = T;
+    type VertexIterator<'a>
+    where
+        T: 'a,
+    = PointsIterator<'a, T>;
+    type LineIterator<'a>
+    where
+        T: 'a,
+    = IntoIter<Line<T>>;
 
     /// no collinear, common points
     fn is_valid(&self) -> bool {
@@ -23,11 +33,11 @@ where
         self.points_set.boundary()
     }
 
-    fn vertices(&self, sample: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
+    fn vertices<'a>(&'a self, sample: usize) -> Self::VertexIterator<'a> {
         self.points_set.vertices(sample)
     }
 
-    fn edges(&self, sample: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+    fn edges<'a>(&'a self, sample: usize) -> Self::LineIterator<'a> {
         self.points_set.edges(sample)
     }
 }

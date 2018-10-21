@@ -1,4 +1,5 @@
 use crate::{Line, Point, Rectangle};
+use std::marker::PhantomData;
 
 mod convert;
 mod projection;
@@ -25,6 +26,14 @@ mod wolfram;
 pub trait Shape2D {
     /// The value type of the shape.
     type Value;
+    /// The value type of the shape.
+    type VertexIterator<'a>: Iterator<Item = Point<Self::Value>>
+    where
+        Self: 'a;
+    /// The value type of the shape.
+    type LineIterator<'a>: Iterator<Item = Line<Self::Value>>
+    where
+        Self: 'a;
     /// Returns true if the shape is valid and in normal form.
     fn is_valid(&self) -> bool;
     /// Returns true if the shape successfully normalized.
@@ -36,7 +45,34 @@ pub trait Shape2D {
     /// Returns the owned vertices of the shape.
     ///
     /// Notice that sample only works for non-linear shapes.
-    fn vertices(&self, sample: usize) -> impl Iterator<Item = Point<Self::Value>> + '_;
+    fn vertices<'a>(&'a self, sample: usize) -> Self::VertexIterator<'a>;
     /// Returns the owned edges of the shape.
-    fn edges(&self, sample: usize) -> impl Iterator<Item = Line<Self::Value>> + '_;
+    fn edges<'a>(&'a self, sample: usize) -> Self::LineIterator<'a>;
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct PlaceHolderNodeIterator<T> {
+    place_holder: PhantomData<T>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct PlaceHolderEdgeIterator<T> {
+    place_holder: PhantomData<T>,
+}
+impl<T> Iterator for PlaceHolderNodeIterator<T> {
+    type Item = Point<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        None
+    }
+}
+
+impl<T> Iterator for PlaceHolderEdgeIterator<T> {
+    type Item = Line<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        None
+    }
 }

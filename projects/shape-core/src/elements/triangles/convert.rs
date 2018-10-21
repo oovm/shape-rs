@@ -1,6 +1,6 @@
 use super::*;
 use crate::utils::{max3, min3};
-use std::iter::from_generator;
+use std::vec::IntoIter;
 
 impl<T, P> TryFrom<(P, P, P)> for Triangle<T>
 where
@@ -37,6 +37,14 @@ where
     T: Clone + PartialOrd + Num,
 {
     type Value = T;
+    type VertexIterator<'a>
+    where
+        Self: 'a,
+    = IntoIter<Point<T>>;
+    type LineIterator<'a>
+    where
+        Self: 'a,
+    = IntoIter<Line<T>>;
 
     fn is_valid(&self) -> bool {
         let a = Vector::from_2_points(self.a.clone(), self.b.clone());
@@ -52,19 +60,16 @@ where
         Rectangle::from_min_max(Point::new(min_x, min_y), Point::new(max_x, max_y))
     }
 
-    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
-        from_generator(move || {
-            yield self.a.clone();
-            yield self.b.clone();
-            yield self.c.clone();
-        })
+    fn vertices<'a>(&'a self, _: usize) -> Self::VertexIterator<'a> {
+        vec![self.a.clone(), self.b.clone(), self.c.clone()].into_iter()
     }
 
-    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
-        from_generator(move || {
-            yield Line::new(self.a.clone(), self.b.clone());
-            yield Line::new(self.b.clone(), self.c.clone());
-            yield Line::new(self.c.clone(), self.a.clone());
-        })
+    fn edges<'a>(&'a self, _: usize) -> Self::LineIterator<'a> {
+        vec![
+            Line::new(self.a.clone(), self.b.clone()),
+            Line::new(self.b.clone(), self.c.clone()),
+            Line::new(self.c.clone(), self.a.clone()),
+        ]
+        .into_iter()
     }
 }

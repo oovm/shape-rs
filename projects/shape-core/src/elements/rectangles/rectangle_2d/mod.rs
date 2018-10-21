@@ -1,5 +1,6 @@
 use super::*;
 use crate::utils::{max2, min2};
+use std::{ops::Mul, vec::IntoIter};
 
 mod constructors;
 
@@ -29,6 +30,15 @@ where
     T: Signed + Clone + PartialOrd,
 {
     type Value = T;
+    type VertexIterator<'a>
+    where
+        T: 'a,
+    = IntoIter<Point<T>>;
+    type LineIterator<'a>
+    where
+        T: 'a,
+    = IntoIter<Line<T>>;
+
     /// A valid rectangle means it has a positive area.
     ///
     /// # Examples
@@ -70,31 +80,38 @@ where
     }
 
     /// Returns four vertices counterclockwise in the **↑Y coordinate system**
-    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
-        from_generator(move || {
-            yield self.min.clone();
-            yield Point { x: self.max.x.clone(), y: self.min.y.clone() };
-            yield self.max.clone();
-            yield Point { x: self.min.x.clone(), y: self.max.y.clone() };
-        })
+    fn vertices<'a>(&'a self, _: usize) -> Self::VertexIterator<'a> {
+        // yield self.min.clone();
+        // yield Point { x: self.max.x.clone(), y: self.min.y.clone() };
+        // yield self.max.clone();
+        // yield Point { x: self.min.x.clone(), y: self.max.y.clone() };
+        vec![
+            self.min.clone(),
+            Point { x: self.max.x.clone(), y: self.min.y.clone() },
+            self.max.clone(),
+            Point { x: self.min.x.clone(), y: self.max.y.clone() },
+        ]
+        .into_iter()
     }
 
     /// Returns four edges counterclockwise in the **↑Y coordinate system**
-    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+    fn edges<'a>(&'a self, _: usize) -> Self::LineIterator<'a> {
         let mut start = self.min.clone();
         let mut end = Point { x: self.max.x.clone(), y: self.min.y.clone() };
-        from_generator(move || {
-            yield Line::new(start.clone(), end.clone());
+        let mut out = Vec::with_capacity(4);
+        {
+            out.push(Line::new(start.clone(), end.clone()));
             start = end.clone();
             end = self.max.clone();
-            yield Line::new(start.clone(), end.clone());
+            out.push(Line::new(start.clone(), end.clone()));
             start = end.clone();
             end = Point { x: self.min.x.clone(), y: self.max.y.clone() };
-            yield Line::new(start.clone(), end.clone());
+            out.push(Line::new(start.clone(), end.clone()));
             start = end.clone();
             end = self.min.clone();
-            yield Line::new(start.clone(), end.clone());
-        })
+            out.push(Line::new(start.clone(), end.clone()));
+        };
+        out.into_iter()
     }
 }
 
@@ -163,5 +180,29 @@ impl<T> Rectangle<T> {
     /// Move reference to the inner value
     pub fn ref_inner(&self) -> Rectangle<&T> {
         Rectangle { min: self.min.ref_inner(), max: self.max.ref_inner() }
+    }
+    pub fn contains(&self, point: &Point<T>) -> bool
+    where
+        T: Clone + PartialOrd,
+    {
+        point.x >= self.min.x.clone()
+            && point.x <= self.max.x.clone()
+            && point.y >= self.min.y.clone()
+            && point.y <= self.max.y.clone()
+    }
+    pub fn overlaps(&self, other: &Rectangle<T>) -> bool
+    where
+        T: Clone + PartialOrd,
+    {
+        self.min.x.clone() <= other.max.x.clone()
+            && self.max.x.clone() >= other.min.x.clone()
+            && self.min.y.clone() <= other.max.y.clone()
+            && self.max.y.clone() >= other.min.y.clone()
+    }
+    pub fn area(&self) -> T
+    where
+        T: Clone + Mul<Output = T> + Sub<Output = T>,
+    {
+        (self.max.x.clone() - self.min.x.clone()) * (self.max.y.clone() - self.min.y.clone())
     }
 }

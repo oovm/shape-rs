@@ -1,4 +1,5 @@
 use super::*;
+use std::vec::IntoIter;
 
 mod constructors;
 
@@ -40,6 +41,14 @@ where
     T: Signed + Clone + PartialOrd,
 {
     type Value = T;
+    type VertexIterator<'a>
+    where
+        Self: 'a,
+    = IntoIter<Point<T>>;
+    type LineIterator<'a>
+    where
+        Self: 'a,
+    = IntoIter<Line<T>>;
 
     fn is_valid(&self) -> bool {
         self.s > T::zero()
@@ -54,29 +63,32 @@ where
         }
     }
 
-    fn vertices(&self, _: usize) -> impl Iterator<Item = Point<Self::Value>> + '_ {
-        from_generator(move || {
-            yield Point { x: self.x.clone(), y: self.y.clone() };
-            yield Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() };
-            yield Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() + self.s.clone() };
-            yield Point { x: self.x.clone(), y: self.y.clone() + self.s.clone() };
-        })
+    fn vertices<'a>(&'a self, _: usize) -> Self::VertexIterator<'a> {
+        vec![
+            Point { x: self.x.clone(), y: self.y.clone() },
+            Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() },
+            Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() + self.s.clone() },
+            Point { x: self.x.clone(), y: self.y.clone() + self.s.clone() },
+        ]
+        .into_iter()
     }
 
-    fn edges(&self, _: usize) -> impl Iterator<Item = Line<Self::Value>> + '_ {
+    fn edges<'a>(&'a self, _: usize) -> Self::LineIterator<'a> {
         let mut start = Point { x: self.x.clone(), y: self.y.clone() };
         let mut end = Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() };
-        from_generator(move || {
-            yield Line::new(start.clone(), end.clone());
+        let mut out = Vec::with_capacity(4);
+        {
+            out.push(Line::new(start.clone(), end.clone()));
             start = end;
             end = Point { x: self.x.clone() + self.s.clone(), y: self.y.clone() + self.s.clone() };
-            yield Line::new(start.clone(), end.clone());
+            out.push(Line::new(start.clone(), end.clone()));
             start = end;
             end = Point { x: self.x.clone(), y: self.y.clone() + self.s.clone() };
-            yield Line::new(start.clone(), end.clone());
+            out.push(Line::new(start.clone(), end.clone()));
             start = end;
             end = Point { x: self.x.clone(), y: self.y.clone() };
-            yield Line::new(start, end);
-        })
+            out.push(Line::new(start, end));
+        };
+        out.into_iter()
     }
 }
