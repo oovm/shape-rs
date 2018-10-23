@@ -38,13 +38,13 @@ where
 {
     type Value = T;
     type VertexIterator<'a>
-    where
-        Self: 'a,
-    = IntoIter<Point<T>>;
+
+    = IntoIter<Point<T>>where
+        T: 'a;
     type LineIterator<'a>
-    where
-        Self: 'a,
-    = IntoIter<Line<T>>;
+
+    = IntoIter<Line<T>>where
+        T: 'a;
 
     fn is_valid(&self) -> bool {
         let a = Vector::from_2_points(self.a.clone(), self.b.clone());

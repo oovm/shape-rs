@@ -1,6 +1,6 @@
 use super::*;
 use crate::elements::points::point_2d_set::PointsIterator;
-use std::{marker::PhantomData, vec::IntoIter};
+use std::vec::IntoIter;
 
 mod constructors;
 
@@ -16,13 +16,13 @@ where
 {
     type Value = T;
     type VertexIterator<'a>
-    where
-        T: 'a,
-    = PointsIterator<'a, T>;
+
+    = PointsIterator<'a, T>where
+        T: 'a;
     type LineIterator<'a>
-    where
-        T: 'a,
-    = IntoIter<Line<T>>;
+
+    = IntoIter<Line<T>>where
+        T: 'a;
 
     /// no collinear, common points
     fn is_valid(&self) -> bool {

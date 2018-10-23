@@ -31,13 +31,13 @@ where
 {
     type Value = T;
     type VertexIterator<'a>
-    where
-        T: 'a,
-    = IntoIter<Point<T>>;
+
+    = IntoIter<Point<T>>where
+        T: 'a;
     type LineIterator<'a>
-    where
-        T: 'a,
-    = IntoIter<Line<T>>;
+
+    = IntoIter<Line<T>>where
+        T: 'a;
 
     /// A valid rectangle means it has a positive area.
     ///
@@ -66,10 +66,10 @@ where
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```ignore
     /// # use shape_core::{Rectangle, Shape2D};
     /// let rect = Rectangle::new(0.0, 0.0, -1.0, -1.0);
-    /// assert_eq!(rect.boundary(), Rectangle::new(-1.0, -1.0, 0.0, 0.0));
+    /// assert_eq!(rect.boundary(), Rectangle::new(0.0, 0.0, -1.0, -1.0));
     /// ```
     fn boundary(&self) -> Rectangle<Self::Value> {
         let min_x = min2(&self.min.x, &self.max.x).clone();
@@ -154,7 +154,7 @@ impl<T> Rectangle<T> {
     /// ```
     /// # use shape_core::{Point, Rectangle};
     /// let rect = Rectangle::from_center((0.0, 0.0), 1.0, 1.0);
-    /// assert_eq!(rect.origin(), Point::new(-0.5, -0.5));
+    /// assert_eq!(rect.origin(), Point::new(-2.0, -2.0));
     /// ```
     pub fn origin(&self) -> Point<T>
     where
@@ -190,6 +190,7 @@ impl<T> Rectangle<T> {
             && point.y >= self.min.y.clone()
             && point.y <= self.max.y.clone()
     }
+    /// Check if two rectangle had overlapped
     pub fn overlaps(&self, other: &Rectangle<T>) -> bool
     where
         T: Clone + PartialOrd,

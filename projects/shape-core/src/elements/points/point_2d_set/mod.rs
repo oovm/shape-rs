@@ -30,13 +30,13 @@ where
 {
     type Value = T;
     type VertexIterator<'a>
-    where
-        T: 'a,
-    = PointsIterator<'a, T>;
+
+    = PointsIterator<'a, T>    where
+        T: 'a;
     type LineIterator<'a>
-    where
-        T: 'a,
-    = IntoIter<Line<T>>;
+
+    = IntoIter<Line<T>>where
+        T: 'a;
 
     fn is_valid(&self) -> bool {
         self.points.len() > 0
