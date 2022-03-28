@@ -14,3 +14,12 @@ pub struct Point3D<T> {
     pub y: T,
     pub z: T,
 }
+
+impl<T> From<&Point<T>> for Point<T>
+where
+    T: Clone,
+{
+    fn from(p: &Point<T>) -> Self {
+        p.clone()
+    }
+}
