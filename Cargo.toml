@@ -4,6 +4,7 @@ default-members = [
     "projects/projective",
 ]
 exclude = [
+    "projects/images",
     "projects/.DS_Store",
 ]
 
