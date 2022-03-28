@@ -4,52 +4,23 @@ use std::{
     ops::{Add, Mul, Sub},
 };
 
-use num_traits::{Signed, Zero};
+use num_traits::Signed;
 use partition::partition;
 
 use crate::ConvexHull;
 
-impl<T> ConvexHull<T> for &[(T, T)] {
+impl<T> ConvexHull<T> for &[(T, T)]
+where
+    T: Signed + Clone + PartialOrd,
+{
     type Output = Vec<(T, T)>;
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output> {
         match self {
-            []|[_]|[_,_] => None,
-
+            [] | [_] | [_, _] => None,
+            [a, b, c] => convex3(a, b, c, tolerance),
+            _ => Some(convex4(&mut self.to_vec(), tolerance)),
         }
     }
-}
-
-fn convex3<T>(a: (T, T), b: (T, T), c: (T, T), tolerance: Option<T>) -> Vec<(T, T)> {
-    todo!()
-    let Point { x: x1, y: y1 } = a.clone();
-    let Point { x: x2, y: y2 } = b.clone();
-    let Point { x: x3, y: y3 } = c.clone();
-    let Point { x: x4, y: y4 } = a.clone();
-    let delta = (y3 - y1) * (x2 - x1) - (x3 - x4) * (y2 - y4);
-    match delta.abs() <= tolerance.unwrap_or(T::zero()) {
-        true => Some(vec![a, b, c]),
-        false => None,
-    }
-}
-
-unsafe fn find_min_point<T>(points: &[(T, T)]) -> (T, T)
-where
-    T: Clone + PartialOrd,
-{
-    todo!()
-    // debug_assert!(points.len() > 0);
-    // let mut points = points.iter();
-    // // definitely safe
-    // let (mut x, mut y) = points.next().unwrap_unchecked();
-    // for point in points {
-    //     if point.0 < x {
-    //         x = point.0.clone();
-    //     }
-    //     if point.1 < y {
-    //         y = point.1.clone();
-    //     }
-    // }
-    // (x, y)
 }
 
 #[inline]
@@ -60,16 +31,15 @@ where
     p.0.partial_cmp(&q.0).unwrap().then(p.1.partial_cmp(&q.1).unwrap())
 }
 
-/// check counter-clockwise
 #[inline]
-fn check_cc<T>(a: &(T, T), b: &(T, T), c: &(T, T)) -> bool
+fn point3_dot<T>(a: &(T, T), b: &(T, T), c: &(T, T)) -> T
 where
-    T: Clone + PartialOrd + Zero,
+    T: Clone + PartialOrd,
     T: Sub<Output = T> + Mul<Output = T>,
 {
     let p = (b.0.clone() - a.0.clone()) * (c.1.clone() - b.1.clone());
     let q = (b.1.clone() - a.1.clone()) * (c.0.clone() - b.0.clone());
-    p - q > Zero::zero()
+    p - q
 }
 
 #[inline]
@@ -91,8 +61,19 @@ fn swap_remove_to_first<'a, T>(slice: &mut &'a mut [T], idx: usize) -> &'a mut T
     *slice = t;
     h
 }
+
+fn convex3<T>(a: &(T, T), b: &(T, T), c: &(T, T), tolerance: Option<T>) -> Option<Vec<(T, T)>>
+where
+    T: Signed + Clone + PartialOrd,
+{
+    match point3_dot(a, b, c).abs() <= tolerance.unwrap_or(T::zero()) {
+        true => Some(vec![a.clone(), b.clone(), c.clone()]),
+        false => None,
+    }
+}
+
 // Adapted from https://web.archive.org/web/20180409175413/http://www.ahristov.com/tutorial/geometry-games/convex-hull.html
-pub fn convex4<T>(mut points: &mut [(T, T)]) -> Vec<(T, T)>
+pub fn convex4<T>(mut points: &mut [(T, T)], _tolerance: Option<T>) -> Vec<(T, T)>
 where
     T: Clone + PartialOrd + Signed,
 {
@@ -111,10 +92,10 @@ where
         (min, max)
     };
 
-    let (part1, _) = partition(points, |p| check_cc(max, min, p));
+    let (part1, _) = partition(points, |p| point3_dot(max, min, p) > T::zero());
     hull_set(max, min, part1, &mut hull);
     hull.push(max.clone());
-    let (part2, _) = partition(points, |p| check_cc(min, max, p));
+    let (part2, _) = partition(points, |p| point3_dot(min, max, p) > T::zero());
     hull_set(min, max, part2, &mut hull);
     hull.push(min.clone());
     hull
@@ -166,16 +147,16 @@ where
         .unwrap()
         .0;
     let furthest_point = swap_remove_to_first(&mut set, furthest_idx);
-    let (part1, _) = partition(set, |p| check_cc(furthest_point, b, p));
+    let (part1, _) = partition(set, |p| point3_dot(furthest_point, b, p) > T::zero());
     hull_set(furthest_point, b, part1, hull);
     hull.push(furthest_point.clone());
-    let (part2, _) = partition(set, |p| check_cc(a, furthest_point, p));
+    let (part2, _) = partition(set, |p| point3_dot(a, furthest_point, p) > T::zero());
     hull_set(a, furthest_point, part2, hull);
 }
 
 #[test]
 fn quick_hull_test_collinear() {
     let mut initial = vec![(-1., 0.), (-1., -1.), (-1., 1.), (0., 0.), (0., -1.), (0., 1.), (1., 0.), (1., -1.), (1., 1.)];
-    let res = convex4(&mut initial);
+    let res = convex4(&mut initial, None);
     assert_eq!(res, vec![(1.0, -1.0), (1.0, 1.0), (-1.0, 1.0), (-1.0, -1.0)]);
 }
