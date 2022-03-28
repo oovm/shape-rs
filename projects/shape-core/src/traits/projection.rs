@@ -1,7 +1,7 @@
 use num_traits::Float;
 use projective::Projective;
 
-use crate::{Line, Point, Triangle};
+use crate::{Line, Point, Polygon, Square, Triangle};
 
 impl<T> Projective<T> for Point<T>
 where
@@ -34,5 +34,14 @@ where
         let b = self.vertex[1].transform(matrix);
         let c = self.vertex[2].transform(matrix);
         Triangle { vertex: [a, b, c] }
+    }
+}
+
+impl<T> Projective<T> for Polygon<T>
+where
+    T: Float,
+{
+    fn transform(&self, matrix: &[&T; 9]) -> Self {
+        Self { vertex: self.vertex.iter().map(|p| p.transform(matrix)).collect() }
     }
 }

@@ -5,7 +5,7 @@ authors = ["Aster <192607617@qq.com>"]
 description = "The representation projective transformation"
 categories = ["mathematics", "graphics"]
 keywords = ["math", "projective", "transformation"]
-repository = "https://github.com/oovm/transform-rs"
+repository = "https://github.com/oovm/shape-rs"
 documentation = "https://docs.rs/convex"
 readme = "Readme.md"
 license = "MPL-2.0"
@@ -15,7 +15,7 @@ edition = "2021"
 partition = "0.1.2"
 num-traits = "0.2.14"
 
-[dependencies.graphics-shape]
+[dependencies.shape-core]
 version = "0.0.2"
 path = "../shape-core"
 
