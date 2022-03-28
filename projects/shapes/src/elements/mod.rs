@@ -44,3 +44,9 @@ impl<T> Polygon<T> {
         Self { points: points.into_iter().map(|p| p.into()).collect() }
     }
 }
+
+impl<T: Clone> From<&Triangle<T>> for Polygon<T> {
+    fn from(v: &Triangle<T>) -> Self {
+        Self { points: v.vertex.to_vec() }
+    }
+}

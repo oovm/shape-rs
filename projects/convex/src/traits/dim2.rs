@@ -7,18 +7,18 @@ use std::{
 use num_traits::Signed;
 use partition::partition;
 
-use crate::ConvexHull;
+use crate::{utils::dot_dim2_point3, ConvexHull};
 
-impl<T> ConvexHull<T> for &[(T, T)]
+impl<T> ConvexHull<T> for Vec<(T, T)>
 where
     T: Signed + Clone + PartialOrd,
 {
     type Output = Vec<(T, T)>;
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output> {
-        match self {
+        match self.as_slice() {
             [] | [_] | [_, _] => None,
             [a, b, c] => convex3(a, b, c, tolerance),
-            _ => Some(convex4(&mut self.to_vec(), tolerance)),
+            _ => Some(convex4(&mut self.clone(), tolerance)),
         }
     }
 }
@@ -29,17 +29,6 @@ where
     T: PartialOrd,
 {
     p.0.partial_cmp(&q.0).unwrap().then(p.1.partial_cmp(&q.1).unwrap())
-}
-
-#[inline]
-fn point3_dot<T>(a: &(T, T), b: &(T, T), c: &(T, T)) -> T
-where
-    T: Clone + PartialOrd,
-    T: Sub<Output = T> + Mul<Output = T>,
-{
-    let p = (b.0.clone() - a.0.clone()) * (c.1.clone() - b.1.clone());
-    let q = (b.1.clone() - a.1.clone()) * (c.0.clone() - b.0.clone());
-    p - q
 }
 
 #[inline]
@@ -66,7 +55,7 @@ fn convex3<T>(a: &(T, T), b: &(T, T), c: &(T, T), tolerance: Option<T>) -> Optio
 where
     T: Signed + Clone + PartialOrd,
 {
-    match point3_dot(a, b, c).abs() <= tolerance.unwrap_or(T::zero()) {
+    match dot_dim2_point3(a, b, c).abs() <= tolerance.unwrap_or(T::zero()) {
         true => Some(vec![a.clone(), b.clone(), c.clone()]),
         false => None,
     }
@@ -92,10 +81,10 @@ where
         (min, max)
     };
 
-    let (part1, _) = partition(points, |p| point3_dot(max, min, p) > T::zero());
+    let (part1, _) = partition(points, |p| dot_dim2_point3(max, min, p) > T::zero());
     hull_set(max, min, part1, &mut hull);
     hull.push(max.clone());
-    let (part2, _) = partition(points, |p| point3_dot(min, max, p) > T::zero());
+    let (part2, _) = partition(points, |p| dot_dim2_point3(min, max, p) > T::zero());
     hull_set(min, max, part2, &mut hull);
     hull.push(min.clone());
     hull
@@ -147,16 +136,9 @@ where
         .unwrap()
         .0;
     let furthest_point = swap_remove_to_first(&mut set, furthest_idx);
-    let (part1, _) = partition(set, |p| point3_dot(furthest_point, b, p) > T::zero());
+    let (part1, _) = partition(set, |p| dot_dim2_point3(furthest_point, b, p) > T::zero());
     hull_set(furthest_point, b, part1, hull);
     hull.push(furthest_point.clone());
-    let (part2, _) = partition(set, |p| point3_dot(a, furthest_point, p) > T::zero());
+    let (part2, _) = partition(set, |p| dot_dim2_point3(a, furthest_point, p) > T::zero());
     hull_set(a, furthest_point, part2, hull);
-}
-
-#[test]
-fn quick_hull_test_collinear() {
-    let mut initial = vec![(-1., 0.), (-1., -1.), (-1., 1.), (0., 0.), (0., -1.), (0., 1.), (1., 0.), (1., -1.), (1., 1.)];
-    let res = convex4(&mut initial, None);
-    assert_eq!(res, vec![(1.0, -1.0), (1.0, 1.0), (-1.0, 1.0), (-1.0, -1.0)]);
 }

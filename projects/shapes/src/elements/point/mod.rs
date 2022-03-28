@@ -15,6 +15,15 @@ pub struct Point3D<T> {
     pub z: T,
 }
 
+impl<T> From<(T, T)> for Point<T>
+where
+    T: Clone,
+{
+    fn from(p: (T, T)) -> Self {
+        Self { x: p.0, y: p.1 }
+    }
+}
+
 impl<T> From<&Point<T>> for Point<T>
 where
     T: Clone,
