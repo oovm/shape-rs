@@ -1,6 +1,9 @@
-use num_traits::{real::Real, One, Zero};
-
-mod dim2;
-mod dim3;
-
-pub use self::{dim2::Projective, dim3::Projective3D};
+///
+pub trait ConvexHull {
+    ///
+    type Output;
+    ///
+    fn is_convex_hull(&self) -> bool;
+    ///
+    fn get_convex_hull(&self) -> Option<Self::Output>;
+}

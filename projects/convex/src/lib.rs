@@ -7,4 +7,8 @@
 
 pub use crate::traits::*;
 
+mod extensions;
 mod traits;
+
+#[cfg(feature = "shape")]
+pub use graphics_shape as shape;
