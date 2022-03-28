@@ -1,5 +1,5 @@
 [package]
-name = "convex"
+name = "shape-convex"
 version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
 description = "The representation projective transformation"
@@ -12,9 +12,17 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+partition = "0.1.2"
 num-traits = "0.2.14"
+
+[dependencies.graphics-shape]
+version = "0.0.2"
+path = "../shapes"
 
 [dev-dependencies]
 
 [features]
 default = []
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--html-in-header", "./src/katex.html"]
