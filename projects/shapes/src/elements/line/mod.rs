@@ -1,15 +1,24 @@
-mod traits;
-mod dim2;
-mod dim3;
 use super::*;
 
-
+mod dim2;
+mod dim3;
+mod traits;
 
 /// A circle.
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Line<T> {
     pub start: Point<T>,
     pub end: Point<T>,
+}
+
+impl<T> PartialEq for Line<T>
+where
+    T: PartialEq,
+{
+    /// If two vectors are collinear, then the two lines coincide
+    fn eq(&self, other: &Self) -> bool {
+        self.start == other.start && self.end == other.end
+    }
 }
 
 /// A circle.
