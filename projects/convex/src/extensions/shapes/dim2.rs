@@ -19,19 +19,19 @@ where
     type Output = Polygon<T>;
 
     fn is_convex_hull(&self, tolerance: Option<T>) -> bool {
+        // Handling special cases
         match self {
-            [] | [_] | [_, _] => false,
-            [a, b, c] => {
-                let Point { x: x1, y: y1 } = a.clone();
-                let Point { x: x2, y: y2 } = b.clone();
-                let Point { x: x3, y: y3 } = c.clone();
-                let Point { x: x4, y: y4 } = a.clone();
-                ((y3 - y1) * (x2 - x1) - (x3 - x4) * (y2 - y4)).abs() <= tolerance.unwrap_or(T::zero())
-            }
-            _ => {
-                todo!()
-            }
+            [] | [_] | [_, _] => return false,
+            [a, b, c] => {}
+            _ => {}
         }
+        // Use divide and conquer algorithms for large-scale problems
+        const PARALLEL_IS_FASTER: usize = 131072;
+        match self.len() >= PARALLEL_IS_FASTER {
+            true => {}
+            false => {}
+        }
+        todo!()
     }
 
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output> {

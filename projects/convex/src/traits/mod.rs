@@ -1,11 +1,10 @@
+mod dim2;
+mod dim3;
+
 ///
 pub trait ConvexHull<T> {
     ///
     type Output;
-    /// Auxiliary function for judging whether the current graph constitutes a convex hull
-    fn is_convex_hull(&self, tolerance: Option<T>) -> bool {
-        self.get_convex_hull(tolerance).is_some()
-    }
     /// Get the convex hull, allowing a certain numerical error
     fn get_convex_hull(&self, tolerance: Option<T>) -> Option<Self::Output>;
 }
