@@ -1,8 +1,7 @@
 use super::*;
 
 /// 3D projective transformations
-///
-/// # Examples
+#[doc = "# Examples"]
 #[doc = "```"]
 #[doc = include_str ! ("../../tests/point3d.rs")]
 #[doc = "```"]
@@ -23,65 +22,74 @@ where
     ///     m_12 & m_13 & m_14 & m_15 \\
     /// \end{bmatrix}
     /// ```
-    fn transform(self, m: &[T; 16]) -> Self;
+    fn transform(&self, m: &[&T; 16]) -> Self;
     /// Transform by a 3×3 matrix.
-    fn rotate(self, _alpha: T, _beta: T, _gamma: T) -> Self {
+    fn rotate(&self, _alpha: T, _beta: T, _gamma: T) -> Self {
         todo!()
     }
     /// Transform by a 3×3 matrix.
-    fn rotate_point(self, _point: &[T; 3], _alpha: T, _beta: T, _gamma: T) -> Self {
+    fn rotate_point(&self, _point: &[T; 3], _alpha: T, _beta: T, _gamma: T) -> Self {
         todo!()
     }
     /// Rotate with a line.
     #[rustfmt::skip]
-    fn rotate_axis(self, _p1: &[T; 3], _p2: &[T; 3], _alpha:T) -> Self {
+    fn rotate_axis(&self, _p1: &[T; 3], _p2: &[T; 3], _alpha:T) -> Self {
         todo!()
     }
-    fn rotate_axis_x(self, alpha: T) -> Self {
+    /// Rotate with a line.
+    fn rotate_axis_x(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::one(), T::zero(), T::zero()], alpha)
     }
-    fn rotate_axis_y(self, alpha: T) -> Self {
+    /// Rotate with a line.
+    fn rotate_axis_y(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::zero(), T::one(), T::zero()], alpha)
     }
-    fn rotate_axis_z(self, alpha: T) -> Self {
+    /// Rotate with a line.
+    fn rotate_axis_z(&self, alpha: T) -> Self {
         self.rotate_axis(&[T::zero(), T::zero(), T::zero()], &[T::zero(), T::zero(), T::one()], alpha)
     }
+    /// Rotate with a line.
     #[rustfmt::skip]
-    fn translate(self, x: T, y: T, z: T) -> Self {
+    fn translate(&self, x: &T, y: &T, z: &T) -> Self {
         self.transform(&[
-            T::one(), T::zero(), T::zero(), x,
-            T::zero(), T::one(), T::zero(), y,
-            T::zero(), T::zero(), T::one(), z,
-            T::zero(), T::zero(), T::zero(), T::one(),
+            &T::one(), &T::zero(), &T::zero(), x,
+            &T::zero(), &T::one(), &T::zero(), y,
+            &T::zero(), &T::zero(), &T::one(), z,
+            &T::zero(), &T::zero(), &T::zero(), &T::one(),
         ])
     }
     /// Transform by length $\delta x$.
-    fn translate_x(self, x: T) -> Self {
-        self.translate(x, T::zero(), T::zero())
+    fn translate_x(&self, x: &T) -> Self {
+        self.translate(x, &T::zero(), &T::zero())
     }
     /// Transform by length $\delta y$.
-    fn translate_y(self, y: T) -> Self {
-        self.translate(T::zero(), y, T::zero())
+    fn translate_y(&self, y: &T) -> Self {
+        self.translate(&T::zero(), y, &T::zero())
     }
-    fn translate_z(self, y: T) -> Self {
-        self.translate(T::zero(), T::zero(), y)
+    /// Transform by length $\delta z$.
+    fn translate_z(&self, y: &T) -> Self {
+        self.translate(&T::zero(), &T::zero(), y)
     }
+    /// Transform by a translation matrix.
     #[rustfmt::skip]
-    fn scale(self, x: T, y: T, z: T) -> Self {
+    fn scale(&self, x: &T, y: &T, z: &T) -> Self {
         self.transform(&[
-            x, T::zero(), T::zero(), T::zero(),
-            T::zero(), y, T::zero(), T::zero(),
-            T::zero(), T::zero(), z, T::zero(),
-            T::zero(), T::zero(), T::zero(), T::one(),
+            x, &T::zero(), &T::zero(), &T::zero(),
+            &T::zero(), y, &T::zero(), &T::zero(),
+            &T::zero(), &T::zero(), z, &T::zero(),
+            &T::zero(), &T::zero(), &T::zero(), &T::one(),
         ])
     }
-    fn scale_x(self, x: T) -> Self {
-        self.scale(x, T::one(), T::one())
+    /// Transform by a scaling matrix.
+    fn scale_x(self, x: &T) -> Self {
+        self.scale(x, &T::one(), &T::one())
     }
-    fn scale_y(self, y: T) -> Self {
-        self.scale(T::one(), y, T::one())
+    /// Transform by a scaling matrix.
+    fn scale_y(self, y: &T) -> Self {
+        self.scale(&T::one(), y, &T::one())
     }
-    fn scale_z(self, z: T) -> Self {
-        self.scale(T::one(), T::one(), z)
+    /// Transform by a scaling matrix.
+    fn scale_z(self, z: &T) -> Self {
+        self.scale(&T::one(), &T::one(), z)
     }
 }
