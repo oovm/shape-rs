@@ -1,0 +1,15 @@
+# OS
+.DS_Store/
+*.wxf
+*.mx
+
+# IDE
+.vscode/
+.vs/
+.idea/
+*.iml
+time-travel.*
+
+# Rust
+target/
+Cargo.lock
