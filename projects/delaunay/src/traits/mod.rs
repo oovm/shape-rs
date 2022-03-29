@@ -1,7 +1,24 @@
-use num_traits::{real::Real, One, Zero};
+use std::borrow::Cow;
 
-mod dim2;
-mod dim3;
+///
+pub trait Delaunay<T> {
+    ///
+    type Output: Triangulation;
+    /// Get the convex hull, allowing a certain numerical error
+    fn delaunay(&self, tolerance: Option<T>) -> Self::Output;
+}
 
-pub use self::{dim2::Projective, dim3::Projective3D};
-
+pub trait Triangulation {
+    type Triangle: ToOwned;
+    type Edge: ToOwned;
+    type Point: ToOwned;
+    fn triangles<'a, T>(&'a self) -> T
+    where
+        T: Iterator<Item = Cow<'a, Self::Triangle>>;
+    fn edges<'a, T>(&'a self) -> T
+    where
+        T: Iterator<Item = Cow<'a, Self::Edge>>;
+    fn point<'a, T>(&'a self) -> T
+    where
+        T: Iterator<Item = Cow<'a, Self::Point>>;
+}

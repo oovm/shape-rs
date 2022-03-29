@@ -1,12 +1,12 @@
 [package]
 name = "delaunay"
-version = "0.2.5"
+version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
-description = "The representation projective transformation"
-categories = ["mathematics", "graphics"]
-keywords = ["math", "projective", "transformation"]
+description = "The representation of delaunay triangulation"
+categories = ["mathematics"]
+keywords = ["math", "delaunay", "triangulation"]
 repository = "https://github.com/oovm/shape-rs"
-documentation = "https://docs.rs/projective"
+documentation = "https://docs.rs/delaunay"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
