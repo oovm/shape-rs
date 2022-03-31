@@ -11,6 +11,19 @@ pub struct Line<T> {
     pub end: Point<T>,
 }
 
+#[derive(Clone, Copy, Debug)]
+pub struct Vector<T> {
+    pub dx: T,
+    pub dy: T,
+}
+
+#[derive(Clone, Copy, Debug)]
+pub struct Vector3D<T> {
+    pub dx: T,
+    pub dy: T,
+    pub dz: T,
+}
+
 impl<T> PartialEq for Line<T>
 where
     T: PartialEq,

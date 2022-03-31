@@ -33,7 +33,6 @@ where
     T: Clone,
 {
     fn from(v: &Parallelogram<T>) -> Self {
-        todo!()
-        // Self { vertex: v.vertex.to_vec() }
+        v.vectors()
     }
 }

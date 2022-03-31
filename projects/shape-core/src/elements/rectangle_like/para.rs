@@ -39,6 +39,8 @@ where
         a.length() == b.length()
     }
     pub fn is_rectangle(&self) -> bool {
-        todo!()
+        let a = Line::new(&self.anchor, &self.side.0);
+        let b = Line::new(&self.anchor, &self.side.1);
+        a.is_orthogonal(&b)
     }
 }
