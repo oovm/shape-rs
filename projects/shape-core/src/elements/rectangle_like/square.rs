@@ -1,4 +1,5 @@
 use super::*;
+use num_traits::Num;
 
 pub struct Parallelogram<T> {
     anchor: Point<T>,
@@ -28,10 +29,13 @@ where
 
 impl<T> Rectangle<T>
 where
-    T: Clone + Real,
+    T: Clone + Num,
 {
-    pub fn new(center: Point<T>, side: (T, T)) -> Self {
-        Self { anchor: center, side }
+    pub fn new<P>(anchor: P, side: (T, T)) -> Self
+    where
+        P: Into<Point<T>>,
+    {
+        Self { anchor: anchor.into(), side }
     }
     pub fn from_center(anchor: Point<T>, side: (T, T)) -> Self {
         todo!()

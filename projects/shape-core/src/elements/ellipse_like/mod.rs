@@ -2,6 +2,7 @@ use super::*;
 
 mod circle;
 mod circle3d;
+mod convert;
 mod ellipse;
 
 pub struct Circle<T> {
@@ -19,6 +20,15 @@ pub struct Ellipse<T> {
     pub center: Point<T>,
     pub radius: (T, T),
     pub angle: T,
+}
+
+impl<T> Ellipse<T>
+where
+    T: Zero + PartialEq,
+{
+    pub fn is_horizontal(&self) -> bool {
+        self.angle == T::zero()
+    }
 }
 
 pub struct Ellipse3D<T> {

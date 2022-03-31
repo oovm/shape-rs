@@ -1,17 +1,14 @@
+use shape_core::{Ellipse, Point, Rectangle, Triangle};
+use shape_svg::ToSVG;
+
 #[test]
 fn ready() {
     println!("it works!")
 }
 
-// #[test]
-// fn test() {
-//     let mut graphics = Graphics::default();
-//     graphics.push(Point::new(0.0, 0.0));
-//     graphics.push(Point::new(0.0, 1.0));
-//     println!("{:?}", Rectangle::new(0.0, 1.0, 10.0, 6.18).with_color((127, 64, 130)));
-//     graphics.push(Rectangle::new(0.0, 1.0, 10.0, 6.18).with_color((127, 64, 130)));
-//
-//     let mut renderer = SvgRenderer::default();
-//     let out = graphics.render_with(&mut renderer).unwrap();
-//     std::fs::write("tests/show.svg", format!("{}", out)).unwrap();
-// }
+#[test]
+fn test() {
+    println!("{:#}", Rectangle::new((100, 100), (1000, 618)).to_svg());
+    println!("{:#}", Triangle::new([(100, 100), (400, 500), (800, 1000)]).to_svg());
+    println!("{:#}", Ellipse::new((100.0, 100.0), (50.0, 25.0), 1.0).to_svg());
+}

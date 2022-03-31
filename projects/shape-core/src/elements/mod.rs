@@ -3,7 +3,7 @@ pub use self::{
     line::{Line, Line3D},
     point::{Point, Point3D},
     polygon_like::Polygon,
-    rectangle_like::{Rectangle, Square},
+    rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::Triangle,
 };
 use crate::Distance;
