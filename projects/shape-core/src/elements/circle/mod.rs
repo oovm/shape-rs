@@ -1,12 +1,17 @@
-use crate::{π, Circle, Float, Point};
+use crate::{π, Point};
 
-impl Circle {
+pub struct Circle<T> {
+    pub center: Point<T>,
+    pub radius: T,
+}
+
+impl<T> Circle<T> {
     /// Create a new circle with the given center and radius.
-    pub fn unit(x: Float, y: Float) -> Self {
-        Self { center: Point::new(x, y), radius: 1.0 }
+    pub fn unit() -> Self {
+        Self { center: Point::from_x_y(x, y), radius: T::one }
     }
     /// Create circle with the center and radius.
-    pub fn from_1_point(center: &Point, radius: Float) -> Self {
+    pub fn from_1_point(center: &Point<T>, radius: T) -> Self {
         Self { center: Point { x: center.x, y: center.y }, radius }
     }
 
