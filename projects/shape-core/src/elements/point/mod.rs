@@ -1,3 +1,5 @@
+use num_traits::Zero;
+
 mod dim2;
 mod dim3;
 
@@ -13,6 +15,15 @@ pub struct Point3D<T> {
     pub x: T,
     pub y: T,
     pub z: T,
+}
+
+impl<T> Default for Point<T>
+where
+    T: Zero,
+{
+    fn default() -> Self {
+        Self { x: T::zero(), y: T::zero() }
+    }
 }
 
 impl<T> From<(T, T)> for Point<T>

@@ -1,11 +1,10 @@
-pub use ellipse::{Circle, Ellipse};
+pub use ellipse_group::{Circle, Ellipse};
 pub use line::{Line, Line3D};
 pub use point::{Point, Point3D};
 pub use polygon::Polygon;
 pub use triangle::Triangle;
 
-mod circle;
-mod ellipse;
+mod ellipse_group;
 mod line;
 mod point;
 mod polygon;

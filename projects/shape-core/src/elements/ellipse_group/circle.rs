@@ -1,18 +1,24 @@
-use crate::{π, Point};
+use super::*;
+use num_traits::One;
 
 pub struct Circle<T> {
     pub center: Point<T>,
     pub radius: T,
 }
 
-impl<T> Circle<T> {
-    /// Create a new circle with the given center and radius.
-    pub fn unit() -> Self {
-        Self { center: Point::from_x_y(x, y), radius: T::one }
+impl<T> Default for Circle<T>
+where
+    T: One,
+{
+    fn default() -> Self {
+        Self { center: Default::default(), radius: T::one() }
     }
+}
+
+impl<T: Clone> Circle<T> {
     /// Create circle with the center and radius.
-    pub fn from_1_point(center: &Point<T>, radius: T) -> Self {
-        Self { center: Point { x: center.x, y: center.y }, radius }
+    pub fn new(center: &Point<T>, radius: &T) -> Self {
+        Self { center: center.clone(), radius: radius.clone() }
     }
 
     /// Create circle from two points on the diameter.
