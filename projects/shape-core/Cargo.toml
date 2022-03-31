@@ -1,6 +1,6 @@
 [package]
 name = "shape-core"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Aster <192607617@qq.com>"]
 description = "The representation of a circle"
 repository = "https://github.com/oovm/shape-rs"
@@ -12,9 +12,12 @@ edition = "2021"
 [dependencies]
 num-traits = "0.2.14"
 bitflags = "1.3.2"
-projective = "0.2.5"
 serde = {version = "1.0.136", features = ["derive"]}
 rand = {version = "0.8.5", optional = true}
+
+[dependencies.projective]
+version = "0.2.5"
+path = "../projective"
 
 [dev-dependencies]
 
@@ -23,8 +26,4 @@ default = []
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--html-in-header", "./src/katex.html"]
-
-[package.metadata.wee]
-t = "cargo test"
-p = "cargo publish --allow-dirty"
 

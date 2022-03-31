@@ -13,14 +13,14 @@ impl<T> Parallelogram<T>
 where
     T: Clone + Num,
 {
-    pub fn vertex(&self) -> Vec<Point<T>> {
+    pub fn vertexes(&self) -> Vec<Point<T>> {
         let a = self.anchor.clone();
         let b = self.anchor.clone() + &self.side.0;
         let c = self.anchor.clone() + &self.side.1;
         let d = self.anchor.clone() + &self.side.0 + &self.side.1;
         vec![a, b, c, d]
     }
-    pub fn vectors(&self) -> (Line<T>, Line<T>) {
+    pub fn side_edges(&self) -> (Line<T>, Line<T>) {
         let a = Line::new(&self.anchor, &self.side.0);
         let b = Line::new(&self.anchor, &self.side.1);
         (a, b)
@@ -35,7 +35,7 @@ where
     where
         T: Float,
     {
-        let (a, b) = self.vectors();
+        let (a, b) = self.side_edges();
         a.length() == b.length()
     }
     pub fn is_rectangle(&self) -> bool {

@@ -5,13 +5,13 @@ mod dim3;
 mod proj;
 
 /// A 2D point.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Point3D<T> {
     pub x: T,
     pub y: T,

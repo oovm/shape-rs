@@ -1,7 +1,6 @@
+use crate::{Ellipse, Line, Point, Polygon, Triangle};
 use num_traits::Float;
 use projective::Projective;
-
-use crate::{Ellipse, Line, Polygon, Triangle};
 
 impl<T> Projective<T> for Line<T>
 where
@@ -31,15 +30,22 @@ where
     T: Float,
 {
     fn transform(&self, matrix: &[&T; 9]) -> Self {
-        todo!()
+        Self { vertex: self.vertex.iter().map(|v| v.transform(matrix)).collect() }
     }
 }
 
 impl<T> Projective<T> for Ellipse<T>
 where
-    T: Float,
+    T: Float + Clone,
 {
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        todo!()
+    #[track_caller]
+    fn transform(&self, _: &[&T; 9]) -> Self {
+        panic!("Can't keep the shape after projective transformation");
+    }
+    fn translate(&self, x: &T, y: &T) -> Self {
+        Self { center: self.center + Point::new(x.clone(), y.clone()), ..self.clone() }
+    }
+    fn rotate(&self, angle: &T) -> Self {
+        Self { angle: self.angle + angle.clone(), ..self.clone() }
     }
 }

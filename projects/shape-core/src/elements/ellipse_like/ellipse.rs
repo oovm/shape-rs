@@ -25,6 +25,16 @@ impl<T> Ellipse<T> {
 
 impl<T> Ellipse<T>
 where
+    T: Zero + PartialEq,
+{
+    /// a / pi in Z
+    pub fn is_horizontal(&self) -> bool {
+        self.angle == T::zero()
+    }
+}
+
+impl<T> Ellipse<T>
+where
     T: Real + Pow<u32, Output = T>,
 {
     /// Return the center of the ellipse.
