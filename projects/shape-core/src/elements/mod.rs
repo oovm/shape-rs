@@ -1,5 +1,5 @@
 pub use self::{
-    ellipse_like::{Circle, Ellipse},
+    ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D},
     line::{Line, Line3D},
     point::{Point, Point3D},
     polygon_like::Polygon,
@@ -7,9 +7,9 @@ pub use self::{
     triangle::Triangle,
 };
 use crate::Distance;
-use num_traits::{real::Real, Float, FloatConst, One, Pow, Signed, Zero};
+use num_traits::{real::Real, Float, FloatConst, One, Pow, Zero};
 use projective::Projective;
-use std::ops::{Add, Div, Mul};
+use std::ops::Add;
 
 mod ellipse_like;
 mod line;

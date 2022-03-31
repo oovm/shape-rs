@@ -19,5 +19,5 @@ pub struct Rectangle<T> {
 
 pub struct Parallelogram<T> {
     pub anchor: Point<T>,
-    pub side: (Line<T>, Line<T>),
+    pub side: (Point<T>, Point<T>),
 }

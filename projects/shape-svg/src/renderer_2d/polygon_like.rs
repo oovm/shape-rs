@@ -15,7 +15,7 @@ where
     T: Display,
 {
     fn to_svg(&self) -> SVG {
-        let attributes = &[
+        let attributes = vec![
             //
             ("cx", format!("{}", self.center.x)),
             ("cy", format!("{}", self.center.y)),
@@ -30,13 +30,17 @@ where
     T: Display + PartialEq + Zero,
 {
     fn to_svg(&self) -> SVG {
-        let attributes = &[
+        let mut attributes = vec![
             ("cx", format!("{}", self.center.x)),
             ("cy", format!("{}", self.center.y)),
             ("rx", format!("{}", self.radius.0)),
             ("ry", format!("{}", self.radius.1)),
-            ("transform", format!("rotate({}, {} {})", self.angle, self.center.x, self.center.y)),
         ];
+        if !self.is_horizontal() {
+            let rotate = format!("rotate({}, {} {})", self.angle, self.center.x, self.center.y);
+            attributes.push(("transform", rotate));
+        }
+
         SVG::new("ellipse", attributes, vec![])
     }
 }
@@ -55,7 +59,7 @@ where
     T: Display,
 {
     fn to_svg(&self) -> SVG {
-        let attributes = &[
+        let attributes = vec![
             ("x", format!("{}", self.anchor.x)),
             ("y", format!("{}", self.anchor.y)),
             ("width", format!("{}", self.side)),
@@ -70,7 +74,7 @@ where
     T: Display,
 {
     fn to_svg(&self) -> SVG {
-        let attributes = &[
+        let attributes = vec![
             ("x", format!("{}", self.anchor.x)),
             ("y", format!("{}", self.anchor.y)),
             ("width", format!("{}", self.side.0)),
@@ -98,7 +102,7 @@ where
     //   style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
     fn to_svg(&self) -> SVG {
         let points = self.vertex.iter().map(|p| format!("{},{}", p.x, p.y)).collect::<Vec<_>>().join(" ");
-        let attributes = &[("points", points)];
+        let attributes = vec![("points", points)];
         SVG::new("polygon", attributes, vec![])
     }
 }
