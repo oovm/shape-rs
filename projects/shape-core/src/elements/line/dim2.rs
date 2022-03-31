@@ -1,32 +1,50 @@
-use num_traits::One;
-use std::ops::{Mul, Sub};
-
 use super::*;
+use num_traits::{Num, One};
 
 impl<T> Default for Line<T>
 where
     T: Zero + One,
 {
+    #[inline(always)]
     fn default() -> Self {
-        Self { start: Point { x: T::zero(), y: T::zero() }, end: Point { x: T::one(), y: T::zero() } }
+        Self { start: Point { x: zero(), y: zero() }, end: Point { x: one(), y: zero() } }
     }
 }
 
 impl<T> Line<T> {
-    pub fn new(start: Point<T>, end: Point<T>) -> Self {
-        Self { start, end }
+    #[inline(always)]
+    pub fn new<P>(start: P, end: P) -> Self
+    where
+        Point<T>: From<P>,
+    {
+        Self { start: start.into(), end: end.into() }
     }
 }
 
-impl<T> Point<T> {
+impl<T> Line<T>
+where
+    T: Clone + Float,
+{
+    pub fn length(&self) -> T {
+        (self.end.clone() - self.start.clone()).norm()
+    }
+}
+
+impl<T> Point<T>
+where
+    T: Num + Clone,
+{
+    pub fn norm(&self) -> T
+    where
+        T: Float,
+    {
+        (self.x.clone() * self.x.clone() + self.y.clone() * self.y.clone()).sqrt()
+    }
+
     /// ```math
     /// \vec{PA}\times\vec{PB} = (a_x-b_x)*(p_y-b_y)-(p_x-b_x)*(a_y-b_y)
     /// ```
-    pub fn cross_dot(&self, a: &Self, b: &Self) -> T
-    where
-        T: Clone + PartialOrd,
-        T: Sub<Output = T> + Mul<Output = T>,
-    {
+    pub fn cross_dot(&self, a: &Self, b: &Self) -> T {
         let p = (b.x.clone() - a.x.clone()) * (self.y.clone() - b.y.clone());
         let q = (b.y.clone() - a.y.clone()) * (self.x.clone() - b.x.clone());
         p - q

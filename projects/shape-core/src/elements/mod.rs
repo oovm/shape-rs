@@ -7,7 +7,7 @@ pub use self::{
     triangle::Triangle,
 };
 use crate::Distance;
-use num_traits::{real::Real, Float, FloatConst, One, Pow, Zero};
+use num_traits::{real::Real, Float, FloatConst, Num, One, Pow, Zero};
 use projective::Projective;
 use std::ops::Add;
 

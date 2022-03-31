@@ -1,4 +1,5 @@
 use super::*;
+use std::ops::Sub;
 
 impl<T> Default for Point<T>
 where
@@ -37,5 +38,18 @@ where
     fn add(self, rhs: V) -> Self::Output {
         let rhs: Self = rhs.into();
         Point { x: self.x + rhs.x, y: self.y + rhs.y }
+    }
+}
+
+impl<T, V> Sub<V> for Point<T>
+where
+    Point<T>: From<V>,
+    T: Sub<Output = T>,
+{
+    type Output = Self;
+
+    fn sub(self, rhs: V) -> Self::Output {
+        let rhs: Self = rhs.into();
+        Point { x: self.x - rhs.x, y: self.y - rhs.y }
     }
 }

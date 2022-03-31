@@ -1,19 +1,4 @@
 use super::*;
-use num_traits::Num;
-
-pub struct Parallelogram<T> {
-    pub anchor: Point<T>,
-    pub side: (Line<T>, Line<T>),
-}
-
-impl<T> Parallelogram<T> {
-    pub fn is_square(&self) -> bool {
-        todo!()
-    }
-    pub fn is_rectangle(anchor: Point<T>, side: (Line<T>, Line<T>)) -> Self {
-        Self { anchor, side }
-    }
-}
 
 impl<T> Square<T>
 where
