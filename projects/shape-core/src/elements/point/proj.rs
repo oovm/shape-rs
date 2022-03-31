@@ -3,7 +3,7 @@ use crate::Distance;
 
 impl<T> Distance<T, Self> for Point<T>
 where
-    T: Clone,
+    T: Clone + Real,
 {
     fn distance_to(&self, other: &Self) -> T {
         let dx = self.x.clone() - other.x.clone();
@@ -14,7 +14,7 @@ where
 
 impl<T> Distance<T, Self> for Point3D<T>
 where
-    T: Clone,
+    T: Clone + Real,
 {
     fn distance_to(&self, other: &Self) -> T {
         let dx = self.x.clone() - other.x.clone();

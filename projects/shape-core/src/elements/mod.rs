@@ -1,41 +1,50 @@
+pub use self::{
+    ellipse_like::{Circle, Ellipse},
+    line::{Line, Line3D},
+    point::{Point, Point3D},
+    polygon_like::Polygon,
+    rectangle_like::{Rectangle, Square},
+    triangle::Triangle,
+};
 use crate::Distance;
-pub use ellipse_group::{Circle, Ellipse};
-pub use line::{Line, Line3D};
 use num_traits::{real::Real, Float, FloatConst, One, Pow, Signed, Zero};
-pub use point::{Point, Point3D};
-pub use polygon::Polygon;
 use projective::Projective;
 use std::ops::{Add, Div, Mul};
-pub use triangle::Triangle;
 
-mod ellipse_group;
+mod ellipse_like;
 mod line;
 mod point;
-mod polygon;
+mod polygon_like;
 mod rectangle_like;
 mod triangle;
 
 #[inline(always)]
-fn zero<T: Zero>() {
-    zero()
+fn zero<T: Zero>() -> T {
+    T::zero()
 }
 
 #[inline(always)]
-fn one<T: One>() {
+fn one<T: One>() -> T {
     T::one()
 }
 
 #[inline(always)]
-fn two<T: One>() {
+fn two<T>() -> T
+where
+    T: One + Add<Output = T>,
+{
     T::one() + T::one()
 }
 
 #[inline(always)]
-fn pi<T: FloatConst>() {
+fn pi<T: FloatConst>() -> T {
     T::PI()
 }
 
 #[inline(always)]
-fn two_pi<T: One + FloatConst>() {
-    two() * pi()
+fn two_pi<T>() -> T
+where
+    T: One + FloatConst + Add<Output = T>,
+{
+    two::<T>() * pi()
 }

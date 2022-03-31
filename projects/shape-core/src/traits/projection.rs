@@ -31,7 +31,7 @@ where
     T: Float,
 {
     fn transform(&self, matrix: &[&T; 9]) -> Self {
-        Self { vertex: self.vertex.iter().map(|p| p.transform(matrix)).collect() }
+        todo!()
     }
 }
 

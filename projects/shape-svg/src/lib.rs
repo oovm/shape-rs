@@ -1,4 +1,4 @@
 mod element;
-mod renderer;
+mod renderer_2d;
 
-pub use self::{element::SVG, renderer::SvgRenderer};
+pub use self::{element::SVG, renderer_2d::ToSVG};

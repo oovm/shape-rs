@@ -26,6 +26,7 @@ impl<T> Polygon<T> {
 
 impl<T: Clone> From<&Triangle<T>> for Polygon<T> {
     fn from(v: &Triangle<T>) -> Self {
-        Self { vertex: v.vertex.to_vec() }
+        todo!()
+        // Self { vertex: v.vertex.to_vec() }
     }
 }

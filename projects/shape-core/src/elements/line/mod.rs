@@ -22,7 +22,7 @@ where
 }
 
 /// A circle.
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Line3D<T> {
     pub start: Point3D<T>,
     pub end: Point3D<T>,

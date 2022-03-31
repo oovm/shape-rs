@@ -11,8 +11,7 @@ where
 
 impl<T> Circle<T>
 where
-    T: Signed + Clone,
-    T: Mul,
+    T: Real + Clone,
 {
     /// Create circle with the center and radius.
     pub fn new(center: Point<T>, radius: T) -> Self {
@@ -47,11 +46,11 @@ where
 
 impl<T> Circle<T>
 where
-    T: Clone + Mul<Output = T> + FloatConst,
+    T: Real + FloatConst,
 {
     /// Returns the area of the circle.
     pub fn area(&self) -> T {
-        self.radius.clone() * self.radius.clone() * T::PI()
+        self.radius.clone() * self.radius.clone() * pi()
     }
     /// Returns the circumference of the circle.
     pub fn perimeter(&self) -> T {
