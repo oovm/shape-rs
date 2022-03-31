@@ -1,29 +1,20 @@
-use num_traits::Zero;
-
+use super::*;
 mod dim2;
 mod dim3;
+mod proj;
 
 /// A 2D point.
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Point<T> {
     pub x: T,
     pub y: T,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Point3D<T> {
     pub x: T,
     pub y: T,
     pub z: T,
-}
-
-impl<T> Default for Point<T>
-where
-    T: Zero,
-{
-    fn default() -> Self {
-        Self { x: T::zero(), y: T::zero() }
-    }
 }
 
 impl<T> From<(T, T)> for Point<T>

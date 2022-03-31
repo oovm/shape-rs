@@ -1,29 +1,41 @@
+use crate::Distance;
 pub use ellipse_group::{Circle, Ellipse};
 pub use line::{Line, Line3D};
+use num_traits::{real::Real, Float, FloatConst, One, Pow, Signed, Zero};
 pub use point::{Point, Point3D};
 pub use polygon::Polygon;
+use projective::Projective;
+use std::ops::{Add, Div, Mul};
 pub use triangle::Triangle;
 
 mod ellipse_group;
 mod line;
 mod point;
 mod polygon;
-mod rectangle;
+mod rectangle_like;
 mod triangle;
 
-/// A rectangle.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Square {
-    pub x: f32,
-    pub y: f32,
-    pub side: f32,
+#[inline(always)]
+fn zero<T: Zero>() {
+    zero()
 }
 
-/// A rectangle.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Rectangle {
-    pub x: f32,
-    pub y: f32,
-    pub width: f32,
-    pub height: f32,
+#[inline(always)]
+fn one<T: One>() {
+    T::one()
+}
+
+#[inline(always)]
+fn two<T: One>() {
+    T::one() + T::one()
+}
+
+#[inline(always)]
+fn pi<T: FloatConst>() {
+    T::PI()
+}
+
+#[inline(always)]
+fn two_pi<T: One + FloatConst>() {
+    two() * pi()
 }

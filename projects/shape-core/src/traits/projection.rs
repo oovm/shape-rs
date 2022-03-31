@@ -1,18 +1,7 @@
 use num_traits::Float;
 use projective::Projective;
 
-use crate::{Line, Point, Polygon, Square, Triangle};
-
-impl<T> Projective<T> for Point<T>
-where
-    T: Float,
-{
-    fn transform(&self, matrix: &[&T; 9]) -> Self {
-        let x = self.x.mul(*matrix[0]) + self.y.mul(*matrix[1]) + *matrix[2];
-        let y = self.x.mul(*matrix[3]) + self.y.mul(*matrix[4]) + *matrix[5];
-        Point { x, y }
-    }
-}
+use crate::{Ellipse, Line, Point, Polygon, Triangle};
 
 impl<T> Projective<T> for Line<T>
 where
@@ -46,7 +35,10 @@ where
     }
 }
 
-impl<T> Projective<T> for Ellipse<T> {
+impl<T> Projective<T> for Ellipse<T>
+where
+    T: Float,
+{
     fn transform(&self, matrix: &[&T; 9]) -> Self {
         todo!()
     }

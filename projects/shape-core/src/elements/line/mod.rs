@@ -5,7 +5,7 @@ mod dim3;
 mod traits;
 
 /// A circle.
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug)]
 pub struct Line<T> {
     pub start: Point<T>,
     pub end: Point<T>,

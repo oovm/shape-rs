@@ -2,9 +2,6 @@ use bitflags::bitflags;
 
 use super::*;
 
-mod line;
-mod polygon;
-
 pub struct Polyline<T> {
     pub points: Vec<T>,
     pub closed: bool,

@@ -1,9 +1,19 @@
+use num_traits::One;
 use std::ops::{Mul, Sub};
 
 use super::*;
 
+impl<T> Default for Line<T>
+where
+    T: Zero + One,
+{
+    fn default() -> Self {
+        Self { start: Point { x: T::zero(), y: T::zero() }, end: Point { x: T::one(), y: T::zero() } }
+    }
+}
+
 impl<T> Line<T> {
-    pub fn from_2_points(start: Point<T>, end: Point<T>) -> Self {
+    pub fn new(start: Point<T>, end: Point<T>) -> Self {
         Self { start, end }
     }
 }
