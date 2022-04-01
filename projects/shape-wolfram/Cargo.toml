@@ -1,17 +1,17 @@
 [package]
-name = "shape-svg"
-version = "0.0.2"
+name = "shape-wolfram"
+version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
-description = "SVG representation of shapes"
+description = "Wolfram representation of shapes"
 repository = "https://github.com/oovm/shape-rs"
-documentation = "https://docs.rs/shape-svg"
+documentation = "https://docs.rs/shape-wolfram"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
 
 [dependencies]
-serde = { version = "1.0.136", features = ["derive"] }
+wolfram-library-link = "0.2.3"
 
 [dependencies.shape-core]
 version = "0.0.*"
