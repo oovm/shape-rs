@@ -1,6 +1,6 @@
 [package]
 name = "shape-core"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Aster <192607617@qq.com>"]
 description = "The representation of a circle"
 repository = "https://github.com/oovm/shape-rs"
