@@ -10,7 +10,7 @@ use crate::Distance;
 use num_traits::{real::Real, Float, FloatConst, Num, One, Pow, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, Div};
+use std::ops::Add;
 
 mod ellipse_like;
 mod line;
@@ -34,36 +34,12 @@ fn two<T>() -> T
 where
     T: One + Add<Output = T>,
 {
-    double(two())
-}
-
-#[inline(always)]
-fn four<T>() -> T
-where
-    T: One + Add<Output = T>,
-{
-    double(two())
+    T::one() + T::one()
 }
 
 #[inline(always)]
 fn pi<T: FloatConst>() -> T {
     T::PI()
-}
-
-#[inline(always)]
-fn half<T>(x: T) -> T
-where
-    T: One + Add<Output = T> + Div<Output = T>,
-{
-    x.div(two())
-}
-
-#[inline(always)]
-fn double<T>(x: T) -> T
-where
-    T: Clone + Add<Output = T>,
-{
-    x.clone() + x
 }
 
 #[inline(always)]

@@ -1,8 +1,8 @@
 [package]
-name = "shape-core"
-version = "0.0.5"
+name = "venn"
+version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
-description = "Definition of geometry shapes"
+description = "venn-diagram"
 repository = "https://github.com/oovm/shape-rs"
 documentation = "https://docs.rs/shape-core"
 readme = "Readme.md"
