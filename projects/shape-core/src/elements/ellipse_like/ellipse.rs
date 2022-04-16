@@ -1,10 +1,11 @@
 use super::*;
 use crate::elements::polygon_like::Polyline;
+use num_traits::FromPrimitive;
 
 #[allow(unused_variables)]
 impl<T> Ellipse<T>
 where
-    T: Clone + Real,
+    T: Clone + Real + FloatConst,
 {
     /// Create a new ellipse with the center and the two axes and .
     pub fn new<P>(center: P, radius: (T, T), angle: T) -> Self
@@ -18,22 +19,33 @@ where
     /// ```math
     /// a x^2 + b y^2 + c xy + d x + e y + f = 0
     /// ```
-    ///
-    /// x = (2 c d-b f)/(b^2-4 a c)
-    /// y = (2 a f-b d)/(b^2-4 a c)
     pub fn from_coefficient(a: T, b: T, c: T, d: T, e: T, f: T) -> Self {
-        let delta_s = minor_delta(&a, &b, &c);
-        let x = center_x(&a, &b, &c, &d, &e, delta_s);
-        let y = center_y(&a, &b, &c, &d, &e, delta_s);
+        let b = half(b);
+        let d = half(d);
+        let e = half(e);
 
-        let m = eta_invariant(&a, &b, &c);
-        let n = eta_invariant(&d, &e, &f);
-        let angle = (m.atan2(n) * two()).atan();
-        Self { center: Point { x, y }, radius: (m, n), angle }
+        let delta_s = minor_delta(&a, &b, &c);
+        let delta_m = major_delta(&a, &b, &c, &d, &e, &f);
+        let eta = eta_invariant(&a, &b, &c);
+
+        Self {
+            center: Point { x: center_x(&a, &b, &c, &d, &e, &delta_s), y: center_y(&a, &b, &c, &d, &e, &delta_s) },
+            radius: (major_axis(&a, &c, &delta_m, &delta_s, &eta), minor_axis(&a, &c, &delta_m, &delta_s, &eta)),
+            angle: angle(&a, &b, &c),
+        }
     }
 
     /// Create a new ellipse with 5 points.
-    pub fn from_5_points(p1: Point<T>, p2: Point<T>, p3: Point<T>, p4: Point<T>, p5: Point<T>) {}
+    pub fn from_5_points(p1: Point<T>, p2: Point<T>, p3: Point<T>, p4: Point<T>, p5: Point<T>) -> Self {
+        let (a, b, c, d, e, f) = null_space(&[
+            null_space_line(p1),
+            null_space_line(p2),
+            null_space_line(p3),
+            null_space_line(p4),
+            null_space_line(p5),
+        ]);
+        Self::from_coefficient(a, b, c, d, e, f)
+    }
 }
 
 impl<T> Ellipse<T>
@@ -48,7 +60,7 @@ where
 
 impl<T> Ellipse<T>
 where
-    T: Real + Pow<u32, Output = T>,
+    T: Real,
 {
     /// Return the center of the ellipse.
     pub fn major_axis(&self) -> &T {
@@ -58,12 +70,22 @@ where
     pub fn minor_axis(&self) -> &T {
         &self.radius.1
     }
-    /// Return the homogeneous parameters.
+    /// Return the homogeneous coefficients.
     /// ```math
-    /// Ax^2+2Bxy+Cy^2+2Dx+2Ey+F=0
+    /// Ax^2 + 2Bxy + Cy^2 + 2Dx + 2Ey + F = 0
     /// ```
+    #[inline]
     pub fn homogeneous(&self) -> (T, T, T, T, T, T) {
         todo!()
+    }
+    /// Return the coefficients.
+    /// ```math
+    /// a x^2 + b xy + c y^2 + d x + e y + f = 0
+    /// ```
+    #[inline]
+    pub fn coefficients(&self) -> (T, T, T, T, T, T) {
+        let (a, b, c, d, e, f) = self.homogeneous();
+        (a, half(b), c, half(d), half(e), f)
     }
     /// Get the major delta of the ellipse.
     /// ```math
@@ -94,12 +116,39 @@ where
     }
 }
 
-impl<T> Ellipse<T> {
-    pub fn approx_polygon(self) -> Polygon<T> {
-        todo!()
+impl<T> Ellipse<T>
+where
+    T: Clone + Real + FromPrimitive + FloatConst,
+{
+    #[track_caller]
+    pub fn sample_polygon(&self, n: usize) -> Polygon<T> {
+        debug_assert!(n >= 3, "at least 3 points");
+        let mut vertex = Vec::with_capacity(n);
+        for i in 0..n {
+            let angle = T::from_usize(i).unwrap() * two_pi() / T::from_usize(n).unwrap();
+            let x = self.sample_x(&angle);
+            let y = self.sample_y(&angle);
+            vertex.push(Point::new(x, y));
+        }
+        Polygon::new(vertex)
     }
-    pub fn approx_polyline(self) -> Polyline<T> {
-        todo!()
+    #[track_caller]
+    pub fn sample_polyline(&self, n: usize) -> Polyline<T> {
+        debug_assert!(n >= 3, "at least 3 points");
+        let mut vertex = Vec::with_capacity(n);
+        for i in 0..n {
+            let angle = T::from_usize(i).unwrap() * two_pi() / T::from_usize(n).unwrap();
+            let x = self.sample_x(&angle);
+            let y = self.sample_y(&angle);
+            vertex.push(Point::new(x, y));
+        }
+        Polyline::new(vertex)
+    }
+    pub fn sample_x(&self, t: &T) -> T {
+        self.radius.0 * self.angle.cos() * t.cos() - self.radius.1 * self.angle.sin() * t.sin() + self.center.x
+    }
+    pub fn sample_y(&self, t: &T) -> T {
+        self.radius.0 * self.angle.sin() * t.cos() + self.radius.1 * self.angle.cos() * t.cos() + self.center.y
     }
 }
 
@@ -142,7 +191,7 @@ where
     T: Clone + Real,
 {
     let p1 = b.clone() * e.clone() - c.clone() * d.clone();
-    p1 / delta_s
+    p1 / delta_s.clone()
 }
 
 /// (b d - a e) / delta
@@ -152,5 +201,57 @@ where
     T: Clone + Real,
 {
     let p1 = b.clone() * d.clone() - a.clone() * e.clone();
-    p1 / delta_s
+    p1 / delta_s.clone()
+}
+
+#[inline(always)]
+fn major_axis<T>(a: &T, c: &T, delta_m: &T, delta_s: &T, eta: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = (a.clone() + c.clone() + eta.clone()) * delta_s.clone();
+    let axis = -double(delta_m) / p1;
+    axis.sqrt()
+}
+
+#[inline(always)]
+fn minor_axis<T>(a: &T, c: &T, delta_m: &T, delta_s: &T, eta: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = (a.clone() + c.clone() - eta.clone()) * delta_s.clone();
+    let axis = -double(delta_m) / p1;
+    axis.sqrt()
+}
+
+fn angle<T>(a: &T, b: &T, c: &T) -> T
+where
+    T: Clone + Real + FloatConst,
+{
+    match b.is_zero() {
+        true if a < c => zero(),
+        true => half(pi()),
+        false if a < c => double(b).atan2(a.clone() - c.clone()),
+        false => half::<T>(pi()) - double(b).atan2(a.clone() - c.clone()),
+    }
+}
+
+fn null_space_line<T>(p: Point<T>) -> [T; 6]
+where
+    T: Clone + Real,
+{
+    [p.x.clone().powi(2), p.x.clone() * p.y.clone(), p.y.clone().powi(2), p.x.clone(), p.y.clone(), T::one()]
+}
+
+/// ```wolfram
+/// NullSpace@{
+///   {x1^2, x1 y1, y1^2, x1, y1, 1},
+///   {x2^2, x2 y2, y2^2, x2, y2, 1},
+///   {x3^2, x3 y3, y3^2, x3, y3, 1},
+///   {x4^2, x4 y4, y4^2, x4, y4, 1},
+///   {x5^2, x5 y5, y5^2, x5, y5, 1}
+/// }
+/// ```
+fn null_space<T: Clone + Real>(_matrix: &[[T; 6]; 5]) -> (T, T, T, T, T, T) {
+    todo!()
 }

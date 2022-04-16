@@ -1,6 +1,6 @@
 [package]
 name = "shape-core"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Aster <192607617@qq.com>"]
 description = "Definition of geometry shapes"
 repository = "https://github.com/oovm/shape-rs"
