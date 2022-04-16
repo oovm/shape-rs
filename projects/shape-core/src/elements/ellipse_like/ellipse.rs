@@ -22,19 +22,19 @@ where
     /// x = (2 c d-b f)/(b^2-4 a c)
     /// y = (2 a f-b d)/(b^2-4 a c)
     pub fn from_coefficient(a: T, b: T, c: T, d: T, e: T, f: T) -> Self {
-        let delta = b.clone() * b.clone() - four() * a.clone() * c.clone();
+        let delta_s = minor_delta(&a, &b, &c);
+        let x = center_x(&a, &b, &c, &d, &e, delta_s);
+        let y = center_y(&a, &b, &c, &d, &e, delta_s);
 
-        let x = (two() * c.clone() * d.clone() - b.clone() * f.clone()) / delta.clone();
-        let y = (two() * a.clone() * f.clone() - b.clone() * d.clone()) / delta.clone();
-
-        Self { center: Point { x, y }, radius: ((), ()), angle: () }
+        let m = eta_invariant(&a, &b, &c);
+        let n = eta_invariant(&d, &e, &f);
+        let angle = (m.atan2(n) * two()).atan();
+        Self { center: Point { x, y }, radius: (m, n), angle }
     }
 
     /// Create a new ellipse with 5 points.
     pub fn from_5_points(p1: Point<T>, p2: Point<T>, p3: Point<T>, p4: Point<T>, p5: Point<T>) {}
 }
-
-fn delta() {}
 
 impl<T> Ellipse<T>
 where
@@ -77,7 +77,7 @@ where
     /// ```
     pub fn major_delta(&self) -> T {
         let (a, b, c, d, e, f) = self.homogeneous();
-        a * c * f + two::<T>() * b * d * e - a * e * e - c * d * d - f * b * b
+        major_delta(&a, &b, &c, &d, &e, &f)
     }
     /// Get the minor delta of the ellipse.
     /// ```math
@@ -90,7 +90,7 @@ where
     /// ```
     pub fn minor_delta(&self) -> T {
         let (a, b, c, _, _, _) = self.homogeneous();
-        a * c - b.pow(2)
+        minor_delta(&a, &b, &c)
     }
 }
 
@@ -101,4 +101,56 @@ impl<T> Ellipse<T> {
     pub fn approx_polyline(self) -> Polyline<T> {
         todo!()
     }
+}
+
+/// a c f + 2 b d e - a e^2 - c d^2 - f b^2
+#[inline(always)]
+fn major_delta<T>(a: &T, b: &T, c: &T, d: &T, e: &T, f: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = a.clone() + c.clone() + f.clone();
+    let p2 = two::<T>() * b.clone() * d.clone() + two::<T>() * e.clone() * f.clone();
+    let p3 = a.clone() * e.clone() * e.clone() + c.clone() * d.clone() * d.clone() + f.clone() * b.clone() * b.clone();
+    p1 + p2 - p3
+}
+
+/// a c - b^2
+#[inline(always)]
+fn minor_delta<T>(a: &T, b: &T, c: &T) -> T
+where
+    T: Clone + Real,
+{
+    a.clone() * c.clone() - b.clone() * b.clone()
+}
+
+/// (a - c)^2 + 4 b^2
+#[inline(always)]
+fn eta_invariant<T>(a: &T, b: &T, c: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = a.clone() - c.clone();
+    let eta = p1.powi(2) + four::<T>() * b.powi(2);
+    eta.sqrt()
+}
+
+/// (b e - c d) / delta
+#[inline(always)]
+fn center_x<T>(_: &T, b: &T, c: &T, d: &T, e: &T, delta_s: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = b.clone() * e.clone() - c.clone() * d.clone();
+    p1 / delta_s
+}
+
+/// (b d - a e) / delta
+#[inline(always)]
+fn center_y<T>(a: &T, b: &T, _: &T, d: &T, e: &T, delta_s: &T) -> T
+where
+    T: Clone + Real,
+{
+    let p1 = b.clone() * d.clone() - a.clone() * e.clone();
+    p1 / delta_s
 }
