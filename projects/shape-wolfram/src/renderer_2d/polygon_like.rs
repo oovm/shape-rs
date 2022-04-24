@@ -37,7 +37,7 @@ where
             ("ry", format!("{}", self.radius.1)),
         ];
         if !self.is_horizontal() {
-            let rotate = format!("rotate({}, {} {})", self.angle, self.center.x, self.center.y);
+            let rotate = format!("rotate({}, {} {})", self.rotate, self.center.x, self.center.y);
             attributes.push(("transform", rotate));
         }
 

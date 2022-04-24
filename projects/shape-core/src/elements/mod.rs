@@ -1,5 +1,6 @@
 pub use self::{
-    ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D},
+    curve::{BSplineCurve, BezierCurve},
+    ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D, Ellipsoid},
     line::{Line, Line3D, Vector, Vector3D},
     point::{Point, Point3D},
     polygon_like::{Polygon, Polyline, RegularPolygon},
@@ -12,6 +13,7 @@ use projective::Projective;
 use serde::{Deserialize, Serialize};
 use std::ops::{Add, AddAssign, Div};
 
+mod curve;
 mod ellipse_like;
 mod line;
 mod point;
