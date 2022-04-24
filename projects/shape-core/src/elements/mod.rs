@@ -2,7 +2,7 @@ pub use self::{
     ellipse_like::{Ball, Circle, Circle3D, Ellipse, Ellipse3D},
     line::{Line, Line3D, Vector, Vector3D},
     point::{Point, Point3D},
-    polygon_like::Polygon,
+    polygon_like::{Polygon, Polyline, RegularPolygon},
     rectangle_like::{Parallelogram, Rectangle, Square},
     triangle::Triangle,
 };
@@ -10,7 +10,7 @@ use crate::Distance;
 use num_traits::{real::Real, Float, FloatConst, Num, One, Zero};
 use projective::Projective;
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, Div};
+use std::ops::{Add, AddAssign, Div};
 
 mod ellipse_like;
 mod line;
