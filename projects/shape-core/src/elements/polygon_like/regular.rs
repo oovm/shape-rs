@@ -4,8 +4,14 @@ impl<T> RegularPolygon<T>
 where
     T: Real,
 {
-    pub fn new(sides: usize) -> Self {
+    pub fn unit(sides: usize) -> Self {
         Self { sides, center: Point { x: T::zero(), y: T::zero() }, radius: T::one(), rotate: T::zero() }
+    }
+    pub fn new<P>(sides: usize, center: P, radius: T, rotate: T) -> Self
+    where
+        Point<T>: From<P>,
+    {
+        Self { sides, center: center.into(), radius, rotate }
     }
 
     pub fn vertexes(&self) -> Vec<Point<T>> {
@@ -45,8 +51,16 @@ impl<T> CirclePoints<T>
 where
     T: Real,
 {
-    pub fn new(sides: usize) -> Vec<Point<T>> {
-        RegularPolygon::new(sides).vertexes()
+    #[inline]
+    pub fn unit(sides: usize) -> Vec<Point<T>> {
+        RegularPolygon::unit(sides).vertexes()
+    }
+    #[inline]
+    pub fn new<P>(sides: usize, center: P, radius: T, rotate: T) -> Vec<Point<T>>
+    where
+        Point<T>: From<P>,
+    {
+        RegularPolygon::new(sides, center, radius, rotate).vertexes()
     }
 }
 

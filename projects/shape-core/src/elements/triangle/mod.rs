@@ -16,10 +16,13 @@ impl<T> Triangle<T> {
     }
 }
 
-impl<T: Clone> Triangle<T> {
+impl<T> Triangle<T>
+where
+    T: Clone + Num,
+{
     pub fn is_valid(&self) -> bool {
         let (ab, ac, _) = self.edges();
-        ab == ac
+        ab.is_parallel(&ac)
     }
     pub fn is_congruent(&self) -> bool {
         true
@@ -27,8 +30,7 @@ impl<T: Clone> Triangle<T> {
     pub fn is_isosceles(&self) -> bool {
         true
     }
-    #[inline]
-    fn edges(&self) -> (Vector<T>, Vector<T>, Vector<T>) {
+    pub fn perimeter(&self) -> T {
         todo!()
     }
     /// Returns the area of the triangle.
@@ -41,5 +43,9 @@ impl<T: Clone> Triangle<T> {
         // x2 y0 - x0 y2
         let det3 = self.vertex[2].x.clone() * self.vertex[0].y.clone() - self.vertex[0].x.clone() * self.vertex[2].y.clone();
         (det1 + det2 + det3) / two()
+    }
+    #[inline]
+    fn edges(&self) -> (Vector<T>, Vector<T>, Vector<T>) {
+        todo!()
     }
 }

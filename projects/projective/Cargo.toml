@@ -1,6 +1,6 @@
 [package]
 name = "projective"
-version = "0.2.5"
+version = "0.3.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "The representation projective transformation"
 categories = ["mathematics", "graphics"]

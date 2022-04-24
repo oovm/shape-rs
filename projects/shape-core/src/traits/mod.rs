@@ -3,6 +3,7 @@ use num_traits::Zero;
 mod convert;
 mod dim2;
 mod projection;
+mod random;
 #[cfg(feature = "wolfram_wxf")]
 mod wolfram;
 

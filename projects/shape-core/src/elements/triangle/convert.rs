@@ -1,8 +1,10 @@
 use super::*;
+use crate::ValidShape;
 
 impl<T, P> TryFrom<(P, P, P)> for Triangle<T>
 where
     Point<T>: From<P>,
+    T: Num + Clone + PartialOrd,
 {
     type Error = ();
 
