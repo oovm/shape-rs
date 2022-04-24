@@ -1,5 +1,6 @@
 use super::*;
 mod convert;
+mod regular;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Polyline<T> {
