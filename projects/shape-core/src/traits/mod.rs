@@ -50,14 +50,16 @@ pub trait Shape2D {
     fn edges<'a>(&'a self, sample: usize) -> Self::LineIterator<'a>;
 }
 
+/// A placeholder iterator for missing trait bound
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlaceHolderNodeIterator<T> {
     place_holder: PhantomData<T>,
 }
 
+/// A placeholder iterator for missing trait bound
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PlaceHolderEdgeIterator<T> {
     place_holder: PhantomData<T>,
 }

@@ -1,5 +1,7 @@
-use super::*;
 use num_traits::{Num, One};
+
+use super::*;
+
 mod constructors;
 mod convert;
 
@@ -24,12 +26,13 @@ pub struct Line<T> {
 }
 
 impl<T> Line<T>
-where
-    T: Clone + Num,
-{
-    pub fn length(&self) -> T
     where
-        T: Real,
+        T: Clone + Num,
+{
+    /// Get the length of the line
+    pub fn length(&self) -> T
+        where
+            T: Real,
     {
         self.s.euclidean_distance(&self.e)
     }
@@ -38,12 +41,13 @@ where
         let new = self.e.clone() - &self.s;
         Vector { dx: new.x, dy: new.y }
     }
-
+    /// Check if two line is parallel
     pub fn is_parallel(&self, rhs: &Self) -> bool {
         let a = self.as_vector();
         let b = rhs.as_vector();
         a.is_parallel(&b)
     }
+    /// Check if two line is orthogonal
     pub fn is_orthogonal(&self, rhs: &Self) -> bool {
         let a = self.as_vector();
         let b = rhs.as_vector();
@@ -52,12 +56,12 @@ where
 }
 
 impl<T> Vector<T>
-where
-    T: Clone + Num,
+    where
+        T: Clone + Num,
 {
     pub fn from_2_points<P>(start: P, end: P) -> Self
-    where
-        Point<T>: From<P>,
+        where
+            Point<T>: From<P>,
     {
         let Point { x: x1, y: y1 } = start.into();
         let Point { x: x2, y: y2 } = end.into();
@@ -66,14 +70,16 @@ where
 }
 
 impl<T> Vector<T>
-where
-    T: Clone + Num,
+    where
+        T: Clone + Num,
 {
+    /// Check if two vector is parallel
     pub fn is_parallel(&self, rhs: &Self) -> bool {
         let Vector { dx: x1, dy: y1 } = self.clone();
         let Vector { dx: x2, dy: y2 } = rhs.clone();
         x1 * x2 - y1 * y2 == zero()
     }
+    /// Check if two vector is orthogonal
     pub fn is_orthogonal(&self, rhs: &Self) -> bool {
         let Vector { dx: x1, dy: y1 } = self.clone();
         let Vector { dx: x2, dy: y2 } = rhs.clone();

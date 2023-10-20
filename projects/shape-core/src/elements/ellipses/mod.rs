@@ -53,14 +53,19 @@ pub struct Ellipse3D<T> {
 #[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Ball<T> {
+    /// The coordinates of the center point of the ball
     pub center: Point3D<T>,
+    /// The radius of the ball
     pub radius: T,
 }
 
 #[cfg_attr(feature = "serde", repr(C), derive(Serialize, Deserialize))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Ellipsoid<T> {
+    /// The coordinates of the center point of the ellipsoid
     pub center: Point3D<T>,
+    /// The radius from x, y, z axes
     pub radius: (T, T, T),
+    /// The rotate from a, b, y corner
     pub rotate: (T, T, T),
 }

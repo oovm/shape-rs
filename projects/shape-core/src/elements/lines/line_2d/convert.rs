@@ -1,6 +1,7 @@
 use super::*;
 
 impl<T> Line<T> {
+    /// Create a new line from two point
     #[inline(always)]
     pub fn new<P>(start: P, end: P) -> Self
     where
@@ -8,6 +9,7 @@ impl<T> Line<T> {
     {
         Self { s: start.into(), e: end.into() }
     }
+    /// Create a new line from anchor point and vector
     pub fn from_anchor<S, V>(start: S, v: V) -> Self
     where
         T: Clone + Add<Output = T>,

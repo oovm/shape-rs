@@ -1,11 +1,12 @@
 use super::*;
 
 impl<T> Polygon<T> {
+    /// Create a new polygon from container
     pub fn new<I>(points: I) -> Self
     where
-        I: IntoIterator<Item = Point<T>>,
+        I: Iterator<Item = Point<T>>,
     {
-        Self { points_set: points.into_iter().collect() }
+        Self { points_set: points.collect() }
     }
 }
 

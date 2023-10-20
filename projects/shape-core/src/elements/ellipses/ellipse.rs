@@ -130,7 +130,7 @@ where
             let y = self.sample_y(&angle);
             vertex.push(Point::new(x, y));
         }
-        Polygon::new(vertex)
+        Polygon::from_iter(vertex)
     }
     #[track_caller]
     pub fn sample_polyline(&self, n: usize) -> Polyline<T> {

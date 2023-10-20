@@ -16,6 +16,7 @@ impl<T> Polygon3D<T> {
             .tuple_windows()
             .map(|(a, b)| Line3D { s: a.ref_inner(), e: b.ref_inner() })
     }
+    /// Get the center of the polygon
     pub fn center(&self) -> Point3D<T>
     where
         T: Zero + One + Clone + AddAssign + Div<Output = T>,

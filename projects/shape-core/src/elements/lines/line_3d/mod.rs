@@ -34,6 +34,7 @@ impl<T: Real> Line3D<T> {
         let _ = (p, q);
         todo!()
     }
+    /// Take the middle point of a 3D line
     pub fn middle_point(&self) -> Point3D<T> {
         let mx = (self.s.x + self.e.x) / two();
         let my = (self.s.y + self.e.y) / two();

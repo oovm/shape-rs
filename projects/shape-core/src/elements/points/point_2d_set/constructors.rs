@@ -1,6 +1,7 @@
 use super::*;
 
 impl<T> PointSet<T> {
+    /// Create a new set of points
     pub fn new(points: &[Point<T>]) -> Self
     where
         T: Clone,
