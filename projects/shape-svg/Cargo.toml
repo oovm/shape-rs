@@ -11,7 +11,7 @@ edition = "2021"
 
 
 [dependencies]
-svg = "0.13.1"
+svg = "0.14.0"
 #serde = "1.0.159"
 
 

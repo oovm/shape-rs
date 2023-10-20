@@ -12,9 +12,9 @@ edition = "2021"
 [dependencies]
 color-core = "0.1.6"
 itertools = "0.11.0"
-num-traits = "0.2.16"
+num-traits = "0.2.17"
 #bitflags = "2.1.0"
-serde = { version = "1.0.188", features = ["derive"], optional = true}
+serde = { version = "1.0.189", features = ["derive"], optional = true}
 rand = { version = "0.8.5", optional = true }
 wolfram-expr = { version = "0.1.4", optional = true }
 
